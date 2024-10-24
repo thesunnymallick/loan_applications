@@ -9,7 +9,10 @@ import { MdOutlineRequestQuote } from 'react-icons/md';
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation(); // Get the current location (URL)
-  const userRole="Admin"
+  const userRole="Partner"
+
+
+
   const adminMenus = [
     {
       name: "Dashboard",
@@ -56,6 +59,9 @@ const Sidebar = () => {
       icon: MdGroups,
     },
   ];
+
+
+
 
   let menus = [];
   if (userRole === "Admin") {

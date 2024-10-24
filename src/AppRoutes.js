@@ -10,6 +10,7 @@ import RootLayout from './layouts/RootLayout';
 import RoleAssigned from './pages/admin/RoleAssigned';
 import CreateRole from './pages/admin/CreateRole';
 import AllUsers from './pages/admin/AllUsers';
+import PartnerProfile from './pages/partner/PartnerProfile';
 
  const routes = [
   {
@@ -106,6 +107,13 @@ import AllUsers from './pages/admin/AllUsers';
   {
     path:"/partner/dashboard",
     element: PartnerDashboard,
+    layout: RootLayout,
+    protected: true,
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/partner/profile",
+    element: PartnerProfile,
     layout: RootLayout,
     protected: true,
     name:"Partner Dashboard",

@@ -11,7 +11,7 @@ const PlaneOverview = () => {
   const columns = [
     {
       title: "No",
-      dataIndex: "key", // unique identifier
+      dataIndex: "key", 
       key: "key",
     },
     {
@@ -37,8 +37,8 @@ const PlaneOverview = () => {
         <ul>
           {services.map((service, index) => (
             <div className="flex items-center gap-1 text-xs">
-               <span>{index+1})</span>
-               <li  key={index}>{service}</li>
+              <span>{index + 1})</span>
+              <li key={index}>{service}</li>
             </div>
           ))}
         </ul>
@@ -107,7 +107,6 @@ const PlaneOverview = () => {
     },
   ];
 
-
   // Filter the data based on the search text
   const handleSearch = (value) => {
     const filtered = dataSource.filter((record) => {
@@ -126,30 +125,30 @@ const PlaneOverview = () => {
   };
   return (
     <div className="px-2">
-        <div className="py-2 flex justify-between "
-        >
-         <h2 className="text-zinc-700 font-semibold text-xl">Plan Overview</h2>
+      <div className="py-2 flex justify-between ">
+        <h2 className="text-zinc-700 font-semibold text-xl">Plan Overview</h2>
 
-           {/* Search Bar */}
-         <Input
-        placeholder="Search packages..."
-        value={searchText}
-        onChange={(e) => handleSearch(e.target.value)}
-        prefix={<IoSearchOutline  />} // Add search icon
-        style={{
-          marginBottom: 16,
-          width: 300,
-          borderRadius: "8px", 
-          padding: "10px 15px", 
-        }}
-        allowClear 
+        {/*Search Bar */}
+        <Input
+          placeholder="Search packages..."
+          value={searchText}
+          onChange={(e) => handleSearch(e.target.value)}
+          prefix={<IoSearchOutline />}
+          style={{
+            marginBottom: 16,
+            width: 300,
+            borderRadius: "8px",
+            padding: "10px 15px",
+          }}
+          allowClear
+        />
+      </div>
+      <Table
+        bordered
+        columns={columns}
+        dataSource={searchText ? filteredData : dataSource}
+        pagination={false}
       />
-        </div>
-      <Table 
-      bordered
-      columns={columns} 
-      dataSource={searchText ? filteredData : dataSource}
-      pagination={false} />
     </div>
   );
 };
