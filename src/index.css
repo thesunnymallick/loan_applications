@@ -2,3 +2,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Change the color of the active tab */
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: green !important;
+  }
+  
+  /* Optional: Change the color of the active tab underline */
+  .ant-tabs-ink-bar {
+    background-color: green !important;
+  }
+  
+  /* Optional: Change the color of the hover state */
+  .ant-tabs-tab:hover {
+    color: green !important;
+  }

@@ -11,6 +11,8 @@ import RoleAssigned from './pages/admin/RoleAssigned';
 import CreateRole from './pages/admin/CreateRole';
 import AllUsers from './pages/admin/AllUsers';
 import PartnerProfile from './pages/partner/PartnerProfile';
+import UploadDocuments from './pages/partner/UploadDocuments';
+import Subscriptions from './pages/admin/Subscriptions';
 
  const routes = [
   {
@@ -103,6 +105,14 @@ import PartnerProfile from './pages/partner/PartnerProfile';
     protected: true,
     name:"Admin Dashboard",
   },
+  {
+    path:"/admin/subscriptions",
+    element:Subscriptions,
+    layout: RootLayout,
+    protected: true,
+    name:"Admin Dashboard",
+  },
+ 
 
   {
     path:"/partner/dashboard",
@@ -114,6 +124,13 @@ import PartnerProfile from './pages/partner/PartnerProfile';
   {
     path:"/partner/profile",
     element: PartnerProfile,
+    layout: RootLayout,
+    protected: true,
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/partner/upload-doc",
+    element: UploadDocuments,
     layout: RootLayout,
     protected: true,
     name:"Partner Dashboard",

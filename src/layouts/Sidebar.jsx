@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import { MdOutlineDashboard, MdArrowBackIosNew, MdAccountBalance } from "react-icons/md";
+import {
+  MdOutlineDashboard,
+  MdArrowBackIosNew,
+  MdAccountBalance,
+} from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import { MdGroups } from "react-icons/md";
 import { FaUserGear } from "react-icons/fa6";
-import { MdOutlineRequestQuote } from 'react-icons/md';
-
+import { MdOutlineRequestQuote } from "react-icons/md";
+import { FaFileUpload } from "react-icons/fa";
+import { MdSubscriptions } from "react-icons/md";
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation(); // Get the current location (URL)
-  const userRole="Partner"
-
-
+  const userRole = "Admin";
 
   const adminMenus = [
     {
@@ -26,6 +29,11 @@ const Sidebar = () => {
       icon: MdOutlineRequestQuote,
     },
     { name: "Users", link: "/admin/users", icon: MdGroups },
+    {
+      name: "Subscriptions",
+      link: "/admin/subscriptions",
+      icon: MdSubscriptions,
+    },
   ];
 
   const partnerMenus = [
@@ -35,10 +43,15 @@ const Sidebar = () => {
       icon: MdOutlineDashboard,
     },
     { name: "Profile Management", link: "/partner/profile", icon: FaUserGear },
-    { 
-      name: "Financial Services",    
-      link: "/partner/services",     
-      icon: MdAccountBalance,        
+    {
+      name: "Upload Documents",
+      link: "/partner/upload-doc",
+      icon: FaFileUpload,
+    },
+    {
+      name: "Financial Services",
+      link: "/partner/services",
+      icon: MdAccountBalance,
     },
   ];
 
@@ -59,9 +72,6 @@ const Sidebar = () => {
       icon: MdGroups,
     },
   ];
-
-
-
 
   let menus = [];
   if (userRole === "Admin") {
