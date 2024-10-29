@@ -13,6 +13,7 @@ import AllUsers from './pages/admin/AllUsers';
 import PartnerProfile from './pages/partner/PartnerProfile';
 import UploadDocuments from './pages/partner/UploadDocuments';
 import Subscriptions from './pages/admin/Subscriptions';
+import Register from './pages/auth/Register';
 
  const routes = [
   {
@@ -21,6 +22,14 @@ import Subscriptions from './pages/admin/Subscriptions';
     layout: (props) => <RootLayout {...props} showSidebar={false} showNavbar={false} />,
     protected: false,
     name: 'Home',
+  },
+
+  {
+    path: '/partner-apply',
+    element: Register,
+    layout: (props) => <RootLayout {...props} showSidebar={false} showNavbar={false} />,
+    protected: false,
+    name: 'Partner Apply',
   },
   {
     path: '/partner/login',

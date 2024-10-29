@@ -83,7 +83,7 @@ const Login = ({ loginType }) => {
       {/* Login form section */}
       <form
         onSubmit={handleSubmit}
-        className="absolute top-[20%] left-[8%] w-[30%] flex items-center">
+        className="absolute top-[20%] left-[8%] w-[30%] flex items-center ">
         <div className="bg-white w-full p-6 rounded-lg shadow-sm">
           {/* Dynamic title based on login type */}
           <div className="flex justify-center pb-6">
@@ -147,12 +147,16 @@ const Login = ({ loginType }) => {
             </div>
 
             {/* Register link */}
-            <div className="mt-6 flex justify-center pb-3">
+          {
+             loginType==="Partner" && (
+              <div className="mt-6 flex justify-center pb-3">
               <span className="text-sm text-zinc-500">
                 Don't have an account?
-                <Link className="text-green-600 ml-1">Register</Link>
+                <Link to="/partner-apply" className="text-green-600 ml-1">Register</Link>
               </span>
             </div>
+             )
+          }
           </div>
         </div>
       </form>
