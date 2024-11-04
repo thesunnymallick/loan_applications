@@ -1,10 +1,12 @@
-import { Button, Input, notification, Select } from "antd";
-import React from "react";
-import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { Button, Input, notification, Select, Upload } from "antd";
+import React, { useState } from "react";
+import { EyeInvisibleOutlined, EyeTwoTone, LoadingOutlined } from "@ant-design/icons";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { roleAssign } from "../../api/admin/roleAssign";
+import { GoPlus } from "react-icons/go";
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -47,6 +49,8 @@ const validationSchema = Yup.object({
   password_confirmation: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Password confirmation is required"),
+
+  userPhoto: Yup.mixed().required("Profile picture is required"),
 });
 
 
@@ -54,6 +58,11 @@ const validationSchema = Yup.object({
 
 const CreateRole = () => {
   // Initial values for the form fields
+
+  const [loading, setLoading]=useState(false);
+  const [imgLoading, setimgLoading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
   const initialValues = {
     name: "",
     email: "",
@@ -63,8 +72,33 @@ const CreateRole = () => {
     bank_account_no: "",
     ifsc_code: "",
     role: "",
+    userPhoto:"",
     password: "",
     password_confirmation: "",
+  };
+
+
+  const handelRoleAssign = async (values) => {
+    try {
+      setLoading(true);
+      const { status, data } = await roleAssign(values); // Assuming `roleAssign` is an API call function
+      if (status === 201) {
+        console.log(data);
+        // Success notification
+        notification.success({
+          message: 'Role Assigned Successfully',
+          description: `The role "${data?.data?.role}" has been assigned successfully.`,
+        });
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      // Error notification
+      notification.error({
+        message: 'Role Assignment Failed',
+        description: error.response?.data?.message || 'An error occurred while assigning the role.',
+      });
+    }
   };
 
   // Formik setup for handling form state and validation
@@ -73,6 +107,16 @@ const CreateRole = () => {
      validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log("Values", values);
+      const formData = new FormData();
+      for (const key in values) {
+        if (key === "userPhoto" && values[key]) {
+          formData.append(key, values[key]);
+        } else {
+          formData.append(key, values[key]);
+        }
+      }
+      
+      handelRoleAssign(formData);
     },
   });
 
@@ -96,6 +140,20 @@ const CreateRole = () => {
   const { handleChange, values, errors, touched, handleBlur,  setFieldValue, handleSubmit } =
     formik;
 
+
+  const beforeUpload = (file) => {
+    setimgLoading(true)
+    const isLt1M = file.size / 1024 / 1024 < 1;
+    if (!isLt1M) {
+      setimgLoading(false);
+      notification.error({
+        message: "File too large",
+        description: "Image must be smaller than 1MB!",
+      });
+    }
+    return isLt1M;
+  };
+
   return (
     <div 
   
@@ -118,6 +176,55 @@ const CreateRole = () => {
           <h2 className="text-zinc-700 font-semibold text-lg pt-2">
             Personal Details
           </h2>
+           <div className="my-3 flex justify-center">
+           <Upload
+  name="userPhoto"
+  showUploadList={false}
+  beforeUpload={(file) => {
+    if (beforeUpload(file)) {
+      setimgLoading(false);
+      setFieldValue("userPhoto", file);
+      setPreviewUrl(URL.createObjectURL(file));
+      notification.success({
+        message: "Upload Successful",
+        description: "Your profile picture has been uploaded.",
+      });
+    }
+    return false; // Prevent automatic upload
+  }}
+>
+    <div className="flex flex-col items-center gap-1">
+    <div
+    className={`w-28 h-28 ${
+      previewUrl ? "border-green-500" : errors.userPhoto && touched.userPhoto ? "border-red-500" : "border-zinc-400"
+    } border-dashed border-2 flex flex-col items-center justify-center text-sm rounded-full cursor-pointer bg-zinc-100`}
+  >
+    {previewUrl ? (
+      <img
+        src={previewUrl}
+        alt="avatar"
+        className="w-full h-full object-cover rounded-full"
+        onLoad={() => URL.revokeObjectURL(previewUrl)}
+      />
+    ) : (
+      <>
+        {imgLoading ? <LoadingOutlined /> : <GoPlus className="text-zinc-700 text-lg" />}
+        <span className="text-zinc-700">Upload</span>
+      </>
+    )}
+  </div>
+
+  {/* Error Message */}
+  <div className="text-sm flex justify-center my-1">
+    {touched.userPhoto && errors.userPhoto && (
+      <span className="text-red-500 text-sm">{errors.userPhoto}</span>
+    )}
+  </div>
+    </div>
+</Upload>
+
+
+           </div>
           <div className="flex items-center gap-3 mt-1">
             <div className="flex-1 flex flex-col gap-1">
               <label className="text-sm text-zinc-500 font-semibold" htmlFor="">
@@ -329,18 +436,20 @@ const CreateRole = () => {
               ) : null}
               </div>
               <div className="w-[30%]  mt-6">
-                <button 
+                <Button 
                  onClick={generatePassword}
                  className="w-full h-10 bg-green-700 text-white rounded-md shadow-sm">
                   Genarate
-                </button>
+                </Button>
               </div>
             </div>
           </div>
 
           <div className="py-2 mt-10 flex justify-center items-center gap-3">
             <Button className="w-[15%] h-10 rounded-lg">Cancel</Button>
-            <Button htmlType="submit" className="w-[15%] h-10 bg-green-700 text-white rounded-lg">
+            <Button
+              loading={loading}
+              htmlType="submit" className="w-[15%] h-10 bg-green-700 text-white rounded-lg">
               Save
             </Button>
           </div>

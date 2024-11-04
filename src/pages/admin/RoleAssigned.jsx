@@ -1,11 +1,16 @@
-import { Dropdown, Menu, Table } from 'antd';
-import React from 'react'
+import { Avatar, Dropdown, Menu, Table, Tag } from 'antd';
+import React, { useEffect, useState } from 'react'
 import { GoPlus } from "react-icons/go";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from 'react-router-dom';
+import { getAllRoles } from '../../api/admin/roleAssign';
+import userCricle from "../../assets/userCricle.jpg"
 
 const RoleAssigned = () => {
 
+    const [allRoles, setAllRoles]=useState([]);
+    const  [loading, setLoading]=useState(false);
+      
     const columns = [
         {
           title: 'ID',
@@ -13,9 +18,17 @@ const RoleAssigned = () => {
           key: 'id',
         },
         {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
+          title: 'User',
+          key: 'user',
+          render :(text, record)=>(
+            <div className='flex items-center gap-2'>
+              <Avatar size={64} src={<img src={userCricle} alt="avatar" />} />
+              <div className='flex flex-col'>
+                <h2 className='text-zinc-700 text-lg'>{record.name}</h2>
+                <span className='text-zinc-600 text-sm'>{record.email}</span>
+              </div>
+            </div>
+          )
         },
         {
           title: 'Email',
@@ -24,14 +37,55 @@ const RoleAssigned = () => {
         },
         {
           title: 'Phone Number',
-          dataIndex: 'phone',
-          key: 'phone',
+          dataIndex: 'phone_no',
+          key: 'phone_no',
         },
         {
-          title: 'Account Number',
-          dataIndex: 'accountNumber',
-          key: 'accountNumber',
-        },
+          title: 'Role',
+          dataIndex: 'role',
+          key: 'role',
+          render: (role) => {
+              let color = 'default';
+              let style = {
+                  padding: '4px 10px',
+                  fontSize: '14px',
+                  borderRadius: '15px',
+                  fontWeight: '500',
+              };
+  
+              // Customize color and additional styles for specific roles
+              if (role === 'Sales Executive') {
+                  color = 'blue';
+                  style = { ...style, backgroundColor: '#E6F7FF', color: '#1890FF' };
+              } else if (role === 'RM') {
+                  color = 'green';
+                  style = { ...style, backgroundColor: '#F6FFED', color: '#52C41A' };
+              }
+  
+              return <Tag color={color} style={style}>{role}</Tag>;
+          },
+      },
+      {
+        title: 'Bank Details',
+        key: 'bankDetails',
+        children: [
+          {
+            title: 'Bank Name',
+            dataIndex: 'bank_account_name',
+            key: 'bank_account_name',
+          },
+          {
+            title: 'Account Number',
+            dataIndex: 'bank_account_no',
+            key: 'bank_account_no',
+          },
+          {
+            title: 'IFSC Code',
+            dataIndex: 'ifsc_code',
+            key: 'ifsc_code',
+          },
+        ],
+      },
 
         {
             title: 'Action',
@@ -58,26 +112,27 @@ const RoleAssigned = () => {
               );
             },
         },
-      ];
+     ];
 
-      const dataSource = [
-        {
-          key: '1',
-          id: 'SE001',
-          name: 'John Doe',
-          email: 'john@example.com',
-          phone: '+1234567890',
-          accountNumber: '12345678901234',
-        },
-        {
-          key: '2',
-          id: 'SE002',
-          name: 'Jane Smith',
-          email: 'jane@example.com',
-          phone: '+0987654321',
-          accountNumber: '56789012345678',
-        },
-      ];
+   
+
+    useEffect(()=>{
+      const fetchAllRoles=async()=>{
+       try {
+        setLoading(true);
+        const {data, status}=await getAllRoles();
+        if(status===200){
+          setLoading(false);
+          setAllRoles(data?.data);
+        }
+       } catch (error) {
+        setLoading(false);
+        console.log(error);
+       }
+      }
+
+      fetchAllRoles();
+    },[])
       
   return (
     <div 
@@ -99,7 +154,7 @@ const RoleAssigned = () => {
           </div>
           
           <div className='mt-4'>
-          <Table columns={columns} dataSource={dataSource} />
+          <Table loading={loading} bordered columns={columns} dataSource={allRoles}  scroll={{ x: "max-content" }} />
           </div>
 
      </div>

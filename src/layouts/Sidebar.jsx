@@ -10,11 +10,14 @@ import { FaUserGear } from "react-icons/fa6";
 import { MdOutlineRequestQuote } from "react-icons/md";
 import { FaFileUpload } from "react-icons/fa";
 import { MdSubscriptions } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation(); // Get the current location (URL)
-  const userRole = "Admin";
+   const {  role } = useSelector((state) => state.auth);
+
+
 
   const adminMenus = [
     {
@@ -74,13 +77,13 @@ const Sidebar = () => {
   ];
 
   let menus = [];
-  if (userRole === "Admin") {
+  if (role === "admin") {
     menus = adminMenus;
-  } else if (userRole === "Partner") {
+  } else if (role === "partner") {
     menus = partnerMenus;
-  } else if (userRole === "RM") {
+  } else if (role === "RM") {
     menus = rmMenus;
-  } else if (userRole === "salesExecutive") {
+  } else if (role === "Sales Executive") {
     menus = salesExecutive;
   }
 

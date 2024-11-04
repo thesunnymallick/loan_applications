@@ -10,11 +10,11 @@ const App = () => {
       <Routes>
         {routes.map(
           (
-            { path, element: Element, layout: Layout, protected: isProtected, loginType },
+            { path, element: Element, layout: Layout, protected: isProtected, loginType, allowedRoles },
             index
           ) => {
             const RouteElement = isProtected ? (
-              <ProtectedRoute element={Element} isProtected={isProtected} />
+              <ProtectedRoute element={Element} isProtected={isProtected} allowedRoles={allowedRoles} />
             ) : (
               <Element loginType={loginType} />
             );

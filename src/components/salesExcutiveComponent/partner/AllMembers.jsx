@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input, Table, Tag } from "antd";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaUsers } from "react-icons/fa6";
 import { FaUserCheck } from "react-icons/fa";
+import { getAllMembers } from "../../../api/salesExecutive/partnerApi";
 
 // Function to render the Email Verification Tag
 const renderEmailVerificationTag = (emailVerified) => {
@@ -238,19 +239,35 @@ const dataSource = [
   },
 ];
 
+
+
 const AllMembers = () => {
+
+  useEffect(() => {
+    const fetchAllMembers = async () => {
+      try {
+        const {data,status} = await getAllMembers();
+        if (status === 200) {
+          console.log(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchAllMembers();
+  }, []);
   return (
     <div>
       <div className="flex justify-between">
         <h2 className="text-zinc-700 font-semibold text-xl">Member Overview</h2>
 
-        <div >
+        <div>
           {/* Search Bar */}
           <Input
             placeholder="Search Member..."
             // value={searchText}
             // onChange={(e) => handleSearch(e.target.value)}
-            prefix={<IoSearchOutline/>} // Add search icon
+            prefix={<IoSearchOutline />} // Add search icon
             style={{
               // marginBottom: ,
               width: 300,
@@ -262,16 +279,20 @@ const AllMembers = () => {
         </div>
       </div>
       <div className="px-4 mt-3 flex items-center gap-2">
-      <div className="flex items-center gap-1 text-lg  border-r-2 border-r-zinc-400 px-2 py-1">
-           <span className="text-blue-800 font-semibold"><FaUsers/></span>
-           <span className="text-blue-800 font-semibold">55</span>
-           <span className="text-zinc-400 font-semibold">Total Partner</span>
-       </div>
-       <div className="flex items-center gap-1 text-lg border-r-2 border-r-zinc-400 px-2 py-1">
-           <span className="text-green-800 font-semibold text-lg"><FaUserCheck/></span>
-           <span className="text-green-800 font-semibold">50</span>
-           <span className="text-zinc-400 font-semibold">Active Partner</span>
-       </div>
+        <div className="flex items-center gap-1 text-lg  border-r-2 border-r-zinc-400 px-2 py-1">
+          <span className="text-blue-800 font-semibold">
+            <FaUsers />
+          </span>
+          <span className="text-blue-800 font-semibold">55</span>
+          <span className="text-zinc-400 font-semibold">Total Partner</span>
+        </div>
+        <div className="flex items-center gap-1 text-lg border-r-2 border-r-zinc-400 px-2 py-1">
+          <span className="text-green-800 font-semibold text-lg">
+            <FaUserCheck />
+          </span>
+          <span className="text-green-800 font-semibold">50</span>
+          <span className="text-zinc-400 font-semibold">Active Partner</span>
+        </div>
       </div>
       <div className="mt-3">
         <Table

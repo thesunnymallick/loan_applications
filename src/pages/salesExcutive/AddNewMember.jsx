@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "antd";
+import { Button, Modal, notification } from "antd";
 import { RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
 import PersonalInfo from "../../components/salesExcutiveComponent/partner/PersonalInfo";
 import PermanentAddress from "../../components/salesExcutiveComponent/partner/PermanentAddress";
@@ -10,7 +10,11 @@ import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { State} from "country-state-city";
 import * as Yup from 'yup';
-
+import { RxCross2 } from "react-icons/rx";
+import EmailVerify from "../../components/salesExcutiveComponent/partner/EmailVerify";
+import { newPartnerCreate, partnerSendOTP } from "../../api/salesExecutive/partnerApi";
+import moment from "moment";
+import dayjs from 'dayjs';
 const validationSchema = Yup.object().shape({
   name: Yup.string()
     .required('Name is required')
@@ -100,6 +104,9 @@ const AddNewMember = () => {
   const [isOfficeAddress, setIsOfficeAddress] = useState(true);
   const [isIdentityDetails, setIsIdentityDetails] = useState(true);
   const [stateOptions, setStateOptions] = useState([]);
+  const [isOpen, setIsOpen]=useState(false);
+  const [loading, setLoading]=useState(false);
+
 
   // Initial values for the form fields
   const initialValues = {
@@ -131,13 +138,71 @@ const AddNewMember = () => {
   };
 
 
+  // Hnadel Send OTP For Email
+  const handelSendOtp = async (email) => {
+    try {
+        const {status } = await partnerSendOTP({ email: email });
+        // Assuming a successful response returns a status code of 200
+        if (status === 200 ||201) {
+            notification.success({
+                message: 'Success',
+                description: 'OTP has been sent successfully.',
+            });
+        } else {
+            notification.error({
+                message: 'Error',
+                description: 'Failed to send OTP. Please try again.',
+            });
+        }
+    } catch (error) {
+        notification.error({
+            message: 'Error',
+            description: error.message || 'An unexpected error occurred.',
+        });
+    }
+};
+
+
+  // Partner Register 
+  const handelPartnerRegister = async (values) => {
+    try {
+      setLoading(true);
+      const { status } = await newPartnerCreate(values);
+      if (status === 200 || 201) {
+        setLoading(false);
+        setIsOpen(true);
+       
+        notification.success({
+          message: 'Registration Successful',
+          description: 'The partner has been registered but the email is not verified. Please verify the email.',
+        });
+        handelSendOtp(values.email)
+      }
+    } catch (error) {
+      setIsOpen(false);
+      setLoading(false);
+      notification.error({
+        message: 'Registration Failed',
+        description: 'There was an error while registering the partner. Please try again.',
+      });
+      console.log(error);
+    }
+  };
+
+
    // Formik setup for handling form state and validation
    const formik = useFormik({
     initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log("Values", values)
 
+      const updateData = {
+        ...values,
+        date_of_birth: dayjs(values.date_of_birth).isValid()
+          ? dayjs(values.date_of_birth).format("YYYY-MM-DD")
+          : ""
+      };
+      handelPartnerRegister(updateData);
     },
   });
 
@@ -191,7 +256,9 @@ const AddNewMember = () => {
 
         <div className="flex-1 flex items-center justify-end gap-2">
           <Button className="w-[15%] h-10 rounded-lg">Cancel</Button>
-          <Button htmlType="submit" className="w-[15%] h-10 bg-green-700 text-white rounded-lg">
+          <Button  
+            loading={loading}
+            htmlType="submit" className="w-[15%] h-10 bg-green-700 text-white rounded-lg">
             Save
           </Button>
         </div>
@@ -315,6 +382,40 @@ const AddNewMember = () => {
           </div>
         </div>
       </div>
+
+      <Modal
+        open={isOpen}
+        onCancel={() => setIsOpen(false)}
+        title={null}
+        width={400}
+        footer={null}
+        closable={false}
+        maskClosable={false}
+        modalRender={(modal) => {
+          return React.cloneElement(modal, {
+            style: {
+              ...modal.props.style,
+              ...{ borderRadius: 10, padding: 0 },
+            },
+          });
+        }}
+      >
+        <div className="flex justify-between 
+         items-center py-2 px-4 border-b-[1px] border-b-zinc-300">
+          <h1 className="text-zinc-700 font-semibold text-xl">
+          Email Verification
+          </h1>
+          <span
+            onClick={() => setIsOpen(false)}
+            className="text-zinc-600 hover:text-zinc-800 font-semibold text-2xl cursor-pointer"
+          >
+            <RxCross2/>
+          </span>
+        </div>
+
+        <EmailVerify email={values.email}/>
+      
+      </Modal>
     </form>
   );
 };

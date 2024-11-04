@@ -68,6 +68,7 @@ import Register from './pages/auth/Register';
     element: SalesExcutivedDashboard,
     layout: RootLayout,
     protected: true,
+    allowedRoles:['Sales Executive'],
     name: 'Sales Executive Dashboard',
   },
   {
@@ -75,6 +76,7 @@ import Register from './pages/auth/Register';
     element: Partner,
     layout: RootLayout,
     protected: true,
+    allowedRoles:['Sales Executive'],
     name: 'Partner Management',
   },
   {
@@ -82,6 +84,7 @@ import Register from './pages/auth/Register';
     element: AddNewMember,
     layout: RootLayout,
     protected: true,
+    allowedRoles:['Sales Executive'],
     name: 'Add New Member',
   },
   {
@@ -89,6 +92,7 @@ import Register from './pages/auth/Register';
     element: AdminDashboard,
     layout: RootLayout,
     protected: true,
+    allowedRoles: ['admin'],
     name:"Admin Dashboard",
   },
 
@@ -97,6 +101,7 @@ import Register from './pages/auth/Register';
     element: RoleAssigned,
     layout: RootLayout,
     protected: true,
+    allowedRoles: ['admin'],
     name:"Admin Dashboard",
   },
 
@@ -105,6 +110,7 @@ import Register from './pages/auth/Register';
     element: CreateRole,
     layout: RootLayout,
     protected: true,
+    allowedRoles: ['admin'],
     name:"Admin Dashboard",
   },
   {
@@ -112,6 +118,7 @@ import Register from './pages/auth/Register';
     element:AllUsers,
     layout: RootLayout,
     protected: true,
+    allowedRoles: ['admin'],
     name:"Admin Dashboard",
   },
   {
@@ -119,6 +126,7 @@ import Register from './pages/auth/Register';
     element:Subscriptions,
     layout: RootLayout,
     protected: true,
+    allowedRoles: ['admin'],
     name:"Admin Dashboard",
   },
  
@@ -128,6 +136,7 @@ import Register from './pages/auth/Register';
     element: PartnerDashboard,
     layout: RootLayout,
     protected: true,
+    allowedRoles: ['partner'],
     name:"Partner Dashboard",
   },
   {
@@ -135,6 +144,7 @@ import Register from './pages/auth/Register';
     element: PartnerProfile,
     layout: RootLayout,
     protected: true,
+    allowedRoles: ['partner'],
     name:"Partner Dashboard",
   },
   {
@@ -142,6 +152,7 @@ import Register from './pages/auth/Register';
     element: UploadDocuments,
     layout: RootLayout,
     protected: true,
+    allowedRoles: ['partner'],
     name:"Partner Dashboard",
   },
   {

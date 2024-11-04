@@ -1,51 +1,50 @@
 
-import React, {  useEffect } from "react";
-import {  useLocation } from "react-router-dom";
-// import { useSelector } from "react-redux";
+import React, {  useEffect} from "react";
+import {  useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Button, Result } from "antd";
 
-const ProtectedRoute = ({ element: Component, isProtected }) => {
-//   const { authInfo } = useSelector((state) => state.login);
-//   const [redirectPath, setRedirectPath] = useState(null);
-//   const navigate = useNavigate();
+const ProtectedRoute = ({ element: Component, isProtected, allowedRoles}) => {
+     const { isLoggedIn, role, status } = useSelector((state) => state.auth);
+
+  
+    
+  const navigate = useNavigate();
   const location = useLocation();
 
-  const isLoggedIn = true
+  useEffect(() => {
+    if (!isLoggedIn && isProtected) {
+      console.log("User Not Logged In");
+      navigate("/", { state: { from: location } }); 
+    }
+  }, [isLoggedIn, isProtected, location, navigate]);
+
 
   useEffect(() => {
-    // If user is not logged in and the route is protected, show login modal
-    if (!isLoggedIn && isProtected) {
-    //   setRedirectPath(location.pathname);
-    console.log("User Not Login")
+    if (role === "partner" && status === "pending") {
+      // Redirect to the upload-doc page if the user is a "partner" with "pending" status
+      navigate("/partner/upload-doc");
     }
-  }, [isLoggedIn, isProtected,  location.pathname]);
-
+  }, [role, status, navigate]);
  
+  // Check if the user is logged in and has an allowed role
+  if (isProtected && (!isLoggedIn || !allowedRoles.includes(role))) {
+    return (
+      <Result
+        status="403"
+        title="403"
+        subTitle="Sorry, you are not authorized to access this page."
+        extra={
+          <Button type="primary" href="/">
+            Go to Home
+          </Button>
+        }
+      />
+    );
+  }
 
 
 
-//   // Show login modal for unauthenticated users
-//   if (!isLoggedIn && isProtected) {
-//     return (
-//       <>
-//         <Result
-//           status='403'
-//           title='403'
-//           subTitle='You need to be logged in to view this page.'
-//           extra={
-//             <Button type='primary' onClick={handleLoginButtonClick}>
-//               Login
-//             </Button>
-//           }
-//         />
-//         <LoginModal
-//           isOpen={modalOpen}
-//           onClose={handleModalClose}
-//           onLogin={handleLoginSuccess}
-//           onSignup={() => navigate("/sign-up")}
-//         />
-//       </>
-//     );
-//   }
 
  
 

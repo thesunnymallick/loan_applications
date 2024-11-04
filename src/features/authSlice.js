@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import Cookies from 'js-cookie';
 const loadAuthInfo = () => {
   try {
     const savedAuthInfo = localStorage.getItem('authInfo');
     return savedAuthInfo ? JSON.parse(savedAuthInfo) : {
       isLoggedIn: false,
       token: null,
+      status:"",
       role: null,
       userData: {
         name:"",
@@ -18,6 +19,7 @@ const loadAuthInfo = () => {
     return {
       isLoggedIn: false,
       token: null,
+      status:"",
       role: null,
       userData: {
         name:"",
@@ -35,10 +37,17 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setLogin: (state, action) => {
+
+      console.log("action payload", action.payload)
+      const {token, status, user}=action.payload
       state.isLoggedIn = true;
-      state.token = action.payload.token;
-      state.role = action.payload?.role;
-       state.userData.email = action.payload.admin.email;
+      state.token = token;
+      state.status=status;
+      state.role = user.role
+      state.userData.name = user.name;
+      state.userData.email = user.email;
+      state.userData.userPhoto = null
+
 
       // Save entire auth info to local storage
       localStorage.setItem('authInfo', JSON.stringify(state));
@@ -53,6 +62,9 @@ const authSlice = createSlice({
 
       // Remove auth info from local storage
       localStorage.removeItem('authInfo');
+
+      // remove token from cookies
+      Cookies.remove('authToken');
     },
   },
 });

@@ -12,9 +12,9 @@ const Partner = () => {
         <button
           onClick={() => navigate("/sales-executive/add-new-member")}
           className="
-      w-[16%] h-10
-      bg-green-700
-      text-white rounded-lg shadow-sm flex justify-center items-center gap-1 text-base"
+          w-[16%] h-10
+          bg-green-700
+          text-white rounded-lg shadow-sm flex justify-center items-center gap-1 text-base"
         >
           <span className="text-lg">
             <MdOutlineAdd />

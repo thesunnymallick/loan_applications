@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import loginBg from "../../assets/loginBg.png";
-import { Button, Checkbox, Input } from "antd";
-import { Link } from 'react-router-dom';
+import { Button, Checkbox, Input, notification } from "antd";
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from "formik"
 import * as Yup from "yup";
 import { adminLogin } from '../../api/admin/adminAuth';
 import Cookies from 'js-cookie';
 import {useDispatch} from "react-redux"
 import { setLogin } from '../../features/authSlice';
+import { salesExecutiveLogin } from '../../api/salesExecutive/seAuth';
+import { partnerLogin } from '../../api/partner/authApi';
 // Define the validation schema
 const loginSchema = Yup.object({
   email: Yup.string()
@@ -19,7 +21,9 @@ const loginSchema = Yup.object({
 // A reusable login component with loginType as a prop
 const Login = ({ loginType }) => {
 
+  const [loading, setLoading]=useState(false);
   const dispatch=useDispatch()
+  const navigate=useNavigate();
   // Define login types and their corresponding display names
   const loginTitles = {
     Admin: "Admin Login",
@@ -34,28 +38,121 @@ const Login = ({ loginType }) => {
     password: "",
   };
 
-  const handelLoginAdmin = async (values) => {
+
+  // Partner Login 
+  const handelPartnerLogin=async(values)=>{
     try {
-      const {data, status } = await adminLogin(values);
+      setLoading(true);
+      const { data, status } = await partnerLogin(values);
       if (status === 200) {
-        console.log("Admin Login")
-       // Save token in cookies
-      Cookies.set('authToken', data.token, { expires: 7 });
-        dispatch(setLogin(data))
+        setLoading(false);
+        // Save token in cookies
+        Cookies.set('authToken', data.token, { expires: 7 });
+        const modifyData={
+          ...data?.partner,
+          role:"partner"
+        }
+        dispatch(setLogin({ token: data?.token, status:data?.status, user:modifyData  }));
+        // Success notification
+        notification.success({
+          message: 'Login Successful',
+          description: 'You have logged in successfully.',
+          placement: 'topRight',
+        });
+        navigate(`/partner/dashboard`);
       }
     } catch (error) {
-
+      setLoading(false);
+      // Error notification
+      notification.error({
+        message: 'Login Failed',
+        description: error.response?.data?.message || 
+        'An error occurred during login. Please try again.',
+        placement: 'topRight',
+      });
     }
   }
+
+
+  // Sales Executive Login
+  const handelSalesExecutiveLogin=async()=>{
+    try {
+      setLoading(true);
+      const { data, status } = await salesExecutiveLogin(values);
+      if (status === 200) {
+        setLoading(false);
+        // Save token in cookies
+        Cookies.set('authToken', data.token, { expires: 7 });
+        dispatch(setLogin({ token: data?.token, status:"active", user: data?.userInfo }));
+        // Success notification
+        notification.success({
+          message: 'Login Successful',
+          description: 'You have logged in successfully.',
+          placement: 'topRight',
+        });
+        navigate(`/sales-executive/dashboard`);
+      }
+    } catch (error) {
+      setLoading(false);
+      // Error notification
+      notification.error({
+        message: 'Login Failed',
+        description: error.response?.data?.message || 
+        'An error occurred during login. Please try again.',
+        placement: 'topRight',
+      });
+    }
+  }
+
+   // Admin login
+  const handelLoginAdmin = async (values) => {
+    try {
+      setLoading(true);
+      const { data, status } = await adminLogin(values);
+      if (status === 200) {
+        setLoading(false);
+        // Save token in cookies
+        Cookies.set('authToken', data.token, { expires: 7 });
+        dispatch(setLogin({ token: data?.token, status:"active", user: data?.admin }));
+  
+        // Success notification
+        notification.success({
+          message: 'Login Successful',
+          description: 'You have logged in successfully.',
+          placement: 'topRight',
+        });
+        navigate(`/admin/dashboard`);
+      }
+    } catch (error) {
+      setLoading(false);
+      // Error notification
+      notification.error({
+        message: 'Login Failed',
+        description: error.response?.data?.message || 
+        'An error occurred during login. Please try again.',
+        placement: 'topRight',
+      });
+    }
+  };
+  
 
   // Formik setup for handling form state and validation
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
     onSubmit: (values) => {
-      console.log("Values")
+   
+      // login type admin
       if (loginType === "Admin") {
         handelLoginAdmin(values);
+      }
+      // login type sales executive
+      if(loginType==="SalesExecutive"){
+        handelSalesExecutiveLogin(values)
+      }
+       // login type partner
+      if(loginType==="Partner"){
+        handelPartnerLogin(values)
       }
 
     },
@@ -135,6 +232,7 @@ const Login = ({ loginType }) => {
             {/* Login button */}
             <div className="mt-3">
               <Button
+                loading={loading}
                 htmlType='submit'
                 className="bg-green-600 text-white rounded-lg shadow-sm text-lg border-none w-full h-12">
                 Login
