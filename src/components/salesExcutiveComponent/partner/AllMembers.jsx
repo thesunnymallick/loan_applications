@@ -1,13 +1,16 @@
-import React, { useEffect } from "react";
-import { Input, Table, Tag } from "antd";
+import React, { useEffect, useState } from "react";
+import { Input, Table, Tag, Button, Modal, notification } from "antd";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaUsers } from "react-icons/fa6";
 import { FaUserCheck } from "react-icons/fa";
-import { getAllMembers } from "../../../api/salesExecutive/partnerApi";
+import { getAllMembers, partnerSendOTP } from "../../../api/salesExecutive/partnerApi";
+import { RxCross2 } from "react-icons/rx";
+import EmailVerify from "./EmailVerify";
+import dayjs from "dayjs";
 
 // Function to render the Email Verification Tag
 const renderEmailVerificationTag = (emailVerified) => {
-  return emailVerified === "Yes" ? (
+  return emailVerified === 1 ? (
     <Tag color="green">Email Verified</Tag>
   ) : (
     <Tag color="red">Email Not Verified</Tag>
@@ -17,10 +20,10 @@ const renderEmailVerificationTag = (emailVerified) => {
 // Function to render the Account Status Tag
 const renderAccountStatusTag = (accountStatus) => {
   switch (accountStatus) {
-    case "Account Verified":
-      return <Tag color="green">Active</Tag>;
-    case "suspended":
-      return <Tag color="orange">Suspended</Tag>;
+    case "verified":
+      return <Tag color="green">Verified</Tag>;
+    case "pending":
+      return <Tag color="orange">Pending</Tag>;
     case "deactivated":
       return <Tag color="red">Deactivated</Tag>;
     default:
@@ -28,227 +31,31 @@ const renderAccountStatusTag = (accountStatus) => {
   }
 };
 
-const columns = [
-  {
-    title: "Account ID",
-    dataIndex: "accountId",
-    key: "accountId",
-    width: 150, // Adjust width for each column as needed
-  },
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    width: 200,
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-    width: 250,
-  },
-  {
-    title: "Is Email Verified",
-    dataIndex: "isEmailVerified",
-    key: "isEmailVerified",
-    render: (text) => renderEmailVerificationTag(text),
-    width: 150,
-  },
-  {
-    title: "Phone",
-    dataIndex: "phone",
-    key: "phone",
-    width: 150,
-  },
-  {
-    title: "Payment Transaction ID",
-    dataIndex: "transactionId",
-    key: "transactionId",
-    width: 200,
-  },
-  {
-    title: "Payment Txn Mode",
-    dataIndex: "transactionMode",
-    key: "transactionMode",
-    width: 150,
-  },
-  {
-    title: "Subscription",
-    dataIndex: "subscription",
-    key: "subscription",
-    width: 200,
-  },
-  {
-    title: "Created Date",
-    dataIndex: "createdDate",
-    key: "createdDate",
-    width: 150,
-  },
-  {
-    title: "Account Status",
-    dataIndex: "accountStatus",
-    key: "accountStatus",
-    width: 200,
-    render: (text) => renderAccountStatusTag(text),
-  },
-];
 
-const dataSource = [
-  {
-    key: "1",
-    accountId: "LW-241009422",
-    name: "KANIKA FINANCE",
-    email: "kanikafinance18@gmail.com",
-    isEmailVerified: "Yes",
-    phone: "9071379131",
-    transactionId: "428316506915",
-    transactionMode: "UPI",
-    subscription: "DSA DELIGHT PRO",
-    createdDate: "9 Oct 2024",
-    accountStatus: "Account Verified",
-  },
-  {
-    key: "2",
-    accountId: "LW-241003410",
-    name: "HEMANT KUMARI RATHORE",
-    email: "rathorehement8@gmail.com",
-    isEmailVerified: "Yes",
-    phone: "9653743555",
-    transactionId: "427701582202",
-    transactionMode: "UPI",
-    subscription: "DSA DELIGHT PRO",
-    createdDate: "3 Oct 2024",
-    accountStatus: "Account Verified",
-  },
-  {
-    key: "3",
-    accountId: "LW-241001408",
-    name: "VIJAY VERMA",
-    email: "vv176571@gmail.com",
-    isEmailVerified: "Yes",
-    phone: "9399591544",
-    transactionId: "427571256854",
-    transactionMode: "UPI",
-    subscription: "DSA DELIGHT PRO",
-    createdDate: "1 Oct 2024",
-    accountStatus: "Account Verified",
-  },
-  {
-    key: "4",
-    accountId: "LW-240930406",
-    name: "kumari shashikiran",
-    email: "shashi89481@gmail.com",
-    isEmailVerified: "Yes",
-    phone: "7007195512",
-    transactionId: "P3QADGZqY2o4Wl",
-    transactionMode: "UPI",
-    subscription: "DSA DELIGHT PRO",
-    createdDate: "30 Sep 2024",
-    accountStatus: "Account Verified",
-  },
-  {
-    key: "5",
-    accountId: "LW-240930404",
-    name: "NAVNEET KUMAR",
-    email: "navneetyadav852201@gmail.com",
-    isEmailVerified: "Yes",
-    phone: "8405913788",
-    transactionId: "",
-    transactionMode: "UPI",
-    subscription: "DSA DELIGHT PRO",
-    createdDate: "29 Sep 2024",
-    accountStatus: "Account Verified",
-  },
-  {
-    key: "6",
-    accountId: "LW-240923394",
-    name: "PRAVIND GUPTA",
-    email: "gupta1170sa@gmail.com",
-    isEmailVerified: "Yes",
-    phone: "9431099784",
-    transactionId: "463361879292",
-    transactionMode: "UPI",
-    subscription: "DSA LITE",
-    createdDate: "22 Sep 2024",
-    accountStatus: "Account Verified",
-  },
-  {
-    key: "7",
-    accountId: "LW-240918388",
-    name: "Vexhon Consultants",
-    email: "vexhonconsultants@gmail.com",
-    isEmailVerified: "Yes",
-    phone: "9776671566",
-    transactionId: "426287466911",
-    transactionMode: "UPI",
-    subscription: "DSA DELIGHT PRO",
-    createdDate: "18 Sep 2024",
-    accountStatus: "Account Verified",
-  },
-  {
-    key: "8",
-    accountId: "LW-240912384",
-    name: "Smart Financial services",
-    email: "smartfinancialservice.contai@gmail.com",
-    isEmailVerified: "Yes",
-    phone: "7548962209",
-    transactionId: "425646861501",
-    transactionMode: "UPI",
-    subscription: "DSA DELIGHT PRO",
-    createdDate: "12 Sep 2024",
-    accountStatus: "Account Verified",
-  },
-  {
-    key: "9",
-    accountId: "LW-240909381",
-    name: "MD SAD",
-    email: "mdsadofficial2020@gmail.com",
-    isEmailVerified: "Yes",
-    phone: "8514025022",
-    transactionId: "425336898148",
-    transactionMode: "UPI",
-    subscription: "DSA LITE",
-    createdDate: "8 Sep 2024",
-    accountStatus: "Account Verified",
-  },
-  {
-    key: "10",
-    accountId: "LW-240905374",
-    name: "RAMESH PRASAD AHIRWAR",
-    email: "rameshahirwar9581@gmail.com",
-    isEmailVerified: "Yes",
-    phone: "9685967543",
-    transactionId: "753066208363",
-    transactionMode: "UPI",
-    subscription: "DSA LITE",
-    createdDate: "4 Sep 2024",
-    accountStatus: "Account Verified",
-  },
-  {
-    key: "11",
-    accountId: "LW-240826364",
-    name: "MAMILATA SAHOO",
-    email: "eversarat@gmail.com",
-    isEmailVerified: "Yes",
-    phone: "7656070335",
-    transactionId: "opZUDmiep03ANO",
-    transactionMode: "Card",
-    subscription: "DSA DELIGHT PRO",
-    createdDate: "26 Aug 2024",
-    accountStatus: "Account Verified",
-  },
-];
+ 
+         
+
+
+
+
 
 
 
 const AllMembers = () => {
 
+  const [allMembers, setAllMembers]=useState([]);
+  const [email, setEmail]=useState("");
+  const [isOpen, setIsOpen]=useState(false);
+  const [loading, setLoading]=useState(false);
+
+  // fetch all memebers
   useEffect(() => {
     const fetchAllMembers = async () => {
       try {
         const {data,status} = await getAllMembers();
         if (status === 200) {
           console.log(data);
+          setAllMembers(data?.partners);
         }
       } catch (error) {
         console.log(error);
@@ -256,6 +63,130 @@ const AllMembers = () => {
     };
     fetchAllMembers();
   }, []);
+
+
+  // handel Send otp
+  const handelSendOtp = async (email) => {
+    try {
+        const {status } = await partnerSendOTP({ email: email });
+        // Assuming a successful response returns a status code of 200
+        if (status === 200 ||201) {
+            notification.success({
+                message: 'Success',
+                description: 'OTP has been sent successfully.',
+            });
+        } else {
+            notification.error({
+                message: 'Error',
+                description: 'Failed to send OTP. Please try again.',
+            });
+        }
+    } catch (error) {
+        notification.error({
+            message: 'Error',
+            description: error.message || 'An unexpected error occurred.',
+        });
+    }
+};
+
+  // handel Email Verify Modal
+  const handelEmailVerifyModal=(record)=>{
+    setIsOpen(true)
+    handelSendOtp(record.email)
+    setEmail(record.email);
+
+  }
+
+  const handelCloseEmailVerifyModal=()=>{
+    setIsOpen(false)
+    setEmail(null)
+  }
+
+
+  const columns = [
+    {
+      title: "Account ID",
+      dataIndex: "uuid",
+      key: "uuid",
+      width: 150, // Adjust width for each column as needed
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: 200,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      width: 250,
+    },
+    {
+      title: "Is Email Verified",
+      key: "is_email_verified",
+      render: (text, record) => renderEmailVerificationTag(record.is_email_verified),
+      width: 150,
+    },
+    {
+      title: "Phone",
+      dataIndex: "mobile_number",
+      key: "mobile_number",
+      width: 150,
+    },
+    {
+      title: "Payment Transaction ID",
+      dataIndex: "payment_txn_id",
+      key: "payment_txn_id",
+      width: 200,
+    },
+    {
+      title: "Payment Txn Mode",
+      dataIndex: "payment_mode",
+      key: "payment_mode",
+      width: 150,
+    },
+    {
+      title: "Subscription",
+      dataIndex: "subscription",
+      key: "subscription",
+      width: 200,
+    },
+    {
+      title: "Created Date",
+      dataIndex: "created_at",
+      key: "created_at",
+      width: 150,
+      render: (created_at) => dayjs(created_at).format("YYYY-MM-DD"), // Adjust format as needed
+    },
+    {
+      title: "Account Status",
+      dataIndex: "status",
+      key: "status",
+      width: 200,
+      render: (text) => renderAccountStatusTag(text),
+    },
+    {
+      title:"Verify Email",
+      dataIndex:"",
+      key:"",
+      width:150,
+      render:(text, record)=>{
+        return(
+          <Button 
+           disabled={record.is_email_verified===1 ? true :false}
+           onClick={()=>handelEmailVerifyModal(record)}
+           className="w-full 
+           h-8 bg-green-700 text-white rounded-3xl flex justify-center items-center
+           ">Email Verify</Button>
+        )
+      }
+    }
+  ];
+
+  
+
+
   return (
     <div>
       <div className="flex justify-between">
@@ -298,11 +229,45 @@ const AllMembers = () => {
         <Table
           bordered
           columns={columns}
-          dataSource={dataSource}
+          dataSource={allMembers}
           size="small"
           scroll={{ x: "max-content" }}
         />
       </div>
+
+      <Modal
+        open={isOpen}
+        onCancel={() => setIsOpen(false)}
+        title={null}
+        width={400}
+        footer={null}
+        closable={false}
+        maskClosable={false}
+        modalRender={(modal) => {
+          return React.cloneElement(modal, {
+            style: {
+              ...modal.props.style,
+              ...{ borderRadius: 10, padding: 0 },
+            },
+          });
+        }}
+      >
+        <div className="flex justify-between 
+         items-center py-2 px-4 border-b-[1px] border-b-zinc-300">
+          <h1 className="text-zinc-700 font-semibold text-xl">
+          Email Verification
+          </h1>
+          <span
+            onClick={handelCloseEmailVerifyModal}
+            className="text-zinc-600 hover:text-zinc-800 font-semibold text-2xl cursor-pointer"
+          >
+            <RxCross2/>
+          </span>
+        </div>
+
+        <EmailVerify email={email} setIsOpen={setIsOpen}/>
+      
+      </Modal>
     </div>
   );
 };

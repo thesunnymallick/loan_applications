@@ -82,8 +82,7 @@ const CreateRole = () => {
     try {
       setLoading(true);
       const { status, data } = await roleAssign(values); // Assuming `roleAssign` is an API call function
-      if (status === 201) {
-        console.log(data);
+      if (status === 200) {
         // Success notification
         notification.success({
           message: 'Role Assigned Successfully',

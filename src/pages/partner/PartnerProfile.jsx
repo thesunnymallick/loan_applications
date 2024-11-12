@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import userImage from "../../assets/user.jpg";
-
 import { FaFileDownload } from "react-icons/fa";
 import { Tabs } from "antd";
 import UploadDocView from "../../components/salesExcutiveComponent/partner/UploadDocView";
+import { getPartnerProfileInfo } from "../../api/partner/profileApi";
 const { TabPane } = Tabs;
 
 const PartnerProfile = () => {
+
+  const [info, setInfo]=useState(null);
+
+  // get user info 
+  useEffect(()=>{
+   
+    // get partner profile info
+   const handlePartnerProfileInfo=async()=>{
+    try {
+      const {status, data}=await getPartnerProfileInfo();
+       if(status===200){
+        setInfo(data);
+       }
+    } catch (error) {
+    
+    }
+   }
+
+   // get partner profile info
+   handlePartnerProfileInfo();
+
+
+
+  },[])
+
+
+
+
   return (
     <div className="p-6 flex gap-3">
       <div className="w-[30%] bg-white rounded-lg shadow-sm p-4">

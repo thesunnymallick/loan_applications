@@ -1,16 +1,83 @@
-import { Avatar, Dropdown, Menu, Table, Tag } from 'antd';
+import { Avatar, Button, Dropdown, Input, Menu, Modal, notification, Table, Tag } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { GoPlus } from "react-icons/go";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from 'react-router-dom';
-import { getAllRoles } from '../../api/admin/roleAssign';
+import { checkPasswordRole, getAllRoles } from '../../api/admin/roleAssign';
 import userCricle from "../../assets/userCricle.jpg"
-
+import userImage from "../../assets/userCricle.jpg"
+import { RxCross2 } from 'react-icons/rx';
+import RolesUserInfo from './RolesUserInfo';
 const RoleAssigned = () => {
 
     const [allRoles, setAllRoles]=useState([]);
     const  [loading, setLoading]=useState(false);
-      
+    const [isCheckpassword, setIsCheckpassword]=useState(false);
+    const [userProfileInfo, setUserProfileInfo]=useState(null);
+    const [btnLoading, setBtnLoading]=useState(false);
+    const [yourPassword, setYourPassword]=useState("click check button");
+    const [isUserInfo, setIsUserInfo]=useState(false);
+
+
+    const handleCheckPassword = async (userInfo) => {
+      try {
+        setBtnLoading(true);
+        const { data, status } = await checkPasswordRole(userInfo.id);
+  
+        if (status === 200) {
+          setBtnLoading(false);
+          setYourPassword(data.password);
+          notification.success({
+            message: "Success",
+            description: "Password check successful!",
+          });
+        } else {
+          setBtnLoading(false);
+          notification.error({
+            message: "Error",
+            description: "Password check failed.",
+          });
+        }
+      } catch (error) {
+        setBtnLoading(false);
+        notification.error({
+          message: "Error",
+          description: "An error occurred while checking the password.",
+        });
+      }
+    };
+
+
+
+    // handle check password modal Open
+    const handleCheckPasswordModalOpen=(record)=>{
+          setIsCheckpassword(true);
+          setUserProfileInfo(record)
+     }
+  
+       // handle check password modal Close
+    const handleCheckPasswordModalClose=()=>{
+         setIsCheckpassword(false);
+         setUserProfileInfo(null)
+         setYourPassword("Click Check button");
+    }
+
+
+
+       // handle User info modal Open
+  const handleUserInfoModalOpen=(record)=>{
+         setIsUserInfo(true)
+        setUserProfileInfo(record)
+   }
+
+     // handle User info  modal Close
+  const handleUserInfoModalClose=()=>{
+        setIsUserInfo(false);
+       setUserProfileInfo(null)
+  }
+
+
+   // All Columns Name   
     const columns = [
         {
           title: 'ID',
@@ -22,7 +89,7 @@ const RoleAssigned = () => {
           key: 'user',
           render :(text, record)=>(
             <div className='flex items-center gap-2'>
-              <Avatar size={64} src={<img src={userCricle} alt="avatar" />} />
+              <Avatar size={64} src={<img src={record.userPhoto} alt="avatar" />} />
               <div className='flex flex-col'>
                 <h2 className='text-zinc-700 text-lg'>{record.name}</h2>
                 <span className='text-zinc-600 text-sm'>{record.email}</span>
@@ -87,35 +154,48 @@ const RoleAssigned = () => {
         ],
       },
 
-        {
-            title: 'Action',
-            key: 'action',
-            render: (text, record) => {
-              const menu = (
-                <Menu>
-                  <Menu.Item key="check-password" 
-                  //onClick={() => handleCheckPassword(record)}
-                  >
-                    Check Password
-                  </Menu.Item>
-                  <Menu.Item key="view-details" 
-                 // onClick={() => handleViewDetails(record)}
-                  >
-                    View User Details
-                  </Menu.Item>
-                </Menu>
-              );
-              return (
-                <Dropdown overlay={menu}>
-                 <BsThreeDots className='text-xl text-zinc-600 hover:text-zinc-800 cursor-pointer'/>
-                </Dropdown>
-              );
+      {
+        title: "Action",
+        key: "Action",
+        width: 150,
+        render: (text, record) => {
+          const items = [
+            {
+              key: "CheckPassword",
+              label: (
+                <span
+                onClick={()=>handleCheckPasswordModalOpen(record)}
+                 //onClick={() => handleChangeAccountStatusModalOpen(record)}
+                 >
+                  Check Password
+                </span>
+              ),
             },
+            {
+              key: "userinfo",
+              label: (
+                <span
+                onClick={()=>handleUserInfoModalOpen(record)}
+                >
+                User Info
+                </span>
+              )
+            },
+         
+          ];
+      
+          return (
+            <Dropdown menu={{ items }} trigger={["click"]}>
+              <BsThreeDots className="text-xl text-zinc-600 cursor-pointer" />
+            </Dropdown>
+          );
         },
+      }
      ];
 
    
 
+   // Fecth All Roles
     useEffect(()=>{
       const fetchAllRoles=async()=>{
        try {
@@ -133,6 +213,9 @@ const RoleAssigned = () => {
 
       fetchAllRoles();
     },[])
+
+
+
       
   return (
     <div 
@@ -158,6 +241,108 @@ const RoleAssigned = () => {
           </div>
 
      </div>
+
+         {/* Check Password */}
+       <Modal
+       open={isCheckpassword}
+       onCancel={handleCheckPasswordModalClose}
+       title={null}
+       width={400}
+       centered
+       footer={null}
+       closable={false}
+       maskClosable={false}
+       modalRender={(modal) => {
+         return React.cloneElement(modal, {
+           style: {
+             ...modal.props.style,
+             ...{ borderRadius: 10, padding: 0 },
+           },
+         });
+       }}
+      >
+
+      <div className="flex justify-between items-center py-2 px-4 border-b-[1px] border-b-zinc-300">
+          <h1 className="text-zinc-700 font-semibold text-xl">
+              Check Password
+          </h1>
+          <span
+            onClick={handleCheckPasswordModalClose}
+            className="text-zinc-600 hover:text-zinc-800 font-semibold text-2xl cursor-pointer"
+          >
+            <RxCross2/>
+          </span>
+       </div>
+
+
+       <div className='p-6'>
+           <div className='flex flex-col items-center gap-1'>
+             <div className='w-24 h-24 rounded-full border-[2px] border-green-700 overflow-hidden'>
+              <img className='w-full  object-cover' src={userImage} alt="ProfileImage" />
+             </div>
+              <h2 className='text-zinc-700 text-xl'>{userProfileInfo?.name}</h2>
+              <span className='text-zinc-600 text-sm -mt-2'>{userProfileInfo?.email}</span>
+           </div>
+
+           <div className='p-6'>
+           <Input.Password 
+           size='large' 
+           value={yourPassword}
+           placeholder="Your password" 
+           visibilityToggle={true} // Ensure visibility toggle is enabled
+          />
+           </div>
+
+           
+
+           <div className='mt-4 px-6 flex flex-col gap-4 pb-4'>
+             <Button
+              loading={btnLoading}
+             onClick={()=>handleCheckPassword(userProfileInfo)}
+              className='w-full h-10 rounded-3xl bg-green-700 text-white'>Check</Button>
+             <button
+              onClick={handleCheckPasswordModalClose}
+              className='w-full h-10
+              rounded-3xl border-[1px]
+              border-green-700
+              text-green-700' >Cancel</button>
+           </div>
+        </div>
+
+      </Modal>
+
+      <Modal
+        open={isUserInfo}
+        onCancel={handleUserInfoModalClose}
+        title={null}
+        width={600}
+        centered
+        footer={null}
+        closable={false}
+        maskClosable={false}
+        modalRender={(modal) => {
+          return React.cloneElement(modal, {
+            style: {
+              ...modal.props.style,
+              ...{ borderRadius: 10, padding: 0 },
+            },
+          });
+        }}
+      >
+         <div className="flex justify-between items-center py-2 px-4 border-b-[1px] border-b-zinc-300">
+          <h1 className="text-zinc-700 font-semibold text-xl">
+              Sales Excutive /RM Details
+          </h1>
+          <span
+            onClick={handleUserInfoModalClose}
+            className="text-zinc-600 hover:text-zinc-800 font-semibold text-2xl cursor-pointer"
+          >
+            <RxCross2/>
+          </span>
+        </div>
+        <RolesUserInfo userProfileInfo={userProfileInfo}/>
+
+      </Modal>
     </div>
   )
 }

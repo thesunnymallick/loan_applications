@@ -14,6 +14,10 @@ import PartnerProfile from './pages/partner/PartnerProfile';
 import UploadDocuments from './pages/partner/UploadDocuments';
 import Subscriptions from './pages/admin/Subscriptions';
 import Register from './pages/auth/Register';
+import OurPanels from './pages/partner/OurPanels';
+import PartnerEdit from './pages/admin/PartnerEdit';
+import InterestUser from './pages/admin/InterestUser';
+
 
  const routes = [
   {
@@ -122,6 +126,22 @@ import Register from './pages/auth/Register';
     name:"Admin Dashboard",
   },
   {
+    path:"/admin/user/edit/:id",
+    element:PartnerEdit,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['admin'],
+    name:"Admin Dashboard",
+  },
+  {
+    path:"/admin/interestUsers",
+    element:InterestUser,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['admin'],
+    name:"Admin Dashboard",
+  },
+  {
     path:"/admin/subscriptions",
     element:Subscriptions,
     layout: RootLayout,
@@ -150,6 +170,14 @@ import Register from './pages/auth/Register';
   {
     path:"/partner/upload-doc",
     element: UploadDocuments,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/partner/our-panels",
+    element: OurPanels,
     layout: RootLayout,
     protected: true,
     allowedRoles: ['partner'],

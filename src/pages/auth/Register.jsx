@@ -52,6 +52,7 @@ const Register = () => {
           description:
             "We have received your information. Our team will contact you on your registered phone number soon.",
         });
+        resetForm();
       }
     } catch (error) {
       setLoading(false)
@@ -81,6 +82,7 @@ const Register = () => {
     handleBlur,
     setFieldValue,
     handleSubmit,
+    resetForm
   } = formik;
 
   return (

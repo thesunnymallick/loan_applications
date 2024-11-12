@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { partnerOTPVerify } from "../../../api/salesExecutive/partnerApi";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { useNavigate } from "react-router-dom";
-const EmailVerify = ({ email}) => {
+const EmailVerify = ({ email, setIsOpen}) => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [loading, setLoading] = useState(false);
   const navigate =useNavigate();
@@ -26,6 +26,7 @@ const EmailVerify = ({ email}) => {
       setLoading(false);
   
       if (status === 200) {
+        setIsOpen(false);
         setOtp(new Array(6).fill(""))
         // Assuming that a status of 200 indicates successful OTP verification
         notification.success({
@@ -36,7 +37,7 @@ const EmailVerify = ({ email}) => {
        
         // redirect Another Page
           navigate(`/sales-executive/partner`);
-
+          setIsCountdownComplete(false);
       } else {
         notification.error({
           message: "Verification Failed",

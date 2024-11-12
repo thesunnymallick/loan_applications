@@ -11,6 +11,7 @@ import { MdOutlineRequestQuote } from "react-icons/md";
 import { FaFileUpload } from "react-icons/fa";
 import { MdSubscriptions } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { HiOutlineClipboardList } from "react-icons/hi";
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -50,6 +51,11 @@ const Sidebar = () => {
       name: "Upload Documents",
       link: "/partner/upload-doc",
       icon: FaFileUpload,
+    },
+    {
+      name: "My Services",
+      link: "/partner/our-panels",
+      icon: HiOutlineClipboardList,
     },
     {
       name: "Financial Services",

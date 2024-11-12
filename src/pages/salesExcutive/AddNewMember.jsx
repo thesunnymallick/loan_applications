@@ -207,7 +207,7 @@ const AddNewMember = () => {
   });
 
   // Destructure Formik's properties for easier use
-  const {
+    const {
     handleChange,
     values,
     errors,
@@ -413,7 +413,7 @@ const AddNewMember = () => {
           </span>
         </div>
 
-        <EmailVerify email={values.email}/>
+        <EmailVerify email={values.email} setIsOpen={setIsOpen}/>
       
       </Modal>
     </form>
