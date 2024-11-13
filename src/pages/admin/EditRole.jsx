@@ -9,7 +9,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { getRoleInfo, roleAssign, roleAssignUpdate } from "../../api/admin/roleAssign";
+import { getRoleInfo, roleAssignUpdate } from "../../api/admin/roleAssign";
 import { GoPlus } from "react-icons/go";
 
 const validationSchema = Yup.object({
@@ -52,7 +52,7 @@ const validationSchema = Yup.object({
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Password confirmation is required"),
 
-  userPhoto: Yup.mixed().required("Profile picture is required"),
+  userPhoto: Yup.mixed(),
 });
 
 const EditRole = () => {
@@ -79,7 +79,7 @@ const EditRole = () => {
   const handelRoleAssignUpdate = async (values) => {
     try {
       setLoading(true);
-      const { status, data } = await roleAssignUpdate(id, values); // Assuming `roleAssign` is an API call function
+      const { status, data } = await roleAssignUpdate(id, values); 
       if (status === 200) {
         // Success notification
         notification.success({
@@ -107,16 +107,26 @@ const EditRole = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log("Values", values);
+    
       const formData = new FormData();
-      for (const key in values) {
-        if (key === "userPhoto" && values[key]) {
+      
+      if(values.userPhoto===""){
+       for (const key in values) {
+        if (values[key]) {
           formData.append(key, values[key]);
-        } else {
-          formData.append(key, values[key]);
+        } 
+      }
+      }else{
+        for (const key in values) {
+          if (key === "userPhoto" && values[key]) {
+            formData.append(key, values[key]);
+          } else {
+            formData.append(key, values[key]);
+          }
         }
       }
 
-      handelRoleAssignUpdate(formData);
+       handelRoleAssignUpdate(formData);
     },
   });
 
@@ -177,12 +187,6 @@ const EditRole = () => {
           setFieldValue("bank_account_no", data?.data?.bank_account_no);
           setFieldValue("ifsc_code", data?.data?.ifsc_code);
           setFieldValue("role", data?.data?.role);
-          // Set user photo as file
-          const userPhotoUrl = data?.data?.userPhoto;
-          const response = await fetch(userPhotoUrl);
-          const blob = await response.blob();
-          const file = new File([blob], "userPhoto.png", { type: blob.type });
-          setFieldValue("userPhoto", file);
           setPreviewUrl(data?.data?.userPhoto)
         }
       } catch (error) {
@@ -191,7 +195,7 @@ const EditRole = () => {
     };
     // Fetch role info
     fetchRoleInfo();
-  }, []);
+  }, [setFieldValue, id]);
 
   return (
     <div className="p-8">

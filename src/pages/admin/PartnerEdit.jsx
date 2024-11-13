@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
 import * as Yup from "yup";
@@ -89,6 +89,7 @@ const validationSchema = Yup.object().shape({
 
 const PartnerEdit = () => {
   const {id}=useParams();
+  const navigate=useNavigate();
   const [isPersonalInfo, setIsPersonalInfo] = useState(true);
   const [isPermanetAddress, setIsPermanetAddress] = useState(true);
   const [isOfficeAddress, setIsOfficeAddress] = useState(true);
@@ -137,6 +138,7 @@ const handlePartnerUpdate = async (values) => {
         message: 'Partner Update Successful',
         description: 'The partner was successfully updated',
       });
+      navigate(`/admin/users`)
     } else {
       throw new Error('Unexpected status code');
     }
@@ -268,7 +270,9 @@ const handlePartnerUpdate = async (values) => {
 
           <div className="flex-1 flex justify-end items-center gap-2 px-4">
             <Button className="w-[15%] h-10">Cancel</Button>
-            <Button htmlType="submit" className="bg-green-700 text-white rounded-md shadow-sm 
+            <Button 
+             loading={loading}
+            htmlType="submit" className="bg-green-700 text-white rounded-md shadow-sm 
             w-[15%] h-10">Save</Button>
           </div>
         </div>

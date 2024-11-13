@@ -522,7 +522,7 @@ const AllUsers = () => {
           </span>
         </div>
 
-        <Docverified userProfileInfo={userProfileInfo} />
+        <Docverified userProfileInfo={userProfileInfo} setIsDocVerify={setIsDocVerify} />
       </Modal>
     </div>
   );

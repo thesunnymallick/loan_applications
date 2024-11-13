@@ -9,4 +9,4 @@ export const checkPasswordRole=(id)=>apiService.get(`/api/v1/admin/${id}/showPas
 
 export const getRoleInfo=(id)=>apiService.get(`/api/v1/admin/edit_role/${id}`)
 
-export const roleAssignUpdate=(id, payload)=>apiService.put(`/api/v1/admin/update_role/${id}`,payload)
+export const roleAssignUpdate=(id, payload)=>apiService.post(`/api/v1/admin/update_role/${id}`,payload)

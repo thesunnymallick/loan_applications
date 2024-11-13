@@ -1,17 +1,9 @@
 import { Image, Button, Select, notification } from "antd";
 import React, { useState } from "react";
 import { documentVerifyPartner } from "../../api/admin/users";
+import noImageAvailable from "../../assets/noImageAvailable.jpg"
+const Docverified = ({userProfileInfo, setIsDocVerify}) => {
 
-const Docverified = ({userProfileInfo}) => {
-
-  console.log(userProfileInfo)
-  const [images, setImages] = useState({
-    userPhoto: null,
-    aadhar_front_image: null,
-    aadhar_back_image: null,
-    pan_card_image: null,
-    blank_cheque_image: null,
-  });
 
   const [currentStep, setCurrentStep] = useState(0);
   const [verificationStatus, setVerificationStatus] = useState({
@@ -58,6 +50,7 @@ const handelDocVerified = async () => {
         message: "Verification Successful",
         description: "All documents have been successfully verified.",
       });
+      setIsDocVerify(false);
     }
   } catch (error) {
     console.error("Error verifying documents:", error);
@@ -97,7 +90,7 @@ const handelDocVerified = async () => {
         >
           <div className="relative h-full w-full">
             <Image
-              src={userProfileInfo[key]}
+              src={userProfileInfo[key] || noImageAvailable}
               alt={label}
               className="h-full w-full object-cover"
             />
