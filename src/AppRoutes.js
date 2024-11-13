@@ -17,6 +17,7 @@ import Register from './pages/auth/Register';
 import OurPanels from './pages/partner/OurPanels';
 import PartnerEdit from './pages/admin/PartnerEdit';
 import InterestUser from './pages/admin/InterestUser';
+import EditRole from './pages/admin/EditRole';
 
 
  const routes = [
@@ -112,6 +113,14 @@ import InterestUser from './pages/admin/InterestUser';
   {
     path:"/admin/create-role",
     element: CreateRole,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['admin'],
+    name:"Admin Dashboard",
+  },
+  {
+    path:"/admin/edit-role/:id",
+    element: EditRole,
     layout: RootLayout,
     protected: true,
     allowedRoles: ['admin'],

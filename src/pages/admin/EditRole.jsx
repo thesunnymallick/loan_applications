@@ -1,11 +1,15 @@
 import { Button, Input, notification, Select, Upload } from "antd";
-import React, { useState } from "react";
-import { EyeInvisibleOutlined, EyeTwoTone, LoadingOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import {
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { FaArrowLeft } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { roleAssign } from "../../api/admin/roleAssign";
+import { getRoleInfo, roleAssign, roleAssignUpdate } from "../../api/admin/roleAssign";
 import { GoPlus } from "react-icons/go";
 
 const validationSchema = Yup.object({
@@ -26,8 +30,7 @@ const validationSchema = Yup.object({
     .required("Account holder name is required")
     .min(3, "Account holder name must be at least 3 characters"),
 
-  bank_account_name: Yup.string()
-    .required("Bank account name is required"),
+  bank_account_name: Yup.string().required("Bank account name is required"),
 
   bank_account_no: Yup.string()
     .matches(/^\d+$/, "Bank account number must only contain numbers")
@@ -39,8 +42,7 @@ const validationSchema = Yup.object({
     .matches(/^[A-Z]{4}0[A-Z0-9]{6}$/, "Invalid IFSC code format")
     .required("IFSC code is required"),
 
-  role: Yup.string()
-    .required("Role is required"),
+  role: Yup.string().required("Role is required"),
 
   password: Yup.string()
     .required("Password is required")
@@ -53,16 +55,13 @@ const validationSchema = Yup.object({
   userPhoto: Yup.mixed().required("Profile picture is required"),
 });
 
-
-
-
-const CreateRole = () => {
+const EditRole = () => {
   // Initial values for the form fields
+  const { id } = useParams();
   const navigate=useNavigate();
-  const [loading, setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
   const [imgLoading, setimgLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
-
   const initialValues = {
     name: "",
     email: "",
@@ -72,31 +71,32 @@ const CreateRole = () => {
     bank_account_no: "",
     ifsc_code: "",
     role: "",
-    userPhoto:"",
+    userPhoto: "",
     password: "",
     password_confirmation: "",
   };
 
-
-  const handelRoleAssign = async (values) => {
+  const handelRoleAssignUpdate = async (values) => {
     try {
       setLoading(true);
-      const { status, data } = await roleAssign(values); // Assuming `roleAssign` is an API call function
+      const { status, data } = await roleAssignUpdate(id, values); // Assuming `roleAssign` is an API call function
       if (status === 200) {
         // Success notification
         notification.success({
-          message: 'Role Assigned Successfully',
-          description: `The role "${data?.data?.role}" has been assigned successfully.`,
+          message: "Role Assigned update Successfully",
+          description: `The role "${data?.data?.role}" has been assigned update successfully.`,
         });
         setLoading(false);
-        navigate(`/admin/role-assigned`)
+         navigate(`/admin/role-assigned`)
       }
     } catch (error) {
       setLoading(false);
       // Error notification
       notification.error({
-        message: 'Role Assignment Failed',
-        description: error.response?.data?.message || 'An error occurred while assigning the role.',
+        message: "Role Assignment update Failed",
+        description:
+          error.response?.data?.message ||
+          "An error occurred while assigning the role.",
       });
     }
   };
@@ -104,7 +104,7 @@ const CreateRole = () => {
   // Formik setup for handling form state and validation
   const formik = useFormik({
     initialValues,
-     validationSchema: validationSchema,
+    validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log("Values", values);
       const formData = new FormData();
@@ -115,8 +115,8 @@ const CreateRole = () => {
           formData.append(key, values[key]);
         }
       }
-      
-      handelRoleAssign(formData);
+
+      handelRoleAssignUpdate(formData);
     },
   });
 
@@ -130,19 +130,26 @@ const CreateRole = () => {
     } else {
       notification.warning({
         message: "Missing Information",
-        description: "Please enter both name and phone number to generate a password.",
+        description:
+          "Please enter both name and phone number to generate a password.",
         placement: "topRight", // Optional: adjust placement as desired
       });
     }
   };
 
   // Destructure Formik's properties for easier use
-  const { handleChange, values, errors, touched, handleBlur,  setFieldValue, handleSubmit } =
-    formik;
-
+  const {
+    handleChange,
+    values,
+    errors,
+    touched,
+    handleBlur,
+    setFieldValue,
+    handleSubmit,
+  } = formik;
 
   const beforeUpload = (file) => {
-    setimgLoading(true)
+    setimgLoading(true);
     const isLt1M = file.size / 1024 / 1024 < 1;
     if (!isLt1M) {
       setimgLoading(false);
@@ -154,10 +161,40 @@ const CreateRole = () => {
     return isLt1M;
   };
 
+
+  // get role info
+  useEffect(() => {
+    //fetch role info
+    const fetchRoleInfo = async () => {
+      try {
+        const { data, status } = await getRoleInfo(id);
+        if (status === 200) {
+          setFieldValue("name", data?.data?.name);
+          setFieldValue("email", data?.data?.email);
+          setFieldValue("phone_no", data?.data?.phone_no);
+          setFieldValue("account_holder_name", data?.data?.account_holder_name);
+          setFieldValue("bank_account_name", data?.data?.bank_account_name)
+          setFieldValue("bank_account_no", data?.data?.bank_account_no);
+          setFieldValue("ifsc_code", data?.data?.ifsc_code);
+          setFieldValue("role", data?.data?.role);
+          // Set user photo as file
+          const userPhotoUrl = data?.data?.userPhoto;
+          const response = await fetch(userPhotoUrl);
+          const blob = await response.blob();
+          const file = new File([blob], "userPhoto.png", { type: blob.type });
+          setFieldValue("userPhoto", file);
+          setPreviewUrl(data?.data?.userPhoto)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    // Fetch role info
+    fetchRoleInfo();
+  }, []);
+
   return (
-    <div 
-  
-     className="p-8">
+    <div className="p-8">
       <div className="bg-white rounded-lg shadow-sm p-6">
         <div className="flex items-center gap-2">
           <Link
@@ -170,61 +207,67 @@ const CreateRole = () => {
             Sales Excutive/RM Create
           </h2>
         </div>
-        <form 
-           onSubmit={handleSubmit}
-        className="p-4">
+        <form onSubmit={handleSubmit} className="p-4">
           <h2 className="text-zinc-700 font-semibold text-lg pt-2">
             Personal Details
           </h2>
-           <div className="my-3 flex justify-center">
-           <Upload
-  name="userPhoto"
-  showUploadList={false}
-  beforeUpload={(file) => {
-    if (beforeUpload(file)) {
-      setimgLoading(false);
-      setFieldValue("userPhoto", file);
-      setPreviewUrl(URL.createObjectURL(file));
-      notification.success({
-        message: "Upload Successful",
-        description: "Your profile picture has been uploaded.",
-      });
-    }
-    return false; // Prevent automatic upload
-  }}
->
-    <div className="flex flex-col items-center gap-1">
-    <div
-    className={`w-28 h-28 ${
-      previewUrl ? "border-green-500" : errors.userPhoto && touched.userPhoto ? "border-red-500" : "border-zinc-400"
-    } border-dashed border-2 flex flex-col items-center justify-center text-sm rounded-full cursor-pointer bg-zinc-100`}
-  >
-    {previewUrl ? (
-      <img
-        src={previewUrl}
-        alt="avatar"
-        className="w-full h-full object-cover rounded-full"
-        onLoad={() => URL.revokeObjectURL(previewUrl)}
-      />
-    ) : (
-      <>
-        {imgLoading ? <LoadingOutlined /> : <GoPlus className="text-zinc-700 text-lg" />}
-        <span className="text-zinc-700">Upload</span>
-      </>
-    )}
-  </div>
+          <div className="my-3 flex justify-center">
+            <Upload
+              name="userPhoto"
+              showUploadList={false}
+              beforeUpload={(file) => {
+                if (beforeUpload(file)) {
+                  setimgLoading(false);
+                  setFieldValue("userPhoto", file);
+                  setPreviewUrl(URL.createObjectURL(file));
+                  notification.success({
+                    message: "Upload Successful",
+                    description: "Your profile picture has been uploaded.",
+                  });
+                }
+                return false; // Prevent automatic upload
+              }}
+            >
+              <div className="flex flex-col items-center gap-1">
+                <div
+                  className={`w-28 h-28 ${
+                    previewUrl
+                      ? "border-green-500"
+                      : errors.userPhoto && touched.userPhoto
+                      ? "border-red-500"
+                      : "border-zinc-400"
+                  } border-dashed border-2 flex flex-col items-center justify-center text-sm rounded-full cursor-pointer bg-zinc-100`}
+                >
+                  {previewUrl ? (
+                    <img
+                      src={previewUrl}
+                      alt="avatar"
+                      className="w-full h-full object-cover rounded-full"
+                      onLoad={() => URL.revokeObjectURL(previewUrl)}
+                    />
+                  ) : (
+                    <>
+                      {imgLoading ? (
+                        <LoadingOutlined />
+                      ) : (
+                        <GoPlus className="text-zinc-700 text-lg" />
+                      )}
+                      <span className="text-zinc-700">Upload</span>
+                    </>
+                  )}
+                </div>
 
-  {/* Error Message */}
-  <div className="text-sm flex justify-center my-1">
-    {touched.userPhoto && errors.userPhoto && (
-      <span className="text-red-500 text-sm">{errors.userPhoto}</span>
-    )}
-  </div>
-    </div>
-</Upload>
-
-
-           </div>
+                {/* Error Message */}
+                <div className="text-sm flex justify-center my-1">
+                  {touched.userPhoto && errors.userPhoto && (
+                    <span className="text-red-500 text-sm">
+                      {errors.userPhoto}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </Upload>
+          </div>
           <div className="flex items-center gap-3 mt-1">
             <div className="flex-1 flex flex-col gap-1">
               <label className="text-sm text-zinc-500 font-semibold" htmlFor="">
@@ -351,7 +394,7 @@ const CreateRole = () => {
                 }
               />
 
-               {touched.bank_account_no && errors.bank_account_no? (
+              {touched.bank_account_no && errors.bank_account_no ? (
                 <span className="text-red-500 text-sm">
                   {errors.bank_account_no}
                 </span>
@@ -372,10 +415,8 @@ const CreateRole = () => {
                 onBlur={handleBlur}
                 status={touched.ifsc_code && errors.ifsc_code ? "error" : ""}
               />
-               {touched.ifsc_code && errors.ifsc_code? (
-                <span className="text-red-500 text-sm">
-                  {errors.ifsc_code}
-                </span>
+              {touched.ifsc_code && errors.ifsc_code ? (
+                <span className="text-red-500 text-sm">{errors.ifsc_code}</span>
               ) : null}
             </div>
           </div>
@@ -389,22 +430,22 @@ const CreateRole = () => {
               <label className="text-sm text-zinc-500 font-semibold" htmlFor="">
                 Select Role
               </label>
-              <Select 
-              name="role"
-              value={values.role}
-              onChange={(value)=>setFieldValue("role", value)}
-              onBlur={handleBlur}
-              status={touched.role && errors.role ? "error" : ""}
-              size="large" placeholder="Select role ">
+              <Select
+                name="role"
+                value={values.role}
+                onChange={(value) => setFieldValue("role", value)}
+                onBlur={handleBlur}
+                status={touched.role && errors.role ? "error" : ""}
+                size="large"
+                placeholder="Select role "
+              >
                 <Select.Option value="Sales Executive">
                   Sales Executive
                 </Select.Option>
                 <Select.Option value="RM">Realation Manager</Select.Option>
               </Select>
-              {touched.role && errors.role? (
-                <span className="text-red-500 text-sm">
-                  {errors.role}
-                </span>
+              {touched.role && errors.role ? (
+                <span className="text-red-500 text-sm">{errors.role}</span>
               ) : null}
             </div>
 
@@ -424,21 +465,21 @@ const CreateRole = () => {
                   // onChange={handleChange}
                   onBlur={handleBlur}
                   status={touched.password && errors.password ? "error" : ""}
-
                   iconRender={(visible) =>
                     visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                   }
                 />
-                 {touched.password && errors.password? (
-                <span className="text-red-500 text-sm">
-                  {errors.password}
-                </span>
-              ) : null}
+                {touched.password && errors.password ? (
+                  <span className="text-red-500 text-sm">
+                    {errors.password}
+                  </span>
+                ) : null}
               </div>
               <div className="w-[30%]  mt-6">
-                <Button 
-                 onClick={generatePassword}
-                 className="w-full h-10 bg-green-700 text-white rounded-md shadow-sm">
+                <Button
+                  onClick={generatePassword}
+                  className="w-full h-10 bg-green-700 text-white rounded-md shadow-sm"
+                >
                   Genarate
                 </Button>
               </div>
@@ -449,7 +490,9 @@ const CreateRole = () => {
             <Button className="w-[15%] h-10 rounded-lg">Cancel</Button>
             <Button
               loading={loading}
-              htmlType="submit" className="w-[15%] h-10 bg-green-700 text-white rounded-lg">
+              htmlType="submit"
+              className="w-[15%] h-10 bg-green-700 text-white rounded-lg"
+            >
               Save
             </Button>
           </div>
@@ -459,4 +502,4 @@ const CreateRole = () => {
   );
 };
 
-export default CreateRole;
+export default EditRole;

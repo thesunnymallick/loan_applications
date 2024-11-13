@@ -5,13 +5,13 @@ import { Link, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
 import * as Yup from "yup";
-import { Button } from "antd";
+import { Button, notification } from "antd";
 import { State } from "country-state-city";
 import PersonalInfo from "../../components/salesExcutiveComponent/partner/PersonalInfo";
 import PermanentAddress from "../../components/salesExcutiveComponent/partner/PermanentAddress";
 import OfficeAddress from "../../components/salesExcutiveComponent/partner/OfficeAddress";
 import IdentityDetails from "../../components/salesExcutiveComponent/partner/IdentityDetails";
-import { getPartnerInfo } from "../../api/admin/users";
+import { getPartnerInfo, partnerUpdate } from "../../api/admin/users";
 import moment from "moment";
 
 
@@ -124,6 +124,38 @@ const PartnerEdit = () => {
     pan: "",
   };
 
+
+// Partner Update
+const handlePartnerUpdate = async (values) => {
+  setLoading(true);  // Start loading indicator
+
+  try {
+    const { status } = await partnerUpdate(id, values);
+    
+    if (status === 200 || status === 201) {
+      notification.success({
+        message: 'Partner Update Successful',
+        description: 'The partner was successfully updated',
+      });
+    } else {
+      throw new Error('Unexpected status code');
+    }
+  } catch (error) {
+    notification.error({
+      message: 'Partner Update Failed',
+      description: 'An error occurred while updating the partner',
+    });
+    console.error(error);
+  } finally {
+    setLoading(false);  // Stop loading indicator in all cases
+  }
+};
+
+
+
+
+
+
   // Formik setup for handling form state and validation
   const formik = useFormik({
     initialValues,
@@ -135,7 +167,8 @@ const PartnerEdit = () => {
           ? dayjs(values.date_of_birth).format("YYYY-MM-DD")
           : "",
       };
-      // handelPartnerRegister(updateData);
+      console.log()
+       handlePartnerUpdate(updateData);
     },
   });
 
@@ -220,7 +253,9 @@ const PartnerEdit = () => {
 
 
   return (
-    <div className="p-6">
+    <form 
+     onSubmit={handleSubmit}
+    className="p-6">
       <div className="p-4 bg-white rounded-lg shadow-sm">
         <div className="flex items-center gap-2">
           <Link
@@ -233,11 +268,11 @@ const PartnerEdit = () => {
 
           <div className="flex-1 flex justify-end items-center gap-2 px-4">
             <Button className="w-[15%] h-10">Cancel</Button>
-            <Button className="bg-green-700 text-white rounded-md shadow-sm 
+            <Button htmlType="submit" className="bg-green-700 text-white rounded-md shadow-sm 
             w-[15%] h-10">Save</Button>
           </div>
         </div>
-        <form onSubmit={handleSubmit} className="">
+        <div className="">
           <div className="py-4 px-4">
             {/* PERSONAL INFO */}
             <div className="py-2 bg-zinc-100 rounded-md px-2 shadow-sm flex justify-between items-center">
@@ -356,9 +391,9 @@ const PartnerEdit = () => {
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </form>
   );
 };
 

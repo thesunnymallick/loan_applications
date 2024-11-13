@@ -2,27 +2,29 @@ import { Avatar, Button, Dropdown, Input, Menu, Modal, notification, Table, Tag 
 import React, { useEffect, useState } from 'react'
 import { GoPlus } from "react-icons/go";
 import { BsThreeDots } from "react-icons/bs";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { checkPasswordRole, getAllRoles } from '../../api/admin/roleAssign';
-import userCricle from "../../assets/userCricle.jpg"
 import userImage from "../../assets/userCricle.jpg"
 import { RxCross2 } from 'react-icons/rx';
 import RolesUserInfo from './RolesUserInfo';
 const RoleAssigned = () => {
 
     const [allRoles, setAllRoles]=useState([]);
-    const  [loading, setLoading]=useState(false);
+    const [loading, setLoading]=useState(false);
     const [isCheckpassword, setIsCheckpassword]=useState(false);
     const [userProfileInfo, setUserProfileInfo]=useState(null);
     const [btnLoading, setBtnLoading]=useState(false);
     const [yourPassword, setYourPassword]=useState("click check button");
     const [isUserInfo, setIsUserInfo]=useState(false);
+  
 
+    // Navigate
+    const navigate=useNavigate();
 
     const handleCheckPassword = async (userInfo) => {
       try {
         setBtnLoading(true);
-        const { data, status } = await checkPasswordRole(userInfo.id);
+        const { data, status } = await checkPasswordRole(userInfo.uuid);
   
         if (status === 200) {
           setBtnLoading(false);
@@ -81,8 +83,8 @@ const RoleAssigned = () => {
     const columns = [
         {
           title: 'ID',
-          dataIndex: 'id',
-          key: 'id',
+          dataIndex: 'uuid',
+          key: 'uuid',
         },
         {
           title: 'User',
@@ -181,6 +183,14 @@ const RoleAssigned = () => {
                 </span>
               )
             },
+            {
+              key:"Edit",
+              label: <span
+              onClick={()=>navigate(`/admin/edit-role/${record.uuid}`)}
+              >
+               Edit
+              </span>
+            }
          
           ];
       

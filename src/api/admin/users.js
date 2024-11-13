@@ -11,3 +11,5 @@ export const documentVerifyPartner=(userId, payload)=>apiService.put(`/api/v1/ad
 export const getPartnerInfo=(id)=>apiService.get(`/api/v1/about_partner/${id}`)
 
 export const  getAllInterestUsers=()=>apiService.get(`/api/v1/admin/see_interest`)
+
+export const partnerUpdate=(partnerId, payload)=>apiService.put(`/api/v1/partner/${partnerId}`, payload)
