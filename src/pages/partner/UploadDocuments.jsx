@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { Upload, Image, Button, Input, notification } from "antd";
 import {  CloseCircleOutlined } from "@ant-design/icons";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-import { uploadPartnerDoc } from "../../api/partner/uploadDocApi";
+import { getDocumentInfo, uploadPartnerDoc } from "../../api/partner/uploadDocApi";
 
 const validationSchema = Yup.object().shape({
   bank_name: Yup.string()
@@ -24,26 +24,28 @@ const validationSchema = Yup.object().shape({
   branch: Yup.string()
     .required("Branch name is required")
     .min(2, "Branch name must be at least 2 characters long"),
-  userPhoto: Yup.mixed().required("Profile photo is required")
+  userPhoto: Yup.mixed()
+  // .required("Profile photo is required")
     .test("fileSize", "Image must be less than 1MB", value => {
       return !value || (value && value.size <= 1048576);
     }),
-    aadhar_front_image: Yup.mixed().required("Aadhar front image is required")
+    aadhar_front_image: Yup.mixed()
+    // .required("Aadhar front image is required")
     .test("fileSize", "Image must be less than 1MB", value => {
       return value && value.size <= 1048576;
     }),
   aadhar_back_image: Yup.mixed()
-    .required("Aadhar back image is required")
+    // .required("Aadhar back image is required")
     .test("fileSize", "Image must be less than 1MB", value => {
       return value && value.size <= 1048576;
     }),
   pan_card_image: Yup.mixed()
-    .required("PAN card image is required")
+    // .required("PAN card image is required")
     .test("fileSize", "Image must be less than 1MB", value => {
       return value && value.size <= 1048576;
     }),
   blank_cheque_image: Yup.mixed()
-    .required("Blank cheque image is required")
+    // .required("Blank cheque image is required")
     .test("fileSize", "Image must be less than 1MB", value => {
       return value && value.size <= 1048576;
     }),
@@ -57,6 +59,8 @@ const UploadDocuments = () => {
     pan_card_image:null,
     blank_cheque_image:null,
   });
+
+  const [info, setInfo]=useState(null);
 
 
    // Initial values for the form fields
@@ -183,6 +187,39 @@ const UploadDocuments = () => {
 
 
 
+  useEffect(()=>{
+   const fetchDocumentInfo=async()=>{
+      try {
+        const {data, status}=await getDocumentInfo();
+        if(status===200){
+          console.log("Document Info", data);
+          setInfo(data?.data);
+        }
+      } catch (error) {
+        
+      }
+   }
+
+   fetchDocumentInfo()
+  },[])
+
+
+  useEffect(() => {
+    if (info) {
+      setImages({
+        userPhoto: info?.userPhoto || null,
+        aadhar_front_image: info?.aadhar_front_image || null,
+        aadhar_back_image: info?.aadhar_back_image || null,
+        pan_card_image: info?.pan_card_image || null,
+        blank_cheque_image: info?.blank_cheque_image || null,
+      });
+
+    }
+  }, [info, setFieldValue]);
+
+
+  console.log("Values",values);
+
   return (
     <form onSubmit={handleSubmit} className="p-6 flex gap-3">
       <div className="w-[25%] bg-white rounded-lg shadow-sm p-4 ">
@@ -229,9 +266,9 @@ const UploadDocuments = () => {
         </div>
         <div className="px-2">
           <div className="flex flex-col items-center py-3">
-            <h1 className="text-zinc-700 font-semibold text-2xl">Sunny Mallick</h1>
+            <h1 className="text-zinc-700 font-semibold text-2xl">{info?.name}</h1>
             <span className="flex items-center gap-2 text-base text-zinc-600">
-              (<span>ID:</span> <span className="font-semibold">12334</span>)
+              (<span>ID:</span> <span className="font-semibold">{info?.uuid}</span>)
             </span>
           </div>
         </div>

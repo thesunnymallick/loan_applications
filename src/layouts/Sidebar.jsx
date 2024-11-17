@@ -27,11 +27,11 @@ const Sidebar = () => {
       icon: MdOutlineDashboard,
     },
     { name: "Role Assigned", link: "/admin/role-assigned", icon: FaUserGear },
-    {
-      name: "Loan Management",
-      link: "/admin/loan-management",
-      icon: MdOutlineRequestQuote,
-    },
+    // {
+    //   name: "Loan Management",
+    //   link: "/admin/loan-management",
+    //   icon: MdOutlineRequestQuote,
+    // },
     { name: "Users", link: "/admin/users", icon: MdGroups },
     {
       name: "Subscriptions",
