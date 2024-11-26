@@ -2,9 +2,13 @@ import { Image, Button, Select, notification } from "antd";
 import React, { useState } from "react";
 import { documentVerifyPartner } from "../../api/admin/users";
 import noImageAvailable from "../../assets/noImageAvailable.jpg"
-const Docverified = ({userProfileInfo, setIsDocVerify}) => {
-
-
+import userImage from "../../assets/userCricle.jpg";
+import { MdVerified, MdOutlineRemoveCircle } from 'react-icons/md';
+const Docverified = ({
+  userProfileInfo,
+  setUserProfileInfo,
+  fetchAllMembers,  
+  setIsDocVerify}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [verificationStatus, setVerificationStatus] = useState({
     userPhoto: 0,
@@ -13,6 +17,7 @@ const Docverified = ({userProfileInfo, setIsDocVerify}) => {
     pan_card_image: 0,
     blank_cheque_image: 0,
   });
+  const [loading, setLoading]=useState(false);
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -27,16 +32,17 @@ const Docverified = ({userProfileInfo, setIsDocVerify}) => {
   };
 
   const steps = [
-    { label: "Profile Photo", key: "userPhoto" },
-    { label: "Aadhar Front Image", key: "aadhar_front_image" },
-    { label: "Aadhar Back Image", key: "aadhar_back_image" },
-    { label: "Pan Card Image", key: "pan_card_image" },
-    { label: "Cancel Cheque Photo", key: "blank_cheque_image" },
+    { label: "Profile Photo", key: "userPhoto", verfiyKey:"is_user_photo_verified", },
+    { label: "Aadhar Front Image", key: "aadhar_front_image",verfiyKey:"is_aadhar_back_verified", },
+    { label: "Aadhar Back Image", key: "aadhar_back_image", verfiyKey:"is_aadhar_back_verified", },
+    { label: "Pan Card Image", key: "pan_card_image", verfiyKey:"is_pan_card_verified", },
+    { label: "Cancel Cheque Photo", key: "blank_cheque_image", verfiyKey:"is_blank_cheque_verified", },
   ];
 
 // Handle document verification submission
 const handelDocVerified = async () => {
   try {
+    setLoading(true);
     const payload = {
       is_user_photo_verified: verificationStatus.userPhoto,
       is_aadhar_front_verified: verificationStatus.aadhar_front_image,
@@ -46,13 +52,19 @@ const handelDocVerified = async () => {
     };
     const { status } = await documentVerifyPartner(userProfileInfo.uuid, payload);
     if (status === 200) {
+      setLoading(false);
       notification.success({
         message: "Verification Successful",
         description: "All documents have been successfully verified.",
       });
+      setCurrentStep(0);
+      fetchAllMembers();
       setIsDocVerify(false);
+      setUserProfileInfo(null);
+      
     }
   } catch (error) {
+    setLoading(false);
     console.error("Error verifying documents:", error);
     notification.error({
       message: "Verification Failed",
@@ -69,10 +81,42 @@ const handelDocVerified = async () => {
     }));
   };
 
-  const renderUploadBox = (label, key) => (
+  const renderUploadBox = (label, key, verfiyKey) => (
     <div>
+
+   <div className="flex border-b-[1px] border-b-zinc-300 items-center gap-2 px-4 py-2">
+            <div className="w-14 h-14 rounded-full border-[2px] border-green-700 overflow-hidden">
+              <img
+                className="w-full  object-cover"
+                src={userProfileInfo?.userPhoto || userImage}
+                alt="ProfileImage"
+              />
+            </div>
+            <div className="flex flex-col">
+            <h2 className="text-zinc-700 text-xl">{userProfileInfo?.name}</h2>
+            <span className="text-zinc-600 text-sm -mt-2">
+              {userProfileInfo?.email}
+            </span>
+            </div>
+   </div>
+
+
       <div className="flex items-center justify-between px-4 border-b-[1px] border-b-zinc-300 py-2">
+        <div className="flex items-center gap-2">
         <h2 className="text-zinc-700 font-semibold text-lg">{label}</h2>
+        {userProfileInfo[verfiyKey]===1? <span className="px-2  bg-green-600
+         text-white rounded-md flex justify-center gap-1 items-center text-sm">
+          <span><MdVerified/> </span>
+          <span>Verfied</span>
+          </span>: 
+          <span className="px-2  bg-red-600
+          text-white rounded-md flex justify-center gap-1 items-center text-sm">
+           <span><MdOutlineRemoveCircle/> </span>
+           <span>Not verfied</span>
+           </span>
+          
+          }
+        </div>
         <Select
           placeholder ={"Select status"}
          value={verificationStatus[key]}
@@ -82,11 +126,16 @@ const handelDocVerified = async () => {
           <Select.Option value={0}>Pending</Select.Option>
         </Select>
       </div>
+
       <div className="flex justify-center">
         <div
           className={`${
             key === "userPhoto" ? "w-[30%]" : "w-[60%]"
-          } flex justify-center items-center overflow-hidden rounded-lg border-dashed border-2 border-zinc-300 bg-zinc-100 h-60 my-2 relative`}
+          } flex justify-center items-center overflow-hidden 
+            rounded-lg border-dashed border-2
+            border-zinc-300
+            bg-zinc-100 h-60
+            my-2 relative`}
         >
           <div className="relative h-full w-full">
             <Image
@@ -105,7 +154,7 @@ const handelDocVerified = async () => {
       <div className="py-2">
         <div className="flex justify-center">
           <div className="flex-1">
-            {renderUploadBox(steps[currentStep].label, steps[currentStep].key)}
+            {renderUploadBox(steps[currentStep].label, steps[currentStep].key, steps[currentStep].verfiyKey)}
           </div>
         </div>
       </div>
@@ -119,6 +168,7 @@ const handelDocVerified = async () => {
           Back
         </Button>
         <Button
+          loading={loading}
           className="w-[20%] h-8 bg-green-700 text-white rounded-lg"
           onClick={
             currentStep === steps.length - 1

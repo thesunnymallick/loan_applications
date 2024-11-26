@@ -54,7 +54,7 @@ const Sidebar = () => {
     },
     {
       name: "My Services",
-      link: "/partner/our-panels",
+      link: "/our-panels",
       icon: HiOutlineClipboardList,
     },
     {

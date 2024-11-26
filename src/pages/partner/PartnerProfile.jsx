@@ -4,6 +4,7 @@ import { FaFileDownload } from "react-icons/fa";
 import { Tabs } from "antd";
 import UploadDocView from "../../components/salesExcutiveComponent/partner/UploadDocView";
 import { getPartnerProfileInfo } from "../../api/partner/profileApi";
+import dayjs from "dayjs";
 const { TabPane } = Tabs;
 
 const PartnerProfile = () => {
@@ -18,10 +19,10 @@ const PartnerProfile = () => {
     try {
       const {status, data}=await getPartnerProfileInfo();
        if(status===200){
-        setInfo(data);
+        setInfo(data?.partner);
        }
     } catch (error) {
-    
+       console.log(error)
     }
    }
 
@@ -33,6 +34,59 @@ const PartnerProfile = () => {
   },[])
 
 
+  // "id": 2,
+  //       "uuid": "IK-000002",
+  //       "name": "Sunny",
+  //       "mobile": "6297179586",
+  //       "email": "alfesunnymallick2000@gmail.com",
+  //       "is_email_verified": 1,
+  //       "payment_transaction_id": null,
+  //       "payment_txn_id": "TXN987654321",
+  //       "": {
+  //           "name": "Sunny",
+  //           "email": "alfesunnymallick2000@gmail.com",
+  //           "mobile": "6297179586",
+  //           "whatsapp_no": "1234567890",
+  //           "gender": "female",
+  //           "date_of_birth": "1985-05-15",
+  //           "subscription": "premium",
+  //           "subscription_price": "199.99"
+  //       },
+  //       "permanent_address": {
+  //           "address": "Kolkata",
+  //           "city": "West Bengal",
+  //           "pincode": "722208",
+  //           "state": "CA"
+  //       },
+  //       "office_address": {
+  //           "address": "321 Business Blvd",
+  //           "city": "Gotham",
+  //           "pincode": "456789",
+  //           "state": "TX"
+  //       },
+  //       "banking_details": {
+  //           "bank_name": null,
+  //           "account_number": null,
+  //           "ifsc_code": null,
+  //           "branch": null,
+  //           "bank account name": ""
+  //       },
+  //       "identity_details": {
+  //           "gst": null,
+  //           "pan number": null,
+  //           "aadhar number": null
+  //       },
+  //       "userPhoto": "https://api.incomekaro.in/images/1731990450_userPhoto.jpg",
+  //       "aadhar_front_image": "https://api.incomekaro.in/images/1731990450_aadhar_front_image.jpg",
+  //       "aadhar_back_image": "https://api.incomekaro.in/images/1731990450_aadhar_back_image.jpg",
+  //       "pan_card_image": "https://api.incomekaro.in/images/1731990450_pan_card_image.jpg",
+  //       "blank_cheque_image": "https://api.incomekaro.in/images/1731990450_blank_cheque_image.jpeg",
+  //       "is_aadhar_front_verified": 1,
+  //       "is_aadhar_back_verified": 1,
+  //       "is_pan_card_verified": 1,
+  //       "is_blank_cheque_verified": 1,
+  //       "is_user_photo_verified": 1,
+
 
 
   return (
@@ -41,18 +95,18 @@ const PartnerProfile = () => {
         <div className="w-full flex justify-center  overflow-hidden rounded-lg">
           <img
             className="w-[80%] object-cover rounded-lg"
-            src={userImage}
+            src={info?.userPhoto}
             alt="Partner Profile"
           />
         </div>
         <div className="px-2">
           <div className="flex flex-col items-center py-3">
             <h1 className="text-zinc-700 font-semibold text-2xl">
-              Sunny Mallick
+              {info?.name}
             </h1>
             <span className="flex items-center gap-2 text-base text-zinc-600">
               (<span>ID:</span>
-              <span className="font-semibold">12334</span>)
+              <span className="font-semibold">{info?.uuid}</span>)
             </span>
           </div>
         </div>
@@ -61,7 +115,7 @@ const PartnerProfile = () => {
         <div className="grid grid-cols-3  gap-4 px-6">
           <div className="flex flex-col text-zinc-600">
             <span>Id</span>
-            <span className="text-zinc-700 font-semibold">LW-24020382</span>
+            <span className="text-zinc-700 font-semibold">{info?.uuid}</span>
           </div>
           <div className="flex flex-col text-zinc-600">
             <span>RM Name</span>
@@ -73,12 +127,12 @@ const PartnerProfile = () => {
           </div>
           <div className="flex flex-col text-zinc-600">
             <span>Plan Name</span>
-            <span className="text-zinc-700 font-semibold">DSA DELIGHT PRO</span>
+            <span className="text-zinc-700 font-semibold">{info?.personal_details?.subscription}</span>
           </div>
           <div className="flex flex-col text-zinc-600">
             <span>Joining Date</span>
             <span className="text-zinc-700 font-semibold">
-              3rd February, 2024
+              { dayjs(info?.joining_date).format("Do MMMM YYYY")}
             </span>
           </div>
           <div className="flex flex-col text-zinc-600">
@@ -107,50 +161,52 @@ const PartnerProfile = () => {
                   <div className="flex flex-col text-zinc-600">
                     <span className="">Name</span>
                     <span className="text-zinc-700 font-semibold">
-                      Sunny Mallick
+                      {info?.personal_details?.name}
                     </span>
                   </div>
                   <div className="flex flex-col text-zinc-600">
                     <span className="">Email</span>
                     <span className="text-zinc-700 font-semibold">
-                      alfesunny300@gmail.com
+                      {info?.personal_details?.email}
                     </span>
                   </div>
 
                   <div className="flex flex-col text-zinc-600">
                     <span className="">Phone No</span>
                     <span className="text-zinc-700 font-semibold">
-                      62971719586
+                      {info?.personal_details?.mobile}
                     </span>
                   </div>
 
                   <div className="flex flex-col text-zinc-600">
                     <span className="">WhatsApp No</span>
                     <span className="text-zinc-700 font-semibold">
-                      62971719586
+                      {info?.personal_details?.whatsapp_no}
                     </span>
                   </div>
                   <div className="flex flex-col text-zinc-600">
                     <span className="">Gender</span>
-                    <span className="text-zinc-700 font-semibold">Male</span>
+                    <span className="text-zinc-700 font-semibold">
+                      {info?.personal_details?.gender}
+                    </span>
                   </div>
 
                   <div className="flex flex-col text-zinc-600">
                     <span className="">Date Of Birth</span>
                     <span className="text-zinc-700 font-semibold">
-                      02-05-2000
+                      {dayjs(info?.personal_details?.date_of_birth).format("DD-MM-YYYY")}
                     </span>
                   </div>
 
                   <div className="flex flex-col text-zinc-600">
                     <span className="">Subscription</span>
                     <span className="text-zinc-700 font-semibold">
-                      DSA DELIGHT PRO
+                      {info?.personal_details?.subscription}
                     </span>
                   </div>
                   <div className="flex flex-col text-zinc-600">
                     <span className="">Subscription Prize</span>
-                    <span className="text-zinc-700 font-semibold">344</span>
+                    <span className="text-zinc-700 font-semibold">{info?.personal_details?.subscription_price}</span>
                   </div>
                 </div>
               </div>
@@ -165,27 +221,27 @@ const PartnerProfile = () => {
                 <div className="flex flex-col text-zinc-600">
                     <span className="">Bank Name</span>
                     <span className="text-zinc-700 font-semibold">
-                      State Bank Of India
+                      {info?.banking_details?.bank_name}
                     </span>
                 </div>
 
                 <div className="flex flex-col text-zinc-600">
                     <span className="">Bank Ifsc</span>
                     <span className="text-zinc-700 font-semibold">
-                    SBIN0009728
+                    {info?.banking_details?.ifsc_code}
                     </span>
                 </div>
 
                 <div className="flex flex-col text-zinc-600">
                     <span className="">Bank Account No</span>
                     <span className="text-zinc-700 font-semibold">
-                     62971719586
+                     {info?.banking_details?.account_number}
                     </span>
                 </div>
                 <div className="flex flex-col text-zinc-600">
                     <span className="">Bank Account Name</span>
                     <span className="text-zinc-700 font-semibold">
-                   Sunny Mallick
+                     {info?.banking_details?.bank_account_name}
                     </span>
                 </div>
 
@@ -202,27 +258,21 @@ const PartnerProfile = () => {
                 <div className="flex flex-col text-zinc-600">
                     <span className="">GST</span>
                     <span className="text-zinc-700 font-semibold">
-                      2%
+                      {info?.identity_details?.gst}
                     </span>
                 </div>
 
                 <div className="flex flex-col text-zinc-600">
-                    <span className="">Identity Details</span>
+                    <span className="">Aadhar No</span>
                     <span className="text-zinc-700 font-semibold">
-                    1234456789010
+                    {info?.identity_details?.aadhar_number}
                     </span>
                 </div>
 
                 <div className="flex flex-col text-zinc-600">
                     <span className="">Pan No</span>
                     <span className="text-zinc-700 font-semibold">
-                     ABCD12344
-                    </span>
-                </div>
-                <div className="flex flex-col text-zinc-600">
-                    <span className="">Bank Account Name</span>
-                    <span className="text-zinc-700 font-semibold">
-                   Sunny Mallick
+                     {info?.identity_details?.pan_number}
                     </span>
                 </div>
 

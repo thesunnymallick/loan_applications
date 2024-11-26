@@ -71,8 +71,8 @@ const SubscriptionPlans = () => {
 
   return (
     <div className="py-10 px-5">
-      <h2 className="text-2xl md:text-4xl font-bold text-center mb-6 text-green-700">
-        We Help You to Lenderway
+      <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-green-700">
+        We Help You to Incomekaro
       </h2>
       <p className="text-lg text-center mb-10 text-gray-500">
         Subscription Plan (<span className="font-semibold">*Life Time*</span>)

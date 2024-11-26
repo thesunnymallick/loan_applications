@@ -1,8 +1,10 @@
 // PanelCard.js
 import React from "react";
 import { Card, Button } from "antd";
+import { useNavigate } from "react-router-dom";
 
-const PanelCard = ({ title, description, image, services }) => {
+const PanelCard = ({ title, description, image, services, link }) => {
+  const navigate=useNavigate();
   return (
     <Card
       hoverable
@@ -17,7 +19,9 @@ const PanelCard = ({ title, description, image, services }) => {
         ))}
       </ul>
       <div className="absolute bottom-2 py-6 w-[90%] flex justify-center">
-      <Button  className="w-full bg-green-700 text-white h-10">
+      <Button 
+      onClick={()=>navigate(link)}
+       className="w-full bg-green-700 text-white h-10">
         Apply Now
       </Button>
       </div>

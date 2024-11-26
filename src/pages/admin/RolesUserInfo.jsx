@@ -3,17 +3,6 @@ import React from 'react'
 
 const RolesUserInfo = ({userProfileInfo}) => {
 
-     console.log("User Info", userProfileInfo);
-
-    //  "name": "Sunny Mallick",
-    //  "email": "alfesunnymallick800@gmail.com",
-    //  "phone_no": "6297179586",
-    //  "account_holder_name": "Sunny",
-    //  "bank_account_name": "State Bank Of India",
-    //  "bank_account_no": "62917171958690",
-    //  "ifsc_code": "SBIN0123456",
-    //  "role": "Sales Executive",
-    //  "userPhoto": "http://127.0.0.1:8000/storage/images/oOS8TJVerngK51ZNhSiUgZYPYYob18bbWWQWz1Wy.png",
 
   return (
     <div 
@@ -60,8 +49,8 @@ const RolesUserInfo = ({userProfileInfo}) => {
 
                 </div>
             </div>
-            <div className='w-48 h-72 rounded-md border-[2px] border-green-700'>
-              <img className='object-cover w-full h-auto' src={userProfileInfo.userPhoto} alt="userPhoto" />
+            <div className='w-48 h-72 rounded-md border-[4px] border-green-700 overflow-hidden'>
+              <img className='object-cover w-full h-full' src={userProfileInfo.userPhoto} alt="userPhoto" />
             </div>
         </div>
     </div>

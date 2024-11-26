@@ -4,7 +4,17 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+      marquee: "marquee 40s linear infinite",
+    },
+    keyframes: {
+      marquee: {
+        from: { transform: "translateX(100%)" },
+        to: { transform: "translateX(-100%)" },
+      },
+    },
+  },
   },
   plugins: [],
 }

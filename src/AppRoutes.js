@@ -18,6 +18,9 @@ import OurPanels from './pages/partner/OurPanels';
 import PartnerEdit from './pages/admin/PartnerEdit';
 import InterestUser from './pages/admin/InterestUser';
 import EditRole from './pages/admin/EditRole';
+import LoanPanels from './pages/partner/LoanPanels';
+import LoanForm from './pages/partner/LoanForm';
+import UploadDocForLoan from './pages/partner/UploadDocForLoan';
 
 
  const routes = [
@@ -185,13 +188,84 @@ import EditRole from './pages/admin/EditRole';
     name:"Partner Dashboard",
   },
   {
-    path:"/partner/our-panels",
+    path:"/our-panels",
     element: OurPanels,
     layout: RootLayout,
     protected: true,
     allowedRoles: ['partner'],
     name:"Partner Dashboard",
   },
+  {
+    path:"/our-panels/loan-panels",
+    element: LoanPanels,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/loan-panels/pl",
+    element: LoanForm,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    loanType:"personalLoan",
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/loan-panels/bl",
+    element: LoanForm,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    loanType:"businessLoan",
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/loan-panels/hl",
+    element: LoanForm,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    loanType:"homeLoan",
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/loan-panels/lap",
+    element: LoanForm,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    loanType:"loanAgainstProperty",
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/loan-panels/cl",
+    element: LoanForm,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    loanType:"carLoan",
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/loan-panels/ocl",
+    element: LoanForm,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    loanType:"oldCarLoan",
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/loan-panels/:loanType/upload-doc/:fileNo",
+    element: UploadDocForLoan,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  
   {
     path:"/rm/dashboard",
     element: RelationshipManagerDashboard,

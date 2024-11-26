@@ -17,3 +17,33 @@
   .ant-tabs-tab:hover {
     color: green !important;
   }
+
+
+  
+  @layer components {
+    .service-card {
+      position: relative;
+      overflow: hidden;
+      background: white;
+    }
+  
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, #18763a, #18763a);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease-in-out;
+      z-index: 0;
+    }
+  
+    .service-card:hover::before {
+      transform: translateX(0);
+    }
+  
+    .service-card > * {
+      position: relative;
+      z-index: 1;
+    }
+  }
+  

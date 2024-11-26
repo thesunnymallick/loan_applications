@@ -4,7 +4,7 @@ import {  useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Result } from "antd";
 
-const ProtectedRoute = ({ element: Component, isProtected, allowedRoles}) => {
+const ProtectedRoute = ({ element: Component, isProtected, allowedRoles, loanType}) => {
      const { isLoggedIn, role, status } = useSelector((state) => state.auth);
 
   
@@ -49,7 +49,7 @@ const ProtectedRoute = ({ element: Component, isProtected, allowedRoles}) => {
  
 
   // Render the component for authenticated and verified users
-  return <Component />;
+  return <Component loanType={loanType} />;
 };
 
 export default ProtectedRoute;

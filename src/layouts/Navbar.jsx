@@ -29,7 +29,7 @@ const Navbar = () => {
     });
   };
   return (
-    <div className='sticky top-0 left-0 w-full py-4 flex 
+    <div className='fixed top-0 left-0 w-full py-4 flex 
       items-center justify-end gap-2
       px-6 bg-gray-50 border-b-[1px] border-b-zinc-300 z-40'>
      

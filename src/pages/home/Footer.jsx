@@ -1,13 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import logo from "../../assets/logo/logo2.png"
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white py-10 px-5 relative  bttom-0 ">
       <div className="container mx-auto">
         {/* Top Section */}
+        <div className="py-3">
+        <img className="w-60 h-auto object-cover" src={logo} alt="logo" />
+        </div>
         <div className="flex flex-wrap justify-between items-center mb-10">
           <div>
+           
             <h2 className="text-xl md:text-2xl font-bold">
               Growth Your Business, Take Your Step with Us!
             </h2>
@@ -78,19 +82,19 @@ const Footer = () => {
             <span className="text-green-600 font-bold">Attention:</span> INCOMEKARO SOFTWARE PRIVATE LIMITED does not ask any sensitive details
             like debit card, credit card, CVV, or OTP.
           </p>
-          <p>CIN: U62091WB2023PTC265371</p>
+          <p>CIN: </p>
         </div>
 
         {/* Footer Bottom */}
         <div className="flex flex-wrap justify-between items-center mt-6 text-xs">
           <p>Copyright 2023 - 2024. INCOMEKARO SOFTWARE PRIVATE LIMITED.</p>
           <div className="space-x-4">
-            <a href="#" className="text-green-600 hover:underline">
+            <Link href="#" className="text-green-600 hover:underline">
               Terms of Conditions
-            </a>
-            <a href="#" className="text-green-600 hover:underline">
+            </Link>
+            <Link href="#" className="text-green-600 hover:underline">
               Privacy Policy
-            </a>
+            </Link>
           </div>
         </div>
       </div>

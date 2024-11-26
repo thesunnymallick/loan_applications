@@ -20,18 +20,21 @@ const OurPanels = () => {
         "Personal Loan",
         "Old Car Loan",
       ],
+      link:"/our-panels/loan-panels"
     },
     {
       title: "Taxation Panel",
       description: "Our taxation services help you manage taxes efficiently.",
       image: taxPanelBg,
       services: ["Tax Filing", "GST Registration", "Income Tax"],
+      link:"",
     },
     {
       title: "Credit Card Panel",
       description: "Find the perfect credit card with exclusive benefits.",
       image: creditcardPanelBg,
       services: ["Rewards Card", "Travel Card", "Cashback Card"],
+      link:"",
     },
     {
       title: "Micro Panel",
@@ -39,18 +42,21 @@ const OurPanels = () => {
         "Access micro-loans and funding solutions for small businesses.",
       image: microPanelBg,
       services: ["Micro Loans", "SME Loans"],
+      link:"",
     },
     {
       title: "Government Panel",
       description: "Get information on government-backed schemes and support.",
       image: governmentPanelBg,
       services: ["Government Schemes", "Subsidized Loans"],
+      link:"",
     },
     {
       title: "Insurance Panel",
       description: "Secure your future with our range of insurance options.",
       image: insurancePanelBg,
       services: ["Life Insurance", "Health Insurance", "Vehicle Insurance"],
+      link:"",
     },
   ];
 
@@ -64,6 +70,7 @@ const OurPanels = () => {
             description={panel.description}
             image={panel.image}
             services={panel.services}
+            link={panel.link}
           />
         ))}
       </div>

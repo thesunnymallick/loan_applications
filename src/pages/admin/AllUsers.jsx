@@ -56,16 +56,20 @@ const AllUsers = () => {
   const [isDocVerify, setIsDocVerify] = useState(false);
   const [yourPassword, setYourPassword] = useState("click check button");
   const [btnLoading, setBtnLoading] = useState(false);
+  const [loading, setLoading]=useState(false);
 
   // fetch all memebers
   const fetchAllMembers = async () => {
     try {
+      setLoading(true);
       const { data, status } = await getAllMembers();
       if (status === 200) {
+        setLoading(false);
         console.log(data);
         setAllMembers(data?.partners);
       }
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -327,6 +331,7 @@ const AllUsers = () => {
             dataSource={allMembers}
             size="small"
             scroll={{ x: "max-content" }}
+            loading={loading}
           />
         </div>
       </div>
@@ -510,7 +515,9 @@ const AllUsers = () => {
           });
         }}
       >
-        <div className="flex justify-between items-center py-2 px-4 border-b-[1px] border-b-zinc-300">
+        <div className="flex 
+         justify-between 
+         items-center py-2 px-4 border-b-[1px] border-b-zinc-300">
           <h1 className="text-zinc-700 font-semibold text-xl">
             Documents Verified
           </h1>
@@ -522,7 +529,11 @@ const AllUsers = () => {
           </span>
         </div>
 
-        <Docverified userProfileInfo={userProfileInfo} setIsDocVerify={setIsDocVerify} />
+        <Docverified 
+        userProfileInfo={userProfileInfo} 
+        setUserProfileInfo={setUserProfileInfo}
+        fetchAllMembers={fetchAllMembers} 
+        setIsDocVerify={setIsDocVerify} />
       </Modal>
     </div>
   );

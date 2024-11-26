@@ -288,7 +288,7 @@ const RoleAssigned = () => {
        <div className='p-6'>
            <div className='flex flex-col items-center gap-1'>
              <div className='w-24 h-24 rounded-full border-[2px] border-green-700 overflow-hidden'>
-              <img className='w-full  object-cover' src={userImage} alt="ProfileImage" />
+              <img className='w-full h-full object-cover' src={userProfileInfo?.userPhoto || userImage} alt="ProfileImage" />
              </div>
               <h2 className='text-zinc-700 text-xl'>{userProfileInfo?.name}</h2>
               <span className='text-zinc-600 text-sm -mt-2'>{userProfileInfo?.email}</span>
