@@ -7,11 +7,12 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { MdGroups } from "react-icons/md";
 import { FaUserGear } from "react-icons/fa6";
-import { MdOutlineRequestQuote } from "react-icons/md";
 import { FaFileUpload } from "react-icons/fa";
 import { MdSubscriptions } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { HiOutlineClipboardList } from "react-icons/hi";
+import { IoSettingsOutline } from "react-icons/io5";
+
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -38,6 +39,7 @@ const Sidebar = () => {
       link: "/admin/subscriptions",
       icon: MdSubscriptions,
     },
+    {name: "Setting", link:"/setting/loanStatus", icon:IoSettingsOutline}
   ];
 
   const partnerMenus = [
@@ -67,6 +69,7 @@ const Sidebar = () => {
   const rmMenus = [
     { name: "Dashboard", link: "/rm/dashboard", icon: MdOutlineDashboard },
     { name: "Loan", link: "/rm/loan", icon: MdAccountBalance },
+   
   ];
 
   const salesExecutive = [

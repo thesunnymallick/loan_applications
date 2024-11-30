@@ -1,127 +1,218 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaCloudUploadAlt, FaFilePdf } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import userCricle from "../../assets/userCricle.jpg";
-import { Button, Image, Input, Upload } from "antd";
+import { Button, Image, Input, notification, Upload } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { getCustomerDetails, uploadDocForLoan } from "../../api/partner/loanApi";
+import dayjs from "dayjs";
 
 const loanDocumentConfig = {
   businessLoan: [
-    { title: "Aadhar Card Front (jpg, pdf)", imageKey: "aadharFront" },
-    { title: "Aadhar Card Back", imageKey: "aadharBack" },
-    { title: "Pan Card Image", imageKey: "panCard" },
-    { title: "Passport Photo", imageKey: "passportPhoto" },
-    { title: "2 Year ITR PDF File (pdf)", imageKey: "irtPdf", isPdf: true },
-    { title: "1 Year Business Proof (pdf)", imageKey: "businessProofPdf", isPdf: true },
-    { title: "1 Year Full Net Banking Statement (pdf)", imageKey: "bankingStatementPdf", isPdf: true },
+    { title: "Aadhar Card Front", imageKey: "aadhar_front", passwordKey: "aadhar_front_password" },
+    { title: "Aadhar Card Back", imageKey: "aadhar_back", passwordKey: "aadhar_back_password" },
+    { title: "Pan Card Image", imageKey: "pan", passwordKey: "pan_password" },
+    { title: "Passport Photo", imageKey: "passport_photo", passwordKey: "passport_photo_password" },
+    { title: "2 Year ITR PDF File (pdf)", imageKey: "two_year_itr_file", isPdf: true, passwordKey: "two_year_itr_file_password" },
+    { title: "1 Year Business Proof (pdf)", imageKey: "one_year_business_proof", isPdf: true, passwordKey: "one_year_business_proof_password" },
+    { title: "1 Year Full Net Banking Statement (pdf)", imageKey: "one_year_net_banking_statement", isPdf: true, passwordKey: "one_year_net_banking_statement_password" },
   ],
   personalLoan: [
-    { title: "Aadhar Card Front (jpg, pdf)", imageKey: "aadharFront" },
-    { title: "Aadhar Card Back", imageKey: "aadharBack" },
-    { title: "Pan Card Image", imageKey: "panCard" },
-    { title: "Passport Photo", imageKey: "passportPhoto" },
-    { title: "1 Year Bank Statement (pdf)", imageKey: "bankStatementPdf", isPdf: true },
-    { title: "1 Month Salary Slip", imageKey: "salarySlip1", isPdf: true },
-    { title: "2 Month Salary Slip", imageKey: "salarySlip2", isPdf: true },
-    { title: "3 Month Salary Slip", imageKey: "salarySlip3", isPdf: true },
+    { title: "Aadhar Card Front (jpg, pdf)", imageKey: "aadhar_front", passwordKey: "aadhar_front_password" },
+    { title: "Aadhar Card Back", imageKey: "aadhar_back", passwordKey: "aadhar_back_password" },
+    { title: "Pan Card Image", imageKey: "pan", passwordKey: "pan_password" },
+    { title: "Passport Photo", imageKey: "passport_photo", passwordKey: "passport_photo_password" },
+    { title: "1 Year Bank Statement (pdf)", imageKey: "one_year_bank_statement", isPdf: true, passwordKey: "one_year_bank_statement_password" },
+    { title: "1 Month Salary Slip", imageKey: "one_month_salary_slip", isPdf: true, passwordKey: "one_month_salary_slip_password" },
+    { title: "2 Month Salary Slip", imageKey: "two_month_salary_slip", isPdf: true, passwordKey: "two_month_salary_slip_password" },
+    { title: "3 Month Salary Slip", imageKey: "three_month_salary_slip", isPdf: true, passwordKey: "three_month_salary_slip_password" },
   ],
   homeLoan: [
-    { title: "Aadhar Card Front (jpg, pdf)", imageKey: "aadharFront" },
-    { title: "Aadhar Card Back", imageKey: "aadharBack" },
-    { title: "Pan Card Image", imageKey: "panCard" },
-    { title: "1 Month Salary Slip", imageKey: "salarySlip1", isPdf: true },
-    { title: "2 Month Salary Slip", imageKey: "salarySlip2", isPdf: true },
-    { title: "3 Month Salary Slip", imageKey: "salarySlip3", isPdf: true },
-    { title: "1 Year Bank Statement (pdf)", imageKey: "bankStatementPdf", isPdf: true },
-    { title: "3 Year ITR or Business Proof (pdf)", imageKey: "itrOrBusinessProof", isPdf: true },
-    { title: "Complete Chain Deed (pdf)", imageKey: "chainDeed", isPdf: true },
-    { title: "Registration Paper (pdf)", imageKey: "registrationPaper", isPdf: true },
-    { title: "Side Plan (pdf)", imageKey: "sidePlan", isPdf: true },
-    { title: "Building Plan (pdf)", imageKey: "buildingPlan", isPdf: true },
+    { title: "Aadhar Card Front (jpg, pdf)", imageKey: "aadhar_front", passwordKey: "aadhar_front_password" },
+    { title: "Aadhar Card Back", imageKey: "aadhar_back", passwordKey: "aadhar_back_password" },
+    { title: "Pan Card Image", imageKey: "pan", passwordKey: "pan_password" },
+    { title: "1 Month Salary Slip", imageKey: "one_month_salary_slip", isPdf: true, passwordKey: "one_month_salary_slip_password" },
+    { title: "2 Month Salary Slip", imageKey: "two_month_salary_slip", isPdf: true, passwordKey: "two_month_salary_slip_password" },
+    { title: "3 Month Salary Slip", imageKey: "three_month_salary_slip", isPdf: true, passwordKey: "three_month_salary_slip_password" },
+    { title: "1 Year Bank Statement (pdf)", imageKey: "one_year_bank_statement", isPdf: true, passwordKey: "one_year_bank_statement_password" },
+    { title: "3 Year ITR or Business Proof (pdf)", imageKey: "three_year_itr", isPdf: true, passwordKey: "three_year_itr_password" },
+    { title: "Complete Chain Deed (pdf)", imageKey: "complete_chain_deed", isPdf: true, passwordKey: "complete_chain_deed_password" },
+    { title: "Registration Paper (pdf)", imageKey: "registration_paper", isPdf: true, passwordKey: "registration_paper_password" },
+    { title: "Side Plan (pdf)", imageKey: "side_plan", isPdf: true, passwordKey: "side_plan_password" },
+    { title: "Building Plan (pdf)", imageKey: "building_plan", isPdf: true, passwordKey: "building_plan_password" },
+  ],
+  loanAgainstProperty: [
+    { title: "Aadhar Card Front", imageKey: "aadhar_front", passwordKey: "aadhar_front_password" },
+    { title: "Aadhar Card Back", imageKey: "aadhar_back", passwordKey: "aadhar_back_password" },
+    { title: "Pan Card Image", imageKey: "pan", passwordKey: "pan_password" },
+    { title: "1 Month Salary Slip", imageKey: "one_month_salary_slip", isPdf: true, passwordKey: "one_month_salary_slip_password" },
+    { title: "2 Month Salary Slip", imageKey: "two_month_salary_slip", isPdf: true, passwordKey: "two_month_salary_slip_password" },
+    { title: "3 Month Salary Slip", imageKey: "three_month_salary_slip", isPdf: true, passwordKey: "three_month_salary_slip_password" },
+    { title: "1 Year Bank Statement (pdf)", imageKey: "one_year_bank_statement", isPdf: true, passwordKey: "one_year_bank_statement_password" },
+    { title: "3 Year ITR / 3 Year Business Proof (pdf)", imageKey: "three_year_itr", isPdf: true, passwordKey: "three_year_itr_password" },
+    { title: "Complete Chain Deed (pdf)", imageKey: "complete_chain_deed", isPdf: true, passwordKey: "complete_chain_deed_password" },
+    { title: "Registration Paper (pdf)", imageKey: "registration_paper", isPdf: true, passwordKey: "registration_paper_password" },
+    { title: "Side Plan (pdf)", imageKey: "side_plan", isPdf: true, passwordKey: "side_plan_password" },
+    { title: "Building Plan (pdf)", imageKey: "building_plan", isPdf: true, passwordKey: "building_plan_password" },
+  ],
+  carLoan: [
+    { title: "Aadhar Card Front", imageKey: "aadhar_front", passwordKey: "aadhar_front_password" },
+    { title: "Aadhar Card Back", imageKey: "aadhar_back", passwordKey: "aadhar_back_password" },
+    { title: "Pan Card Image", imageKey: "pan", passwordKey: "pan_password" },
+    { title: "RC", imageKey: "rc", passwordKey: "rc_password" },
+  ],
+  oldCarLoan: [
+    { title: "Aadhar Card Front", imageKey: "aadhar_front", passwordKey: "aadhar_front_password" },
+    { title: "Aadhar Card Back", imageKey: "aadhar_back", passwordKey: "aadhar_back_password" },
+    { title: "Pan Card Image", imageKey: "pan", passwordKey: "pan_password" },
+    { title: "RC", imageKey: "rc", passwordKey: "rc_password" },
   ],
 };
+
+
 
 const UploadDocForLoan = () => {
 
   const {loanType, fileNo}=useParams()
- // State for storing uploaded files dynamically
-const [images, setImages] = useState({});
+  // State for storing uploaded files dynamically
+  const [images, setImages] = useState({});
+  const [customerDetails, setCustomerDetails]=useState(null);
+
+
+
+
+
 
 // Get the list of required documents for the selected loan type
 const requiredDocuments = loanDocumentConfig[loanType] || [];
 
 
-  // handle upload 
-  const handleUpload = (file, key) => {
-    // Handle file validation
-    const isValidImage = file.type.startsWith("image/");
-    const isValidPdf = file.type === "application/pdf";
+const handleUpload = (file, key, isPdf) => {
+  // Validate file type
+  const isValidImage = file.type.startsWith("image/");
+  const isValidPdf = file.type === "application/pdf";
 
-    if (key.includes("Pdf") && !isValidPdf) {
-      alert("Please upload a valid PDF file.");
-      return false;
-    }
+  console.log(isValidPdf)
 
-    if (!key.includes("Pdf") && !isValidImage) {
-      alert("Please upload a valid image file.");
-      return false;
-    }
+   // If isPdf is true, ensure the file is a valid PDF
+   if (isPdf && !isValidPdf) {
+    notification.error({
+      message: "Invalid File Type",
+      description: "Please upload a valid PDF file.",
+      placement: "topRight", // You can adjust the position of the notification
+    });
+    return false;
+  }
 
-    // Save file in state
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setImages((prev) => ({
-        ...prev,
-        [key]: key.includes("Pdf") ? { name: file.name, file } : e.target.result,
-      }));
-    };
-    reader.readAsDataURL(file);
+  // If isPdf is false, ensure the file is a valid image
+  if (!isPdf && !isValidImage) {
+    notification.error({
+      message: "Invalid File Type",
+      description: "Please upload a valid image file.",
+      placement: "topRight", // You can adjust the position of the notification
+    });
+    return false;
+  }
 
-    return false; 
-  };
+  // Generate a preview URL for the file
+  const previewUrl = URL.createObjectURL(file);
+
+  // Save file and preview URL in state
+  setImages((prev) => ({
+    ...prev,
+    [key]: { file, preview: previewUrl }, // Save both file and preview
+  }));
+
+  return false; // Prevent automatic upload
+};
+
 
   // handle removed
   const handleRemove = (key) => {
-    setImages((prev) => ({
-      ...prev,
-      [key]: null,
-    }));
+    if (images[key]?.preview) {
+      URL.revokeObjectURL(images[key].preview);
+    }
+    setImages((prev) => {
+      const updated = { ...prev };
+      delete updated[key];
+      return updated;
+    });
   };
+  
+ 
+
+  const handleSave = async (title, key, passwordKey ) => {
+    try {
+      if (!images[key]) {
+        notification.error({
+          message: "Upload Error",
+          description: "Please upload a document before saving.",
+          duration: 3,
+        });
+        return;
+      }
+      const password = document.getElementById(passwordKey)?.value || "";
+      // Prepare the form data
+      const formData = new FormData();
+      formData.append("images", images[key]?.file); // Ensure the file is correctly appended
+      formData.append("type", key);
+      formData.append("password", password); // Add password dynamically if needed
+  
+      // Make the API call
+      const { status } = await uploadDocForLoan(fileNo, formData); // Pass formData to the API
+  
+      if (status === 200) {
+        // Success Notification
+        notification.success({
+          message: "Upload Successful",
+          description: `The document "${title}" has been uploaded successfully.`,
+          duration: 3,
+        });
+  
+        // Optional: Perform any additional actions on success
+      } else {
+        // API error (non-200 status)
+        notification.error({
+          message: "Upload Failed",
+          description: "There was an issue uploading the document. Please try again.",
+          duration: 3,
+        });
+      }
+    } catch (error) {
+      // Handle unexpected errors
+      notification.error({
+        message: "Error Occurred",
+        description: error?.response?.data?.message || "Something went wrong. Please try again later.",
+        duration: 3,
+      });
+      console.error("Error in handleSave:", error);
+    }
+  };
+  
+
+  useEffect(()=>{
+    
+    // Fetch Loan Deatils
+    const fetchLoanCustomerDetails=async()=>{
+      try {
+        const  {data, status}=await getCustomerDetails(fileNo);
+         if(status===200){
+           setCustomerDetails(data);
+         }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    // Fetch Loan Deatils
+    fetchLoanCustomerDetails();
+
+  },[fileNo]);
 
 
-  const allFiles = [
-    {
-      title: "Aadhar Card Front (jpg, pdf)",
-      imageKey: "aadharFront",
-    },
-    {
-      title: "Aadhar Card Back",
-      imageKey: "aadharBack",
-    },
-    {
-      title: "Pan Card Image",
-      imageKey: "panCard",
-    },
-    {
-      title: "Passport Photo",
-      imageKey: "passportPhoto",
-    },
-    {
-      title: "2 Year IRT PDF File (pdf)",
-      imageKey: "irtPdf",
-      isPdf: true,
-    },
-    {
-      title: "1 Year Business Proof (pdf)",
-      imageKey: "businessProofPdf",
-      isPdf: true,
-    },
-    {
-      title: "1 Year Full Net Banking Statement (pdf)",
-      imageKey: "bankingStatementPdf",
-      isPdf: true,
-    },
-  ];
+  console.log(customerDetails);
+
+
+
 
   
 
@@ -140,7 +231,7 @@ const requiredDocuments = loanDocumentConfig[loanType] || [];
       <div className="flex gap-4">
         {/* upload documents details */}
         <div className="w-[70%] grid grid-cols-2 mt-4 gap-4">
-          {requiredDocuments.map(({ title, imageKey, isPdf }, index) => (
+          {requiredDocuments.map(({ title, imageKey, isPdf, passwordKey }, index) => (
         <div key={index} className="p-2">
           <h2 className="text-zinc-700 font-semibold">{title}</h2>
           <div
@@ -157,9 +248,9 @@ const requiredDocuments = loanDocumentConfig[loanType] || [];
                   </>
                 ) : (
                   <img
-                    src={images[imageKey]}
-                    alt={`${title} Preview`}
-                    className="h-full w-full object-cover"
+                  src={images[imageKey]?.preview}
+                  alt={`${title} Preview`}
+                  className="h-full w-full object-cover"
                   />
                 )}
                 <Button
@@ -173,7 +264,7 @@ const requiredDocuments = loanDocumentConfig[loanType] || [];
               <Upload
                 showUploadList={false}
                 accept={isPdf ? ".pdf" : "image/*"}
-                beforeUpload={(file) => handleUpload(file, imageKey)}
+                beforeUpload={(file) => handleUpload(file, imageKey, isPdf)}
               >
                 <div className="flex flex-col items-center gap-2">
                   <FaCloudUploadAlt className="text-3xl text-zinc-500" />
@@ -190,11 +281,14 @@ const requiredDocuments = loanDocumentConfig[loanType] || [];
           </div>
           <div className="flex items-center gap-2 w-full">
             <Input.Password
+             id={passwordKey}
               className="w-[80%]"
               size="large"
               placeholder="Enter Password"
             />
-            <Button className="w-[20%] h-10 bg-green-700 text-white rounded-lg">
+            <Button 
+              onClick={()=>handleSave(title, imageKey, passwordKey)}
+            className="w-[20%] h-10 bg-green-700 text-white rounded-lg">
               Save
             </Button>
           </div>
@@ -218,22 +312,24 @@ const requiredDocuments = loanDocumentConfig[loanType] || [];
 
               <div className="flex flex-col gap-2">
                 <h1 className="text-lg text-zinc-800 font-semibold text-center">
-                  MASOOD RANA
+                  {customerDetails?.partner?.name}
                 </h1>
                 <div className="flex items-center gap-2 text-sm">
                   <span className="text-zinc-700">Email</span>
                   <span className="text-zinc-700 font-semibold">
-                    najmulmolla1476@gmail.com
+                  {customerDetails?.partner?.email}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <span className="text-zinc-700">Phone</span>
                   <span className="text-zinc-700 font-semibold">
-                    62971719586
+                  {customerDetails?.partner?.mobile_number}
                   </span>
                 </div>
                 <h2 className="text-zinc-800 font-bold">
-                  Business Loan of RS. 500000 for 24
+                   <span>{customerDetails?.data?.loan_type}</span> Of Rs <span>
+                    {customerDetails?.data?.loan_amount} <span>{customerDetails?.data?.tenure}</span>
+                   </span>
                 </h2>
               </div>
             </div>
@@ -248,64 +344,64 @@ const requiredDocuments = loanDocumentConfig[loanType] || [];
                 <div className="flex flex-col gap-1 ">
                   <span className="text-zinc-600">Pan</span>
                   <span className="text-zinc-700 font-semibold">
-                    CZAPM5688M
+                     {customerDetails?.data?.pan}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-zinc-600">DOB</span>
                   <span className="text-zinc-700 font-semibold">
-                    2024-11-15
+                    {dayjs(customerDetails?.data?.dob).format("DD-MM-YYYY")}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-zinc-600">Pincode</span>
-                  <span className="text-zinc-700 font-semibold">743425</span>
+                  <span className="text-zinc-700 font-semibold">{customerDetails?.data?.residence_pincode}</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-zinc-600">Residence Address</span>
                   <span className="text-zinc-700 font-semibold">
-                    PAIKPARA, HAROA, NORTH 24 PARGANAS, 743425
+                    {customerDetails?.data?.residence_address}
                   </span>
                 </div>
                 {/* Column 2 */}
                 <div className="flex flex-col gap-1">
                   <span className="text-zinc-600">Mother Name</span>
                   <span className="text-zinc-700 font-semibold">
-                    Alaya Bibi
+                  {customerDetails?.data?.mother_name}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-zinc-600">Reference1</span>
                   <span className="text-zinc-700 font-semibold">
-                    JALAL UDDIN - 9093237626
+                   {customerDetails?.data?.reference_name_1} - {customerDetails?.data?.reference_phone_1}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-zinc-600">Reference2</span>
                   <span className="text-zinc-700 font-semibold">
-                    AMIR ALI - 7699135978
+                  {customerDetails?.data?.reference_name_2} - {customerDetails?.data?.reference_phone_2}
                   </span>
                 </div>
                 {/* Column 3 */}
                 <div className="flex flex-col gap-1">
                   <span className="text-zinc-600">Employment Type</span>
-                  <span className="text-zinc-700 font-semibold">
-                    Self Employed
+                  <span className="text-zinc-700 font-semibold capitalize">
+                 {customerDetails?.data?.employment_type}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-zinc-600">Company Name</span>
-                  <span className="text-zinc-700 font-semibold">GROWFRONT</span>
+                  <span className="text-zinc-700 font-semibold"> {customerDetails?.data?.company_name}</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-zinc-600">Company Type</span>
                   <span className="text-zinc-700 font-semibold">
-                    Sole Proprietorship
+                  {customerDetails?.data?.company_type}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-zinc-600">Monthly Income</span>
-                  <span className="text-zinc-700 font-semibold">500000</span>
+                  <span className="text-zinc-700 font-semibold"> {customerDetails?.data?.employment_type}</span>
                 </div>
                 {/* Column 4 */}
                 <div className="flex flex-col gap-1">

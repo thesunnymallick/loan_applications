@@ -151,16 +151,17 @@ const CreateRole = () => {
 
   const beforeUpload = (file) => {
     setimgLoading(true);
-    const isLt1M = file.size / 1024 / 1024 < 1;
-    if (!isLt1M) {
+    const isLt3M = file.size / 1024 / 1024 < 3; // Change to 3MB
+    if (!isLt3M) {
       setimgLoading(false);
       notification.error({
         message: "File too large",
-        description: "Image must be smaller than 1MB!",
+        description: "Image must be smaller than 3MB!",
       });
     }
-    return isLt1M;
+    return isLt3M;
   };
+  
 
   return (
     <div className="p-8">

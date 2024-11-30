@@ -27,7 +27,7 @@ const OurPanels = () => {
       description: "Our taxation services help you manage taxes efficiently.",
       image: taxPanelBg,
       services: ["Tax Filing", "GST Registration", "Income Tax"],
-      link:"",
+      link:"/our-panels/taxation-panel",
     },
     {
       title: "Credit Card Panel",

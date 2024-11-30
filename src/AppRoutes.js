@@ -21,6 +21,12 @@ import EditRole from './pages/admin/EditRole';
 import LoanPanels from './pages/partner/LoanPanels';
 import LoanForm from './pages/partner/LoanForm';
 import UploadDocForLoan from './pages/partner/UploadDocForLoan';
+import AllLoans from './pages/relationshipManager/AllLoans';
+import LoanInfo from './pages/relationshipManager/LoanInfo';
+import TaxationPanel from './pages/partner/TaxationPanel';
+import PlaceOrder from './pages/partner/PlaceOrder';
+import AddClient from './pages/partner/AddClient';
+import LoanStatusSetting from './pages/admin/LoanStatusSetting';
 
 
  const routes = [
@@ -161,6 +167,14 @@ import UploadDocForLoan from './pages/partner/UploadDocForLoan';
     allowedRoles: ['admin'],
     name:"Admin Dashboard",
   },
+  {
+    path:"/setting/loanStatus",
+    element:LoanStatusSetting,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['admin'],
+    name:"Admin Dashboard",
+  },
  
 
   {
@@ -265,6 +279,31 @@ import UploadDocForLoan from './pages/partner/UploadDocForLoan';
     allowedRoles: ['partner'],
     name:"Partner Dashboard",
   },
+
+  {
+    path:"/our-panels/taxation-panel",
+    element: TaxationPanel,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/taxation-panel/place-order",
+    element: PlaceOrder,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/taxation-panel/add-client",
+    element: AddClient,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
   
   {
     path:"/rm/dashboard",
@@ -272,6 +311,23 @@ import UploadDocForLoan from './pages/partner/UploadDocForLoan';
     layout: RootLayout,
     protected: true,
     name:"RM Dashboard",
+    allowedRoles: ['RM'],
+  },
+  {
+    path:"/rm/loan",
+    element: AllLoans,
+    layout: RootLayout,
+    protected: true,
+    name:"RM Dashboard",
+    allowedRoles: ['RM'],
+  },
+  {
+    path:"/rm/loaninfo/:fileNo",
+    element: LoanInfo,
+    layout: RootLayout,
+    protected: true,
+    name:"RM Dashboard",
+    allowedRoles: ['RM'],
   }
 
 ];

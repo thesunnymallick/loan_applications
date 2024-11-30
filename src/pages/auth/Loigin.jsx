@@ -10,6 +10,7 @@ import {useDispatch} from "react-redux"
 import { setLogin } from '../../features/authSlice';
 import { salesExecutiveLogin } from '../../api/salesExecutive/seAuth';
 import { partnerLogin } from '../../api/partner/authApi';
+import { rmLogin } from '../../api/rm/authRmApi';
 // Define the validation schema
 const loginSchema = Yup.object({
   email: Yup.string()
@@ -134,6 +135,37 @@ const Login = ({ loginType }) => {
       });
     }
   };
+
+  // Handle login RM
+  const handleLoginRM = async (values) => {
+    try {
+      setLoading(true);
+      const { data, status } = await rmLogin(values);
+      if (status === 200) {
+        setLoading(false);
+      //  Save token in cookies
+        Cookies.set('authToken', data.token, { expires: 7 });
+        dispatch(setLogin({ token: data?.token, status:"active", user: data?.admin }));
+  
+        // Success notification
+        notification.success({
+          message: 'Login Successful',
+          description: 'You have logged in successfully.',
+          placement: 'topRight',
+        });
+        navigate(`/rm/dashboard`);
+      }
+    } catch (error) {
+      setLoading(false);
+      // Error notification
+      notification.error({
+        message: 'Login Failed',
+        description: error.response?.data?.message || 
+        'An error occurred during login. Please try again.',
+        placement: 'topRight',
+      });
+    }
+  };
   
 
   // Formik setup for handling form state and validation
@@ -153,6 +185,10 @@ const Login = ({ loginType }) => {
        // login type partner
       if(loginType==="Partner"){
         handelPartnerLogin(values)
+      }
+      // RM login
+      if(loginType==="RelationshipManager"){
+        handleLoginRM(values);
       }
 
     },
