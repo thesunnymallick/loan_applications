@@ -35,9 +35,12 @@ const loanSchema = Yup.object({
   loan_amount: Yup.number()
     .required("Loan amount is required")
     .min(1000, "Loan amount must be at least 1000"),
-  tenure: Yup.number()
-    .required("Tenure is required")
-    .min(1, "Tenure must be at least 1 month"),
+  tenure: Yup.string()
+  .required("Tenure is required")
+  .matches(
+    /^\d+(st|nd|rd|th)?\sMonths$/,
+    "Tenure must be in the format '12th Months', '24th Months', etc."
+  ),
   dob: Yup.date()
     .required("Date of birth is required")
     .max(new Date(), "Date of birth cannot be in the future"),

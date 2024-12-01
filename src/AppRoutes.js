@@ -27,6 +27,10 @@ import TaxationPanel from './pages/partner/TaxationPanel';
 import PlaceOrder from './pages/partner/PlaceOrder';
 import AddClient from './pages/partner/AddClient';
 import LoanStatusSetting from './pages/admin/LoanStatusSetting';
+import CreditCard from './pages/partner/CreditCard';
+import CreditCardApply from './pages/partner/CreditCardApply';
+import GovermentLoan from './pages/partner/GovermentLoan';
+import GovermentLoanForm from './pages/partner/GovermentLoanForm';
 
 
  const routes = [
@@ -299,6 +303,67 @@ import LoanStatusSetting from './pages/admin/LoanStatusSetting';
   {
     path:"/our-panels/taxation-panel/add-client",
     element: AddClient,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+
+  {
+    path:"/our-panels/creditCard-panel",
+    element: CreditCard,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+
+  {
+    path:"/our-panels/creditCard-panel/creditcard-apply",
+    element: CreditCardApply,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+
+  {
+    path:"/our-panels/govermentLoan",
+    element: GovermentLoan,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/govermentLoan/:loanType",
+    element: GovermentLoanForm,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/govermentLoan/:loantype",
+    element: GovermentLoanForm,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+
+  {
+    path:"/our-panels/govermentLoan/:loanType",
+    element: GovermentLoanForm,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+
+  {
+    path:"/our-panels/govermentLoan/:loanType",
+    element: GovermentLoanForm,
     layout: RootLayout,
     protected: true,
     allowedRoles: ['partner'],

@@ -34,7 +34,7 @@ const OurPanels = () => {
       description: "Find the perfect credit card with exclusive benefits.",
       image: creditcardPanelBg,
       services: ["Rewards Card", "Travel Card", "Cashback Card"],
-      link:"",
+      link:"/our-panels/creditCard-panel",
     },
     {
       title: "Micro Panel",
@@ -49,7 +49,7 @@ const OurPanels = () => {
       description: "Get information on government-backed schemes and support.",
       image: governmentPanelBg,
       services: ["Government Schemes", "Subsidized Loans"],
-      link:"",
+      link:"/our-panels/govermentLoan",
     },
     {
       title: "Insurance Panel",
