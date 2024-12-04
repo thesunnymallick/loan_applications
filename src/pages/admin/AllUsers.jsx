@@ -17,6 +17,8 @@ import userImage from "../../assets/userCricle.jpg";
 import {
   changedPartnerAccountStatus,
   checkPartnerPassword,
+  getALLRm,
+  rmAssign,
 } from "../../api/admin/users";
 import Docverified from "../../components/adminCom/Docverified";
 import { Link, useNavigate } from "react-router-dom";
@@ -56,7 +58,12 @@ const AllUsers = () => {
   const [isDocVerify, setIsDocVerify] = useState(false);
   const [yourPassword, setYourPassword] = useState("click check button");
   const [btnLoading, setBtnLoading] = useState(false);
-  const [loading, setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isRmAssign, setIsRmAssign] = useState(false);
+  const [allRm, setAllRm] = useState([]);
+  const [selectedRm, setSelectedRm]=useState(null);
+
+
 
   // fetch all memebers
   const fetchAllMembers = async () => {
@@ -182,7 +189,19 @@ const AllUsers = () => {
     setIsDocVerify(false);
   };
 
-  // All Columns Name
+
+  // handle 
+  const handleRMAssignModalOpen = (record) => {
+    setIsRmAssign(true);
+    setUserProfileInfo(record);
+  };
+  const handleRMAssignModalClose = () => {
+    setIsRmAssign(false);
+    setUserProfileInfo(null);
+    setSelectedRm(null);
+  };
+
+  // All Columns name
   const columns = [
     {
       title: "Account ID",
@@ -290,6 +309,15 @@ const AllUsers = () => {
               </span>
             ),
           },
+
+          {
+            key: "rmAssign",
+            label: (
+              <span onClick={() => handleRMAssignModalOpen(record)}>
+                RM Assign
+              </span>
+            ),
+          },
         ];
 
         return (
@@ -301,6 +329,47 @@ const AllUsers = () => {
     },
   ];
 
+  useEffect(() => {
+
+    // Fetch all RM
+    const fetchAllRM = async () => {
+      try {
+        const { data, status } = await getALLRm();
+        if (status === 200) {
+          setAllRm(data?.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+     
+    // Fetch all RM
+    fetchAllRM();
+  }, []);
+
+  // Handle Assign RM
+  const handleAssignRM = async (info) => {
+    try {
+       const payload={
+         value:selectedRm,
+       }
+      const {  status } = await rmAssign(info?.uuid, payload);
+      if (status === 200) {
+        notification.success({
+          message: 'Success',
+          description: 'RM assigned successfully.',
+          duration: 3, // Duration in seconds
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      notification.error({
+        message: 'Error',
+        description: 'Failed to assign RM. Please try again later.',
+        duration: 3, // Duration in seconds
+      });
+    }
+  };
 
 
 
@@ -314,14 +383,15 @@ const AllUsers = () => {
             Users Overview
           </h2>
 
-          <Link 
-           to={`/admin/interestUsers`}
+          <Link
+            to={`/admin/interestUsers`}
             className="w-[20%] h-10
             bg-green-700 text-white 
             rounded-md shadow-sm 
-            flex justify-center items-center">
+            flex justify-center items-center"
+          >
             View Interest Users
-           </Link>
+          </Link>
         </div>
 
         <div className="mt-3">
@@ -497,6 +567,7 @@ const AllUsers = () => {
         </div>
       </Modal>
 
+      {/* Documents verified */}
       <Modal
         open={isDocVerify}
         onCancel={handleDocverifiedModalClose}
@@ -515,9 +586,11 @@ const AllUsers = () => {
           });
         }}
       >
-        <div className="flex 
+        <div
+          className="flex 
          justify-between 
-         items-center py-2 px-4 border-b-[1px] border-b-zinc-300">
+         items-center py-2 px-4 border-b-[1px] border-b-zinc-300"
+        >
           <h1 className="text-zinc-700 font-semibold text-xl">
             Documents Verified
           </h1>
@@ -529,11 +602,104 @@ const AllUsers = () => {
           </span>
         </div>
 
-        <Docverified 
-        userProfileInfo={userProfileInfo} 
-        setUserProfileInfo={setUserProfileInfo}
-        fetchAllMembers={fetchAllMembers} 
-        setIsDocVerify={setIsDocVerify} />
+        <Docverified
+          userProfileInfo={userProfileInfo}
+          setUserProfileInfo={setUserProfileInfo}
+          fetchAllMembers={fetchAllMembers}
+          setIsDocVerify={setIsDocVerify}
+        />
+      </Modal>
+
+      {/* RM Assign */}
+      <Modal
+        open={isRmAssign}
+        onCancel={handleRMAssignModalClose}
+        title={null}
+        width={400}
+        centered
+        footer={null}
+        closable={false}
+        maskClosable={false}
+        modalRender={(modal) => {
+          return React.cloneElement(modal, {
+            style: {
+              ...modal.props.style,
+              ...{ borderRadius: 10, padding: 0 },
+            },
+          });
+        }}
+      >
+        <div className="flex justify-between items-center py-2 px-4 border-b-[1px] border-b-zinc-300">
+          <h1 className="text-zinc-700 font-semibold text-xl">
+            Change Account Status
+          </h1>
+          <span
+            onClick={handleRMAssignModalClose}
+            className="text-zinc-600 hover:text-zinc-800 font-semibold text-2xl cursor-pointer"
+          >
+            <RxCross2 />
+          </span>
+        </div>
+
+        <div className="p-6">
+          <div className="flex flex-col items-center gap-1">
+            <div className="w-24 h-24 rounded-full border-[2px] border-green-700 overflow-hidden">
+              <img
+                className="w-full  object-cover"
+                src={userImage}
+                alt="ProfileImage"
+              />
+            </div>
+            <h2 className="text-zinc-700 text-xl">{userProfileInfo?.name}</h2>
+            <span className="text-zinc-600 text-sm -mt-2">
+              {userProfileInfo?.email}
+            </span>
+          </div>
+
+          <div className="mt-4 px-6 w-full py-4 flex flex-col gap-1">
+            <label htmlFor="" className="text-zinc-700 font-semibold">
+              Select Status
+            </label>
+            <Select
+              size="large"
+              style={{ width: "100%" }}
+              value={selectedRm}
+              onChange={(value) => setSelectedRm(value)}
+              placeholder={"Select RM"}
+            >
+            {
+              allRm.map((item)=>{
+                return(
+                  <Select.Option 
+                  value={item.uuid}
+                  key={item.uuid} 
+                  >{item.name}</Select.Option>
+                )
+              })
+            }
+            </Select>
+          </div>
+
+          <div className="mt-4 px-6 flex flex-col gap-4 pb-4">
+            <Button
+              loading={btnLoading}
+              onClick={() => handleAssignRM(userProfileInfo)}
+              disabled={selectedRm!== "" ? false : true}
+              className="w-full h-10 rounded-3xl bg-green-700 text-white"
+            >
+              Save
+            </Button>
+            <button
+              onClick={handleRMAssignModalClose}
+              className="w-full h-10
+              rounded-3xl border-[1px]
+              border-green-700
+              text-green-700"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

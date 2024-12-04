@@ -52,7 +52,7 @@ const LoanPanels = () => {
 
 
 
-      // Handle table changes (pagination, filters)
+  // Handle table changes (pagination, filters)
   const handleTableChange = (pagination, filters) => {
     setCurrentPage(pagination.current); // Update current page
     setPageSize(pagination.pageSize); // Update page size

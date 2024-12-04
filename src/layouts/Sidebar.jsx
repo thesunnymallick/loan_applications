@@ -54,9 +54,14 @@ const Sidebar = () => {
       link: "/partner/upload-doc",
       icon: FaFileUpload,
     },
+    // {
+    //   name: "My Services",
+    //   link: "/our-panels",
+    //   icon: HiOutlineClipboardList,
+    // },
     {
-      name: "My Services",
-      link: "/our-panels",
+      name: "Loan Panles",
+      link: "/our-panels/loan-panels",
       icon: HiOutlineClipboardList,
     },
     {

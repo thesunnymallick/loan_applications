@@ -4,6 +4,11 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const CreditCardApply = () => {
+
+
+
+
+  
   return (
     <div className="p-6">
       <div className="flex items-center gap-2">
