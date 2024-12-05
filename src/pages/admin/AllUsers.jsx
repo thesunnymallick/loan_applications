@@ -327,6 +327,45 @@ const AllUsers = () => {
         );
       },
     },
+
+    {
+      title: 'Sales Executive Details',
+      key: 'salesExecutiveDetails',
+      children: [
+        {
+          title: 'Name',
+         dataIndex: ["sales_executive", "name"],
+ 
+        },
+        {
+          title: 'Email',
+          dataIndex: ["sales_executive", "email"],
+        },
+        {
+          title: 'Phone',
+          dataIndex: ["sales_executive", "phone"],
+        },
+      ],
+    },
+
+    {
+      title: 'Regional Manager Details',
+      key: 'regional_manager_deatils',
+      children: [
+        {
+          title: 'Name',
+          dataIndex: ["regional_manager", "name"],
+        },
+        {
+          title: 'Email',
+          dataIndex: ["regional_manager", "email"],
+        },
+        {
+          title: 'Phone',
+          dataIndex: ["regional_manager", "phone"],
+        },
+      ],
+    },
   ];
 
   useEffect(() => {
@@ -360,6 +399,10 @@ const AllUsers = () => {
           description: 'RM assigned successfully.',
           duration: 3, // Duration in seconds
         });
+
+        fetchAllMembers();
+        handleRMAssignModalClose();
+
       }
     } catch (error) {
       console.error(error);

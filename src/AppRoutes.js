@@ -31,6 +31,7 @@ import CreditCard from './pages/partner/CreditCard';
 import CreditCardApply from './pages/partner/CreditCardApply';
 import GovermentLoan from './pages/partner/GovermentLoan';
 import GovermentLoanForm from './pages/partner/GovermentLoanForm';
+import ServiceSetting from './pages/admin/ServiceSetting';
 
 
  const routes = [
@@ -174,6 +175,15 @@ import GovermentLoanForm from './pages/partner/GovermentLoanForm';
   {
     path:"/setting/loanStatus",
     element:LoanStatusSetting,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['admin'],
+    name:"Admin Dashboard",
+  },
+
+  {
+    path:"/setting/service",
+    element:ServiceSetting,
     layout: RootLayout,
     protected: true,
     allowedRoles: ['admin'],

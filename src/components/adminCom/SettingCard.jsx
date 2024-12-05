@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { FaRegBuilding } from 'react-icons/fa';
 import userCricle from "../../assets/userCricle.jpg"
 import { FaRegHourglassHalf } from "react-icons/fa6";
+import { MdMiscellaneousServices } from "react-icons/md";
 
 const SettingCard= () => {
 
@@ -20,9 +21,9 @@ const SettingCard= () => {
     },
 
     {
-      title: 'Terminal Setting',
-      path: '/profile/company',
-      icon: <FaRegBuilding />,
+      title: 'Add Service',
+      path: '/setting/service',
+      icon: <MdMiscellaneousServices/>,
     },
 
   ];
