@@ -1,9 +1,14 @@
 import { Card, Col, Input, Row, Select, Table } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { getAllClient } from "../../api/partner/loanApi";
+import { getAllServices } from "../../api/admin/adminSettingApi";
 const { Option } = Select;
 const PlaceOrder = () => {
+
+  const [allClient, setAllClient]=useState([]);
+  const [allServices, setAllServices]=useState([]);
   
   const servicesData = [
     {
@@ -46,6 +51,40 @@ const PlaceOrder = () => {
       align: "right",
     },
   ];
+
+   useEffect(()=>{
+    const fetchAllClient=async()=>{
+      try {
+        const {data, status}=await getAllClient();
+        if(status===200){
+         setAllClient(data?.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+
+    const fetchAllServices=async()=>{
+      try {
+        const {data, status}=await getAllServices();
+        if(status===200){
+         setAllServices(data?.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+
+
+    // Fetch all Client
+    fetchAllClient();
+    fetchAllServices();
+
+   }, [])
+
+
   return (
     <div className="p-6">
       <div className="flex items-center gap-2">
@@ -72,6 +111,24 @@ const PlaceOrder = () => {
                   placeholder="Select a customer"
                   defaultValue="Dipak Mandal - 84220330590"
                 >
+                  {
+                    allClient.map((item)=>{
+                      return(
+                        <Option key={item.file_no} value={item.file_no}>
+                          <div className="flex items-center ">
+                            <div className="flex items-center gap-1 text-sm">
+                            <span>{item.first_name}</span>
+                            <span>{item.middle_name}</span>
+                            <span>{item.last_name}</span>
+                            <span>-</span>
+                            <span>{item?.phone}</span>
+                            </div>
+                          </div>
+                        
+                        </Option>
+                      )
+                    })
+                  }
                   <Option value="1">Dipak Mandal - 84220330590</Option>
                 </Select>
               </div>

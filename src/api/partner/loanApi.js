@@ -17,4 +17,9 @@ export const getAllLoansPartner = (params) => {
   export const getCustomerDetails=(fileNo)=>apiService.get(`/api/v1/user/partner/${fileNo}/get_customer_details`);
 
 
-  export const getLoanCount=()=>apiService.get(`/api/v1/user/partner/loan_count`)
+  export const getLoanCount=()=>apiService.get(`/api/v1/user/partner/loan_count`);
+
+
+
+
+  export const getAllClient=()=>apiService.get(`/api/v1/user/partner/taxtation_user_list`)

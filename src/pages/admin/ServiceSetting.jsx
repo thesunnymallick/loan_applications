@@ -20,6 +20,10 @@ const validationSchema = Yup.object().shape({
     .typeError("Price must be a number")
     .positive("Price must be a positive number")
     .integer("Price must be an integer"),
+    
+  IGST: Yup.string()
+    .matches(/^[0-9]+$/, "IGST must be a numeric value")
+    .nullable(),
 });
 
 const ServiceSetting = () => {
@@ -31,6 +35,7 @@ const ServiceSetting = () => {
     services: "",
     challan: "",
     price: "",
+    IGST :"",
   };
 
   // Fetch all services
@@ -109,6 +114,12 @@ const ServiceSetting = () => {
         key: "price",
         render: (price) => `₹${price}`, // Format price with a dollar sign
     },
+    {
+      title: "IGST",
+      dataIndex: "IGST",
+      key: "IGST",
+      render: (price) => `₹${price}`, // Format price with a dollar sign
+  },
     {
       title: "Challan",
       dataIndex: "challan",
@@ -209,6 +220,24 @@ const ServiceSetting = () => {
               />
               {touched.price && errors.price ? (
                 <span className="text-red-500 text-sm">{errors.price}</span>
+              ) : null}
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="" className="text-zinc-700 font-semibold">
+                Enter Service IGST
+              </label>
+              <Input
+                name="IGST"
+                value={values.IGST}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                status={touched.IGST && errors.IGST ? "error" : ""}
+                size="large"
+                placeholder="Enter Service Price"
+              />
+              {touched.IGST && errors.IGST ? (
+                <span className="text-red-500 text-sm">{errors.IGST}</span>
               ) : null}
             </div>
 

@@ -31,6 +31,8 @@ const AllLoans = () => {
   const [fileNo, setFileNo] = useState(null);
   const [loanStatus, setLoanStatus] = useState(null);
   const [btnLoading, setBtnLoading] = useState(false);
+
+
   // Fetch loans data from API
   const fetchLoans = async (params = {}) => {
     setLoading(true);
@@ -47,6 +49,7 @@ const AllLoans = () => {
     }
   };
 
+  // Dependency array updated
   useEffect(() => {
     fetchLoans({
       page: currentPage,
@@ -54,7 +57,7 @@ const AllLoans = () => {
       search: searchText,
       ...filteredInfo,
     });
-  }, [currentPage, pageSize, searchText, filteredInfo]); // Dependency array updated
+  }, [currentPage, pageSize, searchText, filteredInfo]); 
 
   // Handle table changes (pagination, filters)
   const handleTableChange = (pagination, filters) => {
@@ -75,14 +78,22 @@ const AllLoans = () => {
     });
   };
 
+
+
+   //loan status modal open
   const loanStatusModalOpen = () => {
     setIsLoanStatus(true);
   };
+
+  
+  //loan status modal close
   const loanStatusModalClose = () => {
     setIsLoanStatus(false);
     setFileNo(null);
     setLoanStatus(null);
   };
+
+  // All Columns
   const columns = [
     {
       title: "Sl. No",
@@ -344,6 +355,8 @@ const AllLoans = () => {
     }
   };
 
+
+  // Fecth loan Status
   useEffect(() => {
     const fetchLoanStatus = async () => {
       try {
