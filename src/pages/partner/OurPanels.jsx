@@ -56,7 +56,7 @@ const OurPanels = () => {
       description: "Secure your future with our range of insurance options.",
       image: insurancePanelBg,
       services: ["Life Insurance", "Health Insurance", "Vehicle Insurance"],
-      link:"",
+      link:"/our-panels/insurancePanel",
     },
   ];
 

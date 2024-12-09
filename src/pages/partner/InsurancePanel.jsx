@@ -3,7 +3,7 @@ import {
   AiOutlineFile,
   AiOutlineCheckCircle,
   AiOutlineCloseCircle,
-  AiOutlineCar,
+  AiOutlineDollar,
 } from "react-icons/ai";
 import { FiUpload } from "react-icons/fi";
 import { BsListCheck } from "react-icons/bs";
@@ -13,61 +13,62 @@ import { useNavigate } from "react-router-dom";
 import { getAllCreditCards } from "../../api/partner/creditcardApi";
 import { EyeOutlined } from "@ant-design/icons";
 
-const CreditCard = () => {
+const InsurancePanel= () => {
 
   const [allCreditCards, setAllCreditCards]=useState([]);
   const navigate=useNavigate();
+
+
   const cards = [
     {
       title: "Docs Pending",
       count: 2,
       icon: <AiOutlineFile />,
-      gradient: "from-green-500 to-emerald-700",
+      gradient: "from-pink-400 to-pink-600",
     },
     {
       title: "Docs Uploaded",
       count: 0,
       icon: <FiUpload />,
-      gradient: "from-gray-400 to-gray-600",
+      gradient: "from-blue-400 to-blue-600",
     },
     {
       title: "Docs Pendancy",
       count: 0,
       icon: <BsListCheck />,
-      gradient: "from-teal-400 to-teal-600",
+      gradient: "from-green-400 to-green-600",
     },
     {
       title: "Logged In",
       count: 0,
       icon: <AiOutlineCheckCircle />,
-      gradient: "from-blue-500 to-blue-700",
+      gradient: "from-purple-400 to-purple-600",
     },
     {
       title: "Approved",
       count: 0,
       icon: <AiOutlineCheckCircle />,
-      gradient: "from-purple-500 to-indigo-700",
+      gradient: "from-orange-400 to-orange-600",
     },
     {
       title: "Rejected",
       count: 0,
       icon: <AiOutlineCloseCircle />,
-      gradient: "from-red-500 to-rose-700",
+      gradient: "from-red-400 to-red-600",
     },
     {
-      title: "Dispatched",
+      title: "Banker Pendancy",
       count: 0,
-      icon: <AiOutlineCar />,
-      gradient: "from-yellow-500 to-orange-600",
+      icon: <AiOutlineDollar />,
+      gradient: "from-teal-400 to-teal-600",
     },
     {
       title: "Completed",
       count: 1,
       icon: <AiOutlineCheckCircle />,
-      gradient: "from-lime-500 to-green-700",
+      gradient: "from-yellow-400 to-yellow-600",
     },
   ];
-
 
 
 
@@ -98,36 +99,7 @@ const CreditCard = () => {
       dataIndex: "phone",
       key: "phone",
     },
-    {
-      title: "Applied at Bank",
-      children: [
-        {
-          title: "Applied Bank",
-          dataIndex: ["bankDetails", "appliedBank"],
-          key: "appliedBank",
-        },
-        {
-          title: "Login Id",
-          dataIndex: ["bankDetails", "loginId"],
-          key: "loginId",
-        },
-        {
-          title: "Credit Limit",
-          dataIndex: ["bankDetails", "creditLimit"],
-          key: "creditLimit",
-        },
-        {
-          title: "Applied On",
-          dataIndex: ["bankDetails", "appliedOn"],
-          key: "appliedOn",
-        },
-        {
-          title: "Applied Bank Status",
-          dataIndex: ["bankDetails", "bankStatus"],
-          key: "bankStatus",
-        },
-      ],
-    },
+
     {
       title: "Status",
       dataIndex: "status",
@@ -193,11 +165,11 @@ const CreditCard = () => {
       <div className="p-4 bg-white rounded-lg shadow-sm">
         <div className="flex justify-between items-center py-4 px-2">
           <h1 className="text-zinc-700 font-semibold text-2xl">
-            All Applied Credit Card
+            All Applied Insurance
           </h1>
 
           <button
-           onClick={()=>navigate(`/our-panels/creditCard-panel/creditcard-apply`)}
+           onClick={()=>navigate(`/our-panels/insurancePanel/insurance/apply`)}
            className="
             w-[10%]
             h-10
@@ -226,4 +198,4 @@ const CreditCard = () => {
   );
 };
 
-export default CreditCard;
+export default InsurancePanel;

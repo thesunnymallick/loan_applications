@@ -32,6 +32,12 @@ import CreditCardApply from './pages/partner/CreditCardApply';
 import GovermentLoan from './pages/partner/GovermentLoan';
 import GovermentLoanForm from './pages/partner/GovermentLoanForm';
 import ServiceSetting from './pages/admin/ServiceSetting';
+import AllClient from './pages/partner/AllClient';
+import TaxationUploadDoc from './pages/partner/TaxationUploadDoc';
+import CreditCardDocUpload from './pages/partner/CreditCardDocUpload';
+import InsurancePanel from './pages/partner/InsurancePanel';
+import InsuranceApply from './pages/partner/InsuranceApply';
+import Wallet from './pages/partner/Wallet';
 
 
  const routes = [
@@ -207,6 +213,16 @@ import ServiceSetting from './pages/admin/ServiceSetting';
     allowedRoles: ['partner'],
     name:"Partner Dashboard",
   },
+  
+  {
+    path:"/partner/wallet",
+    element: Wallet,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  
   {
     path:"/partner/upload-doc",
     element: UploadDocuments,
@@ -320,6 +336,24 @@ import ServiceSetting from './pages/admin/ServiceSetting';
   },
 
   {
+    path:"/our-panels/taxation-panel/all-client",
+    element: AllClient,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+
+  {
+    path:"/our-panels/taxation-panel/upload-doc/:id",
+    element: TaxationUploadDoc,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+
+  {
     path:"/our-panels/creditCard-panel",
     element: CreditCard,
     layout: RootLayout,
@@ -331,6 +365,14 @@ import ServiceSetting from './pages/admin/ServiceSetting';
   {
     path:"/our-panels/creditCard-panel/creditcard-apply",
     element: CreditCardApply,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/creditCard-panel/upload-doc/:id",
+    element: CreditCardDocUpload,
     layout: RootLayout,
     protected: true,
     allowedRoles: ['partner'],
@@ -374,6 +416,23 @@ import ServiceSetting from './pages/admin/ServiceSetting';
   {
     path:"/our-panels/govermentLoan/:loanType",
     element: GovermentLoanForm,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+
+  {
+    path:"/our-panels/insurancePanel",
+    element: InsurancePanel,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  {
+    path:"/our-panels/insurancePanel/insurance/apply",
+    element: InsuranceApply,
     layout: RootLayout,
     protected: true,
     allowedRoles: ['partner'],

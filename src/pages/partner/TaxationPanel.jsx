@@ -88,8 +88,11 @@ const columns = [
     title: "Actions",
     dataIndex: "actions",
     key: "actions",
-    render: () => (
-      <Space>
+    render: (text, record) => (
+      <Space 
+       className="cursor-pointer"
+       onClick={()=>navigate(`/our-panels/taxation-panel/upload-doc/${record.fileNo}`)}
+      >
         <EyeOutlined />
       </Space>
     ),
@@ -167,7 +170,7 @@ const columns = [
         <Card
          onClick={()=>navigate('/our-panels/taxation-panel/place-order')}
           hoverable
-          className="rounded-lg shadow-lg text-center border-none"
+          className="rounded-lg shadow-lg text-center border-none cursor-pointe"
           bodyStyle={{
             padding: "24px",
             background: "linear-gradient(135deg, #FFB75E, #ED8F03)", // Premium gold gradient
@@ -182,7 +185,7 @@ const columns = [
         <Card
           onClick={()=>navigate('/our-panels/taxation-panel/add-client')}
           hoverable
-          className="rounded-lg shadow-lg text-center border-none"
+          className="rounded-lg shadow-lg text-center border-none cursor-pointe"
           bodyStyle={{
             padding: "24px",
             background: "linear-gradient(135deg, #00C9FF, #92FE9D)", // Premium aqua to green gradient
@@ -199,7 +202,7 @@ const columns = [
         {/* Orders Card */}
         <Card
           hoverable
-          className="rounded-lg shadow-lg text-center border-none"
+          className="rounded-lg shadow-lg text-center border-none cursor-pointe"
           bodyStyle={{
             padding: "24px",
             background: "linear-gradient(135deg, #FF512F, #DD2476)", // Premium fiery red to pink
@@ -214,8 +217,9 @@ const columns = [
 
         {/* Clients Card */}
         <Card
+         onClick={()=>navigate(`/our-panels/taxation-panel/all-client`)}
           hoverable
-          className="rounded-lg shadow-lg text-center border-none"
+          className="rounded-lg shadow-lg text-center border-none cursor-pointer"
           bodyStyle={{
             padding: "24px",
             background: "linear-gradient(135deg, #11998E, #38EF7D)", // Premium teal gradient
