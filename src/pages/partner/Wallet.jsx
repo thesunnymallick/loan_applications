@@ -4,6 +4,8 @@ import { AiOutlinePlusCircle } from "react-icons/ai"; // PlusCircle icon
 import { AiOutlineArrowUp } from "react-icons/ai";  // ArrowUp icon
 
 const Wallet = () => {
+
+  
   const mainWalletData = [
     {
       key: "1",

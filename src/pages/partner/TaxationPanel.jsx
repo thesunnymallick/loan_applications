@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Table, Input, Tag, Space } from "antd";
 import {
   AppstoreOutlined,
@@ -10,13 +10,16 @@ import {
 } from "@ant-design/icons";
 import { EyeOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { getAllOrders } from "../../api/partner/taxationpanel";
+import dayjs from "dayjs";
 
 const TaxationPanel = () => {
   const [searchText, setSearchText] = useState("");
+  const [allOrders, setAllOrders]=useState();
    const navigate=useNavigate();
-  const handleSearch = (e) => {
+   const handleSearch = (e) => {
     setSearchText(e.target.value.toLowerCase());
-  };
+   };
 
 const columns = [
   {
@@ -27,25 +30,36 @@ const columns = [
   },
   {
     title: "File No",
-    dataIndex: "fileNo",
-    key: "fileNo",
+    dataIndex: "file_no",
+    key: "file_no",
   },
   {
     title: "Applicant Name",
     dataIndex: "applicant",
-    key: "applicant",
+    render: (text, record)=>{
+      return (
+        <div className="flex items-center gap-1">
+          <span>{record?.taxation?.first_name}</span>
+          <span>{record?.taxation?.middle_name}</span>
+          <span>{record?.taxation?.last_name}</span>
+        </div>)
+    }
+
  
   },
   {
     title: "Service",
     dataIndex: "service",
     key: "service",
+    render:(text, record)=>{
+      return(
+        <div className="flex items-center gap-1">
+           <span>{record?.service?.Services}</span>
+        </div>
+      )
+    }
   },
-  {
-    title: "Total Days/Remain Days",
-    dataIndex: "days",
-    key: "days",
-  },
+
   {
     title: "Executive",
     dataIndex: "executive",
@@ -55,6 +69,11 @@ const columns = [
     title: "Created Date",
     dataIndex: "createdDate",
     key: "createdDate",
+    render: (text, record)=>{
+    return (
+      <span>{dayjs(record?.created_at).format("YYYY-MM-DD")}</span>
+    )
+    }
   },
   {
     title: "Status",
@@ -65,11 +84,11 @@ const columns = [
       { text: "CANCELED", value: "CANCELED" },
       { text: "COMPLETED", value: "COMPLETED" },
     ],
-    onFilter: (value, record) => record.status === value,
-    render: (status) => {
+    onFilter: (value, record) => record?.taxation?.status === value,
+    render: (text, record) => {
       let color;
-      switch (status) {
-        case "FRESH LEAD":
+      switch (record?.taxation?.status) {
+        case "fresh_lead":
           color = "yellow";
           break;
         case "CANCELED":
@@ -81,7 +100,7 @@ const columns = [
         default:
           color = "gray";
       }
-      return <Tag color={color}>{status}</Tag>;
+      return <Tag color={color}>{record?.taxation?.status}</Tag>;
     },
   },
   {
@@ -91,7 +110,7 @@ const columns = [
     render: (text, record) => (
       <Space 
        className="cursor-pointer"
-       onClick={()=>navigate(`/our-panels/taxation-panel/upload-doc/${record.fileNo}`)}
+       onClick={()=>navigate(`/our-panels/taxation-panel/upload-doc/${record.file_no}`)}
       >
         <EyeOutlined />
       </Space>
@@ -101,64 +120,26 @@ const columns = [
 
 
 
-  const data = [
-    {
-      fileNo: "TX-10222",
-      applicant: "dipak mandal 8420330590 dipak@lgmail.com",
-      service: "ITR-1 (Upto ₹ 10 Lacs)",
-      days: "NA",
-      executive: "DIPAK MANDAL 9091963351 dipakmandal@lenderway.in",
-      createdDate: "5 Oct 2024",
-      status: "FRESH LEAD",
-    },
-    {
-      fileNo: "TX-10208",
-      applicant: "dipak mandal 8420330590 dipak@lgmail.com",
-      service: "ITR-1 (Upto ₹ 10 Lacs)",
-      days: "NA",
-      executive: "DIPAK MANDAL 9091963351 dipakmandal@lenderway.in",
-      createdDate: "29 Aug 2024",
-      status: "CANCELED",
-    },
-    {
-      fileNo: "TX-10206",
-      applicant: "MAJID Khan 7982454995 mauukhan@gmail.com",
-      service: "Back ITR",
-      days: "-101",
-      executive: "ATHAR HUSSIN 9891533543 athar0343@gmail.com",
-      createdDate: "21 Aug 2024",
-      status: "COMPLETED",
-    },
-    {
-      fileNo: "TX-10189",
-      applicant: "AMIT KAYAL 9123929502 avijitavijit00057@gmail.com",
-      service: "ITR-3 (Turnover Upto ₹ 20 Lacs)",
-      days: "-122",
-      executive: "ATHAR HUSSIN 9891533543 athar0343@gmail.com",
-      createdDate: "31 Jul 2024",
-      status: "COMPLETED",
-    },
-    {
-      fileNo: "TX-10188",
-      applicant: "AMIT KAYAL 9123929502 avijitavijit00057@gmail.com",
-      service: "ITR-3 (Turnover Upto ₹ 1 Crore)",
-      days: "NA",
-      executive: "DIPAK MANDAL 9091963351 dipakmandal@lenderway.in",
-      createdDate: "31 Jul 2024",
-      status: "CANCELED",
-    },
-  ];
 
-  const filteredData = data.filter(
-    (item) =>
-      item.fileNo.toLowerCase().includes(searchText) ||
-      item.applicant.toLowerCase().includes(searchText) ||
-      item.service.toLowerCase().includes(searchText) ||
-      item.executive.toLowerCase().includes(searchText) ||
-      item.createdDate.toLowerCase().includes(searchText) ||
-      item.status.toLowerCase().includes(searchText)
-  );
 
+
+
+    useEffect(()=>{
+
+      const fetchAllOrder=async()=>{
+         try {
+          const {data, status}=await getAllOrders();
+          if(status===200){
+            setAllOrders(data?.data)
+          }
+         } catch (error) {
+          
+         }
+      }
+
+      fetchAllOrder();
+
+    },[])
 
   
 
@@ -272,7 +253,7 @@ const columns = [
         }}
       />
     </div>
-          <Table bordered columns={columns} dataSource={filteredData} rowKey="fileNo"   scroll={{ x: "max-content" }} />
+          <Table bordered columns={columns} dataSource={allOrders} rowKey="fileNo"   scroll={{ x: "max-content" }} />
         </div>
       </div>
     </div>

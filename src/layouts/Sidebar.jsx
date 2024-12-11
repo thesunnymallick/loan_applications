@@ -68,6 +68,7 @@ const Sidebar = () => {
       link: "/partner/services",
       icon: MdAccountBalance,
     },
+    
   ];
 
   const rmMenus = [
@@ -108,7 +109,7 @@ const Sidebar = () => {
       <div
         className={`bg-gradient-to-b from-green-900 to-green-800 duration-300 ease-in-out overflow-hidden 
         h-screen hidden lg:flex lg:flex-col lg:sticky top-0 z-50 pt-2`}
-        style={{ width: sidebarOpen ? "280px" : "95px" }}
+        style={{ width: sidebarOpen ? "280px" : "80px" }}
       >
         {/* Logo Section */}
         <div className="px-5 py-4">

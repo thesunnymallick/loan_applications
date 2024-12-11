@@ -28,13 +28,7 @@ const LoanStatusSetting = () => {
   },[])
 
 
-  // { text: "Fresh Lead", value: "fresh_lead" },
-  // { text: "Upload Documents", value: "upload_documents" },
-  // { text: "Banking Pendency", value: "banking_pendency" },
-  // { text: "Assign", value: "assign" },
-  // { text: "Reject", value: "reject" },
-  // { text: "Login", value: "login" },
-  // { text: "Hold", value: "hold" },
+ 
 
 
 

@@ -6,6 +6,7 @@ import { Button,  Input, notification, Upload } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { getCustomerDetails, uploadDocForLoan } from "../../api/partner/loanApi";
 import dayjs from "dayjs";
+import { uploadCreditCardDoc } from "../../api/partner/creditcardApi";
 
 
 
@@ -19,7 +20,7 @@ const CreditCardDocUpload = () => {
   const [customerDetails, setCustomerDetails]=useState(null);
 
 
-
+  console.log("File No", fileNo);
 
 
 
@@ -99,7 +100,7 @@ const handleUpload = (file, key, isPdf) => {
       formData.append("password", password); // Add password dynamically if needed
   
       // Make the API call
-      const { status } = await uploadDocForLoan(fileNo, formData); // Pass formData to the API
+      const { status } = await uploadCreditCardDoc(fileNo, formData); 
   
       if (status === 200) {
         // Success Notification
@@ -155,6 +156,9 @@ const handleUpload = (file, key, isPdf) => {
     { title: "Pan Card Image", imageKey: "pan", passwordKey: "pan_password" },
     { title: "Passport Photo", imageKey: "passport_photo", passwordKey: "passport_photo_password" },
     { title: "1 Year Bank Statement (pdf)", imageKey: "one_year_bank_statement", isPdf: true, passwordKey: "one_year_bank_statement_password" },
+    { title: "1 Month Salary Slip", imageKey: "one_month_salary_slip", isPdf: true, passwordKey: "one_month_salary_slip_password" },
+    { title: "2 Month Salary Slip", imageKey: "two_month_salary_slip", isPdf: true, passwordKey: "two_month_salary_slip_password" },
+    { title: "3 Month Salary Slip", imageKey: "three_month_salary_slip", isPdf: true, passwordKey: "three_month_salary_slip_password" },
   ]
 
 

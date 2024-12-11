@@ -6,6 +6,7 @@ import { Button,  Input, notification, Upload } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { getCustomerDetails, uploadDocForLoan } from "../../api/partner/loanApi";
 import dayjs from "dayjs";
+import { uploadTaxDoc } from "../../api/partner/taxationpanel";
 
 
 
@@ -99,7 +100,7 @@ const handleUpload = (file, key, isPdf) => {
       formData.append("password", password); // Add password dynamically if needed
   
       // Make the API call
-      const { status } = await uploadDocForLoan(fileNo, formData); // Pass formData to the API
+      const { status } = await uploadTaxDoc(fileNo, formData); // Pass formData to the API
   
       if (status === 200) {
         // Success Notification
@@ -148,6 +149,8 @@ const handleUpload = (file, key, isPdf) => {
 
   },[fileNo]);
 
+
+  // aadhar_front', 'aadhar_back', 'pan', 'passport_photo', 'one_year_bank_statement'
 
  const requiredDocuments= [
     { title: "Aadhar Card Front", imageKey: "aadhar_front", passwordKey: "aadhar_front_password" },

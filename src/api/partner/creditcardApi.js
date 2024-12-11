@@ -5,3 +5,5 @@ export const applyCreditCard=(payload)=>apiService.post(`/api/v1/user/partner/st
 
 export const getAllCreditCards=()=>apiService.get(`/api/v1/user/partner/credit-cards`);
 
+export const uploadCreditCardDoc=(fileNo, payload)=>apiService.post(`/api/v1/credit_card/${fileNo}/upload-documents`, payload)
+

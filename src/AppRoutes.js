@@ -345,7 +345,7 @@ import Wallet from './pages/partner/Wallet';
   },
 
   {
-    path:"/our-panels/taxation-panel/upload-doc/:id",
+    path:"/our-panels/taxation-panel/upload-doc/:fileNo",
     element: TaxationUploadDoc,
     layout: RootLayout,
     protected: true,
@@ -371,7 +371,7 @@ import Wallet from './pages/partner/Wallet';
     name:"Partner Dashboard",
   },
   {
-    path:"/our-panels/creditCard-panel/upload-doc/:id",
+    path:"/our-panels/creditCard-panel/upload-doc/:fileNo",
     element: CreditCardDocUpload,
     layout: RootLayout,
     protected: true,

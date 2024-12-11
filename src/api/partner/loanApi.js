@@ -5,7 +5,7 @@ export const  addLoan=(payload)=>apiService.post(`/api/v1/partner/add_loan`, pay
 
 export const uploadDocForLoan=(fileNo, payload)=>apiService.post(`/api/v1/loans/${fileNo}/upload-documents`, payload);
 
-export const getLoanDocInfo=(fileNo)=>apiService.get(`api/v1/user/get_loan_details/${fileNo}/documents`);// this url move in Rm api
+export const getLoanDocInfo=(fileNo)=>apiService.get(`/api/v1/user/get_loan_details/${fileNo}/documents`);// this url move in Rm api
 
 
 export const getAllLoansPartner = (params) => {
