@@ -62,10 +62,20 @@ const Sidebar = () => {
       link: "/our-panels",
       icon: HiOutlineClipboardList,
     },
+    {
+      name: "I2I Eligible Panel",
+      link: "/i2i-eligible-panel",
+      icon: MdAccountBalance,
+    },
 
     {
-      name: "Financial Services",
-      link: "/partner/services",
+      name: "Instant Login Panel",
+      link: "/instant-login-panel",
+      icon: MdAccountBalance,
+    },
+    {
+      name: "Instant Login Card",
+      link: "/instant-login-card",
       icon: MdAccountBalance,
     },
     

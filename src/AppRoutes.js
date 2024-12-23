@@ -38,12 +38,32 @@ import CreditCardDocUpload from './pages/partner/CreditCardDocUpload';
 import InsurancePanel from './pages/partner/InsurancePanel';
 import InsuranceApply from './pages/partner/InsuranceApply';
 import Wallet from './pages/partner/Wallet';
+import GovermentLoanDocUpload from './pages/partner/GovermentLoanDocUpload';
+import InstantLoginPanel from './pages/partner/InstantLoginPanel';
+import EligiblePanel from './pages/partner/EligiblePanel';
+import InsuranceDocUpload from './pages/partner/InsuranceDocUpload';
+import About from './pages/home/About';
+import ContactUs from './pages/home/ContactUs';
 
 
  const routes = [
   {
     path: '/',
     element: Home,
+    layout: (props) => <RootLayout {...props} showSidebar={false} showNavbar={false} />,
+    protected: false,
+    name: 'Home',
+  },
+  {
+    path: '/about',
+    element: About,
+    layout: (props) => <RootLayout {...props} showSidebar={false} showNavbar={false} />,
+    protected: false,
+    name: 'Home',
+  },
+  {
+    path: '/contact',
+    element: ContactUs,
     layout: (props) => <RootLayout {...props} showSidebar={false} showNavbar={false} />,
     protected: false,
     name: 'Home',
@@ -395,27 +415,10 @@ import Wallet from './pages/partner/Wallet';
     allowedRoles: ['partner'],
     name:"Partner Dashboard",
   },
-  {
-    path:"/our-panels/govermentLoan/:loantype",
-    element: GovermentLoanForm,
-    layout: RootLayout,
-    protected: true,
-    allowedRoles: ['partner'],
-    name:"Partner Dashboard",
-  },
 
   {
-    path:"/our-panels/govermentLoan/:loanType",
-    element: GovermentLoanForm,
-    layout: RootLayout,
-    protected: true,
-    allowedRoles: ['partner'],
-    name:"Partner Dashboard",
-  },
-
-  {
-    path:"/our-panels/govermentLoan/:loanType",
-    element: GovermentLoanForm,
+    path:"/our-panels/govermentLoan/:loanType/uploadDoc/:fileNo",
+    element: GovermentLoanDocUpload,
     layout: RootLayout,
     protected: true,
     allowedRoles: ['partner'],
@@ -438,6 +441,36 @@ import Wallet from './pages/partner/Wallet';
     allowedRoles: ['partner'],
     name:"Partner Dashboard",
   },
+
+  {
+    path:"/our-panels/insurance/upload-doc/:fileNo",
+    element: InsuranceDocUpload,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+
+
+  {
+    path:"/instant-login-panel",
+    element: InstantLoginPanel,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  
+
+  {
+    path:"/i2i-eligible-panel",
+    element: EligiblePanel,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+  
   
   {
     path:"/rm/dashboard",

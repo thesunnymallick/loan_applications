@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Table, Tag } from 'antd';
 import { FaRegBuilding, FaBusinessTime, FaIndustry } from 'react-icons/fa';
 import { BsArrowRight } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
-
+import { EyeOutlined } from "@ant-design/icons";
+import { getAllGovermentLoan } from '../../api/partner/govermentLoanApi';
+import dayjs from 'dayjs';
 const GovermentLoan = () => {
   const navigate=useNavigate();
+  
+  const [loanInfo, setLoanInfo]=useState([]);
+
+
   const loans = [
     {
       type: 'Small Size Business',
@@ -46,42 +52,82 @@ const GovermentLoan = () => {
     },
   ];
 
+
+
+  const handleNavigateUploadDocPage=(loanType, fileNo)=>{
+
+    navigate(`/our-panels/govermentLoan/${loanType}/uploadDoc/${fileNo}`)
+ }
+
   const columns = [
     {
       title: 'File No',
-      dataIndex: 'fileNo',
-      key: 'fileNo',
+      dataIndex: 'file_no',
+      key: 'file_no',
     },
     {
       title: 'Applicant Name',
-      dataIndex: 'applicantName',
-      key: 'applicantName',
+      dataIndex: 'applicant_name',
+      key: 'applicant_name',
     },
     {
       title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      dataIndex: 'applicant_email',
+      key: 'applicant_email',
     },
     {
       title: 'Mobile Number',
-      dataIndex: 'mobileNumber',
-      key: 'mobileNumber',
+      dataIndex: 'mobile_number',
+      key: 'mobile_number',
     },
     {
       title: 'Created Date',
-      dataIndex: 'createdDate',
-      key: 'createdDate',
+      dataIndex: 'created_at',
+      key: 'created_at',
+      render: (text, record)=>{
+        return(
+          <span>{dayjs(record.created_at).format("YYYY-MM-DD")}</span>
+        )
+      }
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (status) => (
-        <Tag color={status === 'REJECTED' ? 'red' : 'green'}>
-          {status.toUpperCase()}
-        </Tag>
-      ),
+      render: (text) => {
+        const statusMapping = {
+          fresh_lead: { label: "Fresh Lead", color: "#004085" },
+          upload_documents: { label: "Upload Documents", color: "#085858" },
+          banking_pendency: { label: "Banking Pendency", color: "#995700" },
+          assign: { label: "Assign", color: "#005a00" },
+          reject: { label: "Reject", color: "#8b0000" },
+          login: { label: "Login", color: "#7b6400" },
+          hold: { label: "Hold", color: "#4b0082" },
+        };
+        const status = statusMapping[text] || { label: text, color: "#595959" };
+
+        return (
+          <Tag
+            style={{
+              backgroundColor: status.color,
+              color: "#fff",
+              border: "none",
+            }}
+          >
+            {status.label}
+          </Tag>
+        );
+      },
     },
+
+    {
+      title: "",
+      key: "actions",
+      render: (record) => <Button 
+       onClick={()=>handleNavigateUploadDocPage(record.loan, record.file_no)}
+      type="link" icon={<EyeOutlined />} />,
+    },
+  
   ];
 
   const data = [
@@ -104,6 +150,24 @@ const GovermentLoan = () => {
       status: 'REJECTED',
     },
   ];
+
+
+  useEffect(()=>{
+
+    const fetchGovermentLoan=async()=>{
+      try {
+        const {data,status}=await getAllGovermentLoan();
+        if(status===200){
+          setLoanInfo(data?.data?.data)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchGovermentLoan();
+
+  }, [])
 
   return (
     <div className="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
@@ -167,7 +231,7 @@ const GovermentLoan = () => {
         </div>
        <Table 
        columns={columns} 
-       dataSource={data} 
+       dataSource={loanInfo} 
        bordered  
    
        />

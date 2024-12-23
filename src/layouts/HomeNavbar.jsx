@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from "../assets/logo/logo1.png"
 //Home Navbar
-const HomeNavbar = () => {
+const HomeNavbar = ({textColor="text-black"}) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -23,13 +23,16 @@ const HomeNavbar = () => {
         <img className='w-60 h-auto object-cover' src={logo} alt="Logo" />
         <ul className='flex items-center gap-10'>
           <Link 
-          className={`${isScrolled? "text-zinc-900" : "text-black"} 
+           to={"/"}
+          className={`${isScrolled? "text-zinc-900" : textColor} 
           text-lg font-medium hover:text-green-500`}>Home</Link>
           <Link 
-          className={`${isScrolled? "text-zinc-900" : "text-black"} 
+           to={"/about"}
+          className={`${isScrolled? "text-zinc-900" : textColor} 
           text-lg font-medium hover:text-green-500`}>About</Link>
           <Link 
-          className={`${isScrolled? "text-zinc-900" : "text-black"} 
+           to={"/contact"}
+          className={`${isScrolled? "text-zinc-900" : textColor} 
           text-lg font-medium hover:text-green-500`}>Contact</Link>
         </ul>
       </div>

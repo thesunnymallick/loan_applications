@@ -12,10 +12,11 @@ import { IoAddOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { getAllCreditCards } from "../../api/partner/creditcardApi";
 import { EyeOutlined } from "@ant-design/icons";
+import { getAllInsurance } from "../../api/partner/InsuranceApi";
 
 const InsurancePanel= () => {
 
-  const [allCreditCards, setAllCreditCards]=useState([]);
+  const [allInsurance, setAllInsurance]=useState([]);
   const navigate=useNavigate();
 
 
@@ -80,14 +81,17 @@ const InsurancePanel= () => {
       key: "file_no",
     },
     {
-      title: "First Name",
-      dataIndex: "first_name",
-      key: "first_name",
-    },
-    {
-      title: "Last Name",
-      dataIndex: "last_name",
-      key: "last_name",
+      title: "Name",
+      key: "name",
+      render : (text, record)=>{
+        return(
+          <div className="flex items-center gap-1">
+             <span>{record?.first_name}</span>
+             <span>{record?.middle_name}</span>
+             <span>{record?.last_name}</span>
+          </div>
+        )
+      }
     },
     {
       title: "Email",
@@ -96,17 +100,49 @@ const InsurancePanel= () => {
     },
     {
       title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
+      dataIndex: "phone_number",
+      key: "phone_number",
     },
 
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status) => (
-        <Tag color={status === "Approved" ? "green" : "volcano"}>{status}</Tag>
-      ),
+      filters: [
+        { text: "Fresh Lead", value: "fresh_lead" },
+        { text: "Upload Documents", value: "upload_documents" },
+        { text: "Banking Pendency", value: "banking_pendency" },
+        { text: "Assign", value: "assign" },
+        { text: "Reject", value: "reject" },
+        { text: "Login", value: "login" },
+        { text: "Hold", value: "hold" },
+      ],
+  
+      onFilter: (value, record) => record.status.includes(value),
+      render: (text) => {
+        const statusMapping = {
+          fresh_lead: { label: "Fresh Lead", color: "#004085" },
+          upload_documents: { label: "Upload Documents", color: "#085858" },
+          banking_pendency: { label: "Banking Pendency", color: "#995700" },
+          assign: { label: "Assign", color: "#005a00" },
+          reject: { label: "Reject", color: "#8b0000" },
+          login: { label: "Login", color: "#7b6400" },
+          hold: { label: "Hold", color: "#4b0082" },
+        };
+        const status = statusMapping[text] || { label: text, color: "#595959" };
+
+        return (
+          <Tag
+            style={{
+              backgroundColor: status.color,
+              color: "#fff",
+              border: "none",
+            }}
+          >
+            {status.label}
+          </Tag>
+        );
+      },
     },
 
     {
@@ -116,7 +152,7 @@ const InsurancePanel= () => {
       render: (text, record) => (
         <Space
          className="cursor-pointer"
-         onClick={()=>navigate(`/our-panels/creditCard-panel/upload-doc/${record.file_no}`)}
+         onClick={()=>navigate(`/our-panels/insurance/upload-doc/${record.file_no}`)}
         >
           <EyeOutlined />
         </Space>
@@ -128,9 +164,9 @@ const InsurancePanel= () => {
   useEffect(()=>{
     const fetchAllCreditCard=async()=>{
       try {
-        const {data,status}=await getAllCreditCards();
+        const {data,status}=await getAllInsurance();
         if(status===200){
-        setAllCreditCards(data?.data)
+        setAllInsurance(data?.data?.data)
         }
 
       } catch (error) {
@@ -190,7 +226,7 @@ const InsurancePanel= () => {
         <Table
           bordered
           columns={columns}
-          dataSource={allCreditCards}
+          dataSource={allInsurance}
           scroll={{ x: "max-content" }}
         />
       </div>

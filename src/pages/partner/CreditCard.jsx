@@ -15,8 +15,28 @@ import { EyeOutlined } from "@ant-design/icons";
 
 const CreditCard = () => {
 
+
   const [allCreditCards, setAllCreditCards]=useState([]);
   const navigate=useNavigate();
+  const [loading, setLoading]=useState(false);
+
+  // Initial
+  const initialValues = {
+    first_name: "",
+     middle_name: "",
+     last_name: "",
+     email: "",
+     phone_number: "",
+     pan_number: "",
+     aadhar_number: "",
+     residence_address: "",
+     residence_city: "",
+     residence_pincode: "",
+     residence_state: "",
+     insurance_type: "",
+     bike_or_car_number: ""
+  };
+
   const cards = [
     {
       title: "Docs Pending",
@@ -67,6 +87,8 @@ const CreditCard = () => {
       gradient: "from-lime-500 to-green-700",
     },
   ];
+
+
 
 
 
@@ -158,7 +180,7 @@ const CreditCard = () => {
       try {
         const {data,status}=await getAllCreditCards();
         if(status===200){
-        setAllCreditCards(data?.data)
+        setAllCreditCards(data?.data?.data)
         }
 
       } catch (error) {
