@@ -1,6 +1,7 @@
 import React from "react";
 import discuss from "../../assets/discuss.jpg";
 import menImage from "../../assets/men.png";
+
 const BusinessOverview = () => {
   return (
     <div className="p-4">
@@ -8,35 +9,36 @@ const BusinessOverview = () => {
         <h1 className="text-zinc-800 font-semibold text-3xl text-center">
           Empowering Businesses
         </h1>
-        <span className="text-green-600 font-semibold">All over india</span>
+        <span className="text-green-600 font-semibold">All over India</span>
       </div>
-      <div className="py-6 flex gap-3">
-        <div className="w-[60%]">
-          {/* left side */}
+      <div className="py-6 flex flex-col lg:flex-row gap-6 lg:gap-3">
+        <div className="lg:w-[60%] w-full">
+          {/* Left side */}
           <img
             className="w-full object-cover rounded-lg"
             src={discuss}
-            alt={"discuss"}
+            alt="discuss"
           />
         </div>
-        {/* right side */}
-        <div className=" w-[40%] grid grid-cols-1 gap-4">
+
+        {/* Right side */}
+        <div className="lg:w-[40%] grid grid-cols-1 lg:grid-cols-1 gap-6 lg:gap-4">
           {/* Row 1: One Card */}
           <div className="bg-gradient-to-b from-green-500 to-green-950 text-white p-6 rounded-lg shadow-md">
             <span className="text-lg font-semibold">Pan India</span>
             <div className="text-2xl font-bold">7500+</div>
-            <p className="">DSA Ageant</p>
+            <p>DSA Agent</p>
           </div>
 
           {/* Row 2: Two Cards */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-gradient-to-b from-green-500 to-green-950 text-white p-6 rounded-lg shadow-md">
-              <span className="text-lg font-semibold">More Then</span>
+              <span className="text-lg font-semibold">More Than</span>
               <div className="text-2xl font-bold">68+</div>
               <p>Banks Tie-up</p>
             </div>
             <div className="bg-gradient-to-b from-green-500 to-green-950 text-white p-6 rounded-lg shadow-md">
-              <span className="text-lg font-semibold">Atleast</span>
+              <span className="text-lg font-semibold">At Least</span>
               <div className="text-2xl font-bold">5X</div>
               <p>Returns</p>
             </div>
@@ -44,22 +46,21 @@ const BusinessOverview = () => {
 
           {/* Row 3: One Card */}
           <div className="bg-gradient-to-b from-green-500 to-green-950 text-white p-6 rounded-lg shadow-md">
-            <span className="text-lg font-semibold">Franchse</span>
+            <span className="text-lg font-semibold">Franchise</span>
             <div className="text-2xl font-bold">30+</div>
           </div>
         </div>
       </div>
 
-      <div className="py-6 flex justify-center">
+      <div className="py-6 flex justify-center ">
         <div
           className="
-         rounded-lg p-6 bg-green-700  bg-gradient-to-b from-green-800 relative w-[70%] flex "
+            rounded-lg p-6 bg-green-700 bg-gradient-to-b
+             from-green-800 relative w-full sm:w-[70%] flex flex-col-reverse 
+             sm:flex-row  items-start md:items-center h-[700px] md:h-full"
         >
-          {/* Half Circle Background */}
-          {/*  */}
-
           {/* Text Content */}
-          <div className="w-[70%]">
+          <div className="w-full md:w-[70%] text-center sm:text-left">
             <h1 className="text-white text-xl font-bold mb-4">
               Start Your Loan DSA Business, Earn In Lakhs as a Pan India Loan
               and Credit Card DSA With Minimum Investment!
@@ -78,15 +79,13 @@ const BusinessOverview = () => {
           </div>
 
           {/* Image Section */}
-          <div className="w-[40%] relative">
+          <div className="w-full md:w-[40%] relative mt-0 md:mt-6 sm:mt-0 ">
             <img
               src={menImage}
               alt="Business Person"
-              className="absolute -bottom-6 z-10 w-[95%]"
+              className="absolute bottom-[7rem] md:-bottom-6 z-10 w-[70%] md:w-[95%] mx-auto sm:mx-0"
             />
-            <div className="absolute -top-1 
-            left-[60%] transform -translate-x-1/2
-             bg-green-400 w-56 h-56 rounded-full"></div>
+            <div className="absolute -top-[20rem] md:-top-1 left-[50%] md:left-[60%] transform -translate-x-1/2 sm:translate-x-0 bg-green-400 w-56 h-56 rounded-full"></div>
           </div>
         </div>
       </div>

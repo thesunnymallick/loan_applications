@@ -353,61 +353,64 @@ const LoanPanels = () => {
 
   return (
     <div className="p-6">
-      <div className="flex items-center gap-2 pb-4">
-        <Link to={"/our-panels"} className="">
-          <FaArrowLeft className="text-xl text-zinc-800 font-semibold" />
-        </Link>
-        <span className="text-2xl text-zinc-800 font-semibold">
-          Loan Panels
-        </span>
-      </div>
-      <div className="grid grid-cols-3 gap-4 p-4">
-        {loans.map((loan) => (
-          <div
-           onClick={()=>navigate(loan.link)}
-            key={loan.id}
-            className={`flex items-center justify-between h-24 rounded-lg text-white px-4 shadow-lg cursor-pointer ${loan.bgColor}`}
-          >
-            <div className="text-4xl">{loan.icon}</div>
-            <div className="text-right">
-              <h3 className="text-sm font-medium">{loan.name}</h3>
-              <p className="text-2xl font-bold">{loan.count}</p>
-            </div>
+    <div className="flex items-center gap-2 pb-4">
+      <Link to="/our-panels" className="">
+        <FaArrowLeft className="text-xl text-zinc-800 font-semibold" />
+      </Link>
+      <span className="text-2xl text-zinc-800 font-semibold">
+        Loan Panels
+      </span>
+    </div>
+  
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+      {loans.map((loan) => (
+        <div
+          onClick={() => navigate(loan.link)}
+          key={loan.id}
+          className={`flex items-center justify-between h-24 rounded-lg text-white px-4 shadow-lg cursor-pointer ${loan.bgColor}`}
+        >
+          <div className="text-4xl">{loan.icon}</div>
+          <div className="text-right">
+            <h3 className="text-sm font-medium">{loan.name}</h3>
+            <p className="text-2xl font-bold">{loan.count}</p>
           </div>
-        ))}
+        </div>
+      ))}
+    </div>
+  
+    <div className="bg-white rounded-lg shadow-sm p-4">
+      <div className="flex flex-col sm:flex-row justify-between py-4">
+        <h2 className="text-zinc-700 font-semibold">All Loan Applications</h2>
       </div>
-
-      <div className="bg-white rounded-lg shadow-sm p-4">
-        <div className="flex justify-between py-4">
-          <h2 className="text-zinc-700 font-semibold">All Loan application</h2>
-        </div>
-        
-        <div className="flex justify-end mb-4">
-          <Input
-            placeholder="Search by File No"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            onPressEnter={handleSearch}
-            style={{ width: 250 }}
-          />
-        </div>
-        <Table
-          bordered
-          columns={columns}
-          dataSource={allLons}
-          loading={loading}
-          pagination={{
-            current: currentPage,
-            pageSize,
-            total: totalItems,
-            onChange: (page) => setCurrentPage(page),
-          }}
-          onChange={handleTableChange}
-          rowKey="key"
-          scroll={{ x: "max-content" }}
+  
+      <div className="flex justify-end mb-4">
+        <Input
+          placeholder="Search by File No"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          onPressEnter={handleSearch}
+          style={{ width: "100%", maxWidth: 250 }}
         />
       </div>
+  
+      <Table
+        bordered
+        columns={columns}
+        dataSource={allLons}
+        loading={loading}
+        pagination={{
+          current: currentPage,
+          pageSize,
+          total: totalItems,
+          onChange: (page) => setCurrentPage(page),
+        }}
+        onChange={handleTableChange}
+        rowKey="key"
+        scroll={{ x: "max-content" }}
+      />
     </div>
+  </div>
+  
   );
 };
 

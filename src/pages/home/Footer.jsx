@@ -29,8 +29,8 @@ const Footer = () => {
             <ul className="space-y-2 flex flex-col ">
               <Link to={"/partner/login"} className="hover:text-green-500 transition-all cursor-pointer">Partner Login</Link>
               <Link to={"/sales-executive/login"} className="hover:text-green-500 transition-all cursor-pointer">Sales Executive Login</Link>
-              <Link to={"/relationship-manager/login"} className="hover:text-green-500 transition-all cursor-pointer">RM login</Link>
-              <Link to={"/admin/login"} className="hover:text-green-500 transition-all cursor-pointer">Admin login</Link>
+              {/* <Link to={"/relationship-manager/login"} className="hover:text-green-500 transition-all cursor-pointer">RM login</Link>
+              <Link to={"/admin/login"} className="hover:text-green-500 transition-all cursor-pointer">Admin login</Link> */}
             </ul>
           </div>
           {/* Column 2 */}

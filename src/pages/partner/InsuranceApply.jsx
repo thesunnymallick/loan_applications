@@ -50,37 +50,34 @@ const validationSchema = Yup.object({
 });
 
 const InsuranceApply = () => {
-
-  const [loading, setLoading]=useState(false);
-  const navigate=useNavigate();
-
-
-
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleApplyInsurance = async (values) => {
     try {
       setLoading(true);
       const { status } = await applyInsurance(values);
-  
+
       if (status === 200 || status === 201) {
         setLoading(false);
         notification.success({
-          message: 'Application Successful',
+          message: "Application Successful",
           description: `Your ${values?.insurance_type} insurance application was submitted successfully!`,
         });
 
         formik.resetForm();
-        navigate(`/our-panels/insurancePanel`)
+        navigate(`/our-panels/insurancePanel`);
       }
     } catch (error) {
       setLoading(false);
       notification.error({
-        message: 'Application Failed',
-        description: error.response?.data?.message || 'An error occurred while applying for the insurance.',
+        message: "Application Failed",
+        description:
+          error.response?.data?.message ||
+          "An error occurred while applying for the insurance.",
       });
     }
   };
-
 
   const initialValues = {
     first_name: "",
@@ -104,20 +101,23 @@ const InsuranceApply = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(values);
-      handleApplyInsurance(values)
+      handleApplyInsurance(values);
     },
   });
 
   // Destructure Formik's properties for easier use
-  const { handleChange, values, errors, touched, handleBlur, handleSubmit, setFieldValue, } =
-  formik;
-
-
-
+  const {
+    handleChange,
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+  } = formik;
 
   return (
     <div className="p-6">
-
       <div className="flex items-center gap-2">
         <Link
           to={`/our-panels/insurancePanel`}
@@ -130,13 +130,9 @@ const InsuranceApply = () => {
         </span>
       </div>
 
-      
-
       <div className="bg-white rounded-lg shadow-sm p-6 mt-4">
-        <form
-         onSubmit={handleSubmit} 
-        >
-          <div className="grid grid-cols-4 gap-4">
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* First Name */}
             <div className="flex flex-col gap-2">
               <label>First Name</label>
@@ -151,7 +147,9 @@ const InsuranceApply = () => {
               />
 
               {touched.first_name && errors.first_name ? (
-                <span className="text-red-500 text-sm">{errors.first_name}</span>
+                <span className="text-red-500 text-sm">
+                  {errors.first_name}
+                </span>
               ) : null}
             </div>
 
@@ -246,9 +244,7 @@ const InsuranceApply = () => {
                 value={values.pan_number}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                status={
-                  touched.pan_number && errors.pan_number ? "error" : ""
-                }
+                status={touched.pan_number && errors.pan_number ? "error" : ""}
               />
               {touched.pan_number && errors.pan_number ? (
                 <span className="text-red-500 text-sm">
@@ -260,19 +256,19 @@ const InsuranceApply = () => {
             {/* Aadhar Number */}
             <div className="flex flex-col gap-2">
               <label>Aadhar Number</label>
-              <Input 
-              size="large" 
-              placeholder="Enter Aadhar Number"
-              name="aadhar_number" 
-              value={values.aadhar_number}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              status={
-                touched.aadhar_number && errors.aadhar_number ? "error" : ""
-              }
+              <Input
+                size="large"
+                placeholder="Enter Aadhar Number"
+                name="aadhar_number"
+                value={values.aadhar_number}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                status={
+                  touched.aadhar_number && errors.aadhar_number ? "error" : ""
+                }
               />
 
-               {touched.aadhar_number && errors.aadhar_number ? (
+              {touched.aadhar_number && errors.aadhar_number ? (
                 <span className="text-red-500 text-sm">
                   {errors.aadhar_number}
                 </span>
@@ -280,44 +276,44 @@ const InsuranceApply = () => {
             </div>
 
             {/* Residence Address */}
-            <div className="flex flex-col gap-2 col-span-2">
+            <div className="flex flex-col gap-2 md:col-span-2">
               <label>Residence Address</label>
               <Input
-               size="large" 
-               placeholder="Enter Residence Address"
-               name="residence_address"
-               value={values.residence_address}
-               onChange={handleChange}
-               onBlur={handleBlur}
-               status={
-                touched.residence_address && errors.residence_address ? "error" : ""
-               }
-               />
-                {touched.residence_address && errors.residence_address ? (
+                size="large"
+                placeholder="Enter Residence Address"
+                name="residence_address"
+                value={values.residence_address}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                status={
+                  touched.residence_address && errors.residence_address
+                    ? "error"
+                    : ""
+                }
+              />
+              {touched.residence_address && errors.residence_address ? (
                 <span className="text-red-500 text-sm">
                   {errors.residence_address}
                 </span>
               ) : null}
-               
-
             </div>
 
             {/* Residence City */}
             <div className="flex flex-col gap-2">
               <label>Residence City</label>
-              <Input 
-              size="large" 
-              placeholder="Enter Residence City"
-              name="residence_city"
-              value={values.residence_city}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              status={
-               touched.residence_city && errors.residence_city ? "error" : ""
-              }
+              <Input
+                size="large"
+                placeholder="Enter Residence City"
+                name="residence_city"
+                value={values.residence_city}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                status={
+                  touched.residence_city && errors.residence_city ? "error" : ""
+                }
               />
 
-               {touched.residence_city && errors.residence_city ? (
+              {touched.residence_city && errors.residence_city ? (
                 <span className="text-red-500 text-sm">
                   {errors.residence_city}
                 </span>
@@ -327,16 +323,18 @@ const InsuranceApply = () => {
             {/* Residence Pincode */}
             <div className="flex flex-col gap-2">
               <label>Residence Pincode</label>
-              <Input 
-              size="large" 
-              placeholder="Enter Residence Pincode"
-              name="residence_pincode"
-              value={values.residence_pincode}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              status={
-               touched.residence_pincode && errors.residence_pincode ? "error" : ""
-              }
+              <Input
+                size="large"
+                placeholder="Enter Residence Pincode"
+                name="residence_pincode"
+                value={values.residence_pincode}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                status={
+                  touched.residence_pincode && errors.residence_pincode
+                    ? "error"
+                    : ""
+                }
               />
 
               {touched.residence_pincode && errors.residence_pincode ? (
@@ -349,40 +347,40 @@ const InsuranceApply = () => {
             {/* Residence State */}
             <div className="flex flex-col gap-2">
               <label>Residence State</label>
-              <Input 
-              size="large" 
-              placeholder="Enter Residence State" 
-              name="residence_state"
-              value={values.residence_state}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              status={
-               touched.residence_state && errors.residence_state ? "error" : ""
-              }
-              />   
+              <Input
+                size="large"
+                placeholder="Enter Residence State"
+                name="residence_state"
+                value={values.residence_state}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                status={
+                  touched.residence_state && errors.residence_state
+                    ? "error"
+                    : ""
+                }
+              />
 
-               {touched.residence_state && errors.residence_state ? (
+              {touched.residence_state && errors.residence_state ? (
                 <span className="text-red-500 text-sm">
                   {errors.residence_state}
                 </span>
               ) : null}
-
-
             </div>
 
             {/* Insurance Type */}
-            <div className="flex flex-col gap-2 col-span-2">
+            <div className="flex flex-col gap-2 md:col-span-2">
               <label>Insurance Type</label>
-              <Select 
-              size="large" 
-              placeholder="Select Insurance Type"
-              name="insurance_type"
-              value={values.insurance_type}
-              onChange={(value)=>setFieldValue("insurance_type", value)}
-              onBlur={handleBlur}
-              status={
-               touched.insurance_type && errors.insurance_type? "error" : ""
-              }
+              <Select
+                size="large"
+                placeholder="Select Insurance Type"
+                name="insurance_type"
+                value={values.insurance_type}
+                onChange={(value) => setFieldValue("insurance_type", value)}
+                onBlur={handleBlur}
+                status={
+                  touched.insurance_type && errors.insurance_type ? "error" : ""
+                }
               >
                 <Option value="Bike">Bike Insurance</Option>
                 <Option value="Car">Car Insurance</Option>
@@ -399,16 +397,18 @@ const InsuranceApply = () => {
             {/* Vehicle Number */}
             <div className="flex flex-col gap-2">
               <label>Bike/Car Number</label>
-              <Input 
-              size="large" 
-              placeholder="Enter Bike/Car Number"
-              name="bike_or_car_number"
-              value={values.bike_or_car_number}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              status={
-               touched.bike_or_car_number && errors.bike_or_car_number? "error" : ""
-              }
+              <Input
+                size="large"
+                placeholder="Enter Bike/Car Number"
+                name="bike_or_car_number"
+                value={values.bike_or_car_number}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                status={
+                  touched.bike_or_car_number && errors.bike_or_car_number
+                    ? "error"
+                    : ""
+                }
               />
               {touched.bike_or_car_number && errors.bike_or_car_number ? (
                 <span className="text-red-500 text-sm">
@@ -418,29 +418,23 @@ const InsuranceApply = () => {
             </div>
           </div>
 
-          <div className="flex justify-end gap-4 mt-6">
+          <div className="flex justify-end gap-4 mt-6 flex-wrap">
             <Button
-             htmlType="submit"
-             loading={loading}
-          
-              className="bg-green-700 text-white px-6 py-2 rounded h-10 w-[10%]"
+              htmlType="submit"
+              loading={loading}
+              className="bg-green-700 text-white px-6 py-2 rounded h-10 w-full sm:w-[10%]"
             >
               Save
             </Button>
             <Button
               type="button"
-              className="bg-zinc-400 text-white px-6 py-2 rounded w-[10%] h-10"
+              className="bg-zinc-400 text-white px-6 py-2 rounded w-full sm:w-[10%] h-10"
             >
               Cancel
             </Button>
           </div>
-
-          
         </form>
       </div>
-
-
-
     </div>
   );
 };

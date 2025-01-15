@@ -209,127 +209,83 @@ const GovermentLoanDocUpload = () => {
 
   return (
     <div className="p-6">
-      <div className="flex items-center gap-2 py-3">
-        <Link
-          to={"/our-panels/govermentLoan"}
-          className="text-zinc-800 font-semibold text-xl"
-        >
-          <FaArrowLeft />
-        </Link>
-        <h2 className="text-zinc-800 font-semibold text-xl">Upload Documents</h2>
-      </div>
-      <Card className="mb-6 shadow-sm">
-        <Title level={4} className="mb-4 text-blue-600">
-          Applicant Details - Part 1
-        </Title>
-        <Table
-          dataSource={applicantDetails1}
-          columns={columns}
-          pagination={false}
-          bordered
-          className="mb-6"
-        />
-      </Card>
-
-      <Card className="mb-6 shadow-sm">
-        <Title level={4} className="mb-4 text-blue-600">
-          Applicant Details - Part 2
-        </Title>
-        <Table
-          dataSource={applicantDetails2}
-          columns={columns}
-          pagination={false}
-          bordered
-          className="mb-6"
-        />
-      </Card>
-
-      <Card className="shadow-sm">
-        <Title level={4} className="mb-4 text-blue-600">
-          Loan Details
-        </Title>
-        <Table
-          dataSource={loanDetails}
-          columns={columns}
-          pagination={false}
-          bordered
-        />
-      </Card>
-
-      <Divider className="my-6" />
-
-      <div className='flex justify-center items-center py-4'>
-            <h1 className='text-zinc-700 text-xl font-semibold'>Upload Documents For Goverment Loan</h1>
-        </div>
-
-      {/* upload documents details */}
-      <div className="w-full grid grid-cols-3 mt-4 gap-4">
-        {requiredDocuments.map(
-          ({ title, imageKey, isPdf, passwordKey }, index) => (
-            <div key={index} className="p-2">
-              <h2 className="text-zinc-700 font-semibold">{title}</h2>
-              <div className="w-full flex justify-center items-center overflow-hidden rounded-lg border-dashed border-2 bg-zinc-100 h-52 my-2 relative">
-                {images[imageKey] ? (
-                  <div className="relative h-full w-full flex justify-center items-center">
-                    {isPdf ? (
-                      <>
-                        <FaFilePdf className="text-red-600 text-5xl" />
-                        <span className="text-sm text-zinc-700 mt-2">
-                          {images[imageKey].name}
-                        </span>
-                      </>
-                    ) : (
-                      <img
-                        src={images[imageKey]?.preview}
-                        alt={`${title} Preview`}
-                        className="h-full w-full object-cover"
-                      />
-                    )}
-                    <Button
-                      shape="circle"
-                      icon={<CloseCircleOutlined />}
-                      className="absolute top-2 right-2 bg-white text-zinc-700 hover:bg-red-500 hover:text-white"
-                      onClick={() => handleRemove(imageKey)}
-                    />
-                  </div>
-                ) : (
-                  <Upload
-                    showUploadList={false}
-                    accept={isPdf ? ".pdf" : "image/*"}
-                    beforeUpload={(file) => handleUpload(file, imageKey, isPdf)}
-                  >
-                    <div className="flex flex-col items-center gap-2">
-                      <FaCloudUploadAlt className="text-3xl text-zinc-500" />
-                      <span className="text-sm text-zinc-700">
-                        Drag and Drop file here
-                      </span>
-                      <span className="text-sm text-zinc-700">Or</span>
-                      <button className="w-full h-7 border border-zinc-400 text-zinc-700 rounded-md">
-                        Browse Files
-                      </button>
-                    </div>
-                  </Upload>
-                )}
-              </div>
-              <div className="flex items-center gap-2 w-full">
-                <Input.Password
-                  id={passwordKey}
-                  className="w-[80%]"
-                  size="large"
-                  placeholder="Enter Password"
-                />
-                <Button
-                  onClick={() => handleSave(title, imageKey, passwordKey)}
-                  className="w-[20%] h-10 bg-green-700 text-white rounded-lg"
-                >
-                  Save
-                </Button>
-              </div>
-            </div>
-          )
-        )}
-      </div>
+    <div className="flex items-center gap-2 py-3">
+      <Link to={"/our-panels/govermentLoan"} className="text-zinc-800 font-semibold text-xl">
+        <FaArrowLeft />
+      </Link>
+      <h2 className="text-zinc-800 font-semibold text-xl sm:text-lg">Upload Documents</h2>
     </div>
+  
+    <Card className="mb-6 shadow-sm">
+      <Title level={4} className="mb-4 text-blue-600">Applicant Details - Part 1</Title>
+      <Table dataSource={applicantDetails1} columns={columns} pagination={false} bordered className="mb-6" />
+    </Card>
+  
+    <Card className="mb-6 shadow-sm">
+      <Title level={4} className="mb-4 text-blue-600">Applicant Details - Part 2</Title>
+      <Table dataSource={applicantDetails2} columns={columns} pagination={false} bordered className="mb-6" />
+    </Card>
+  
+    <Card className="shadow-sm">
+      <Title level={4} className="mb-4 text-blue-600">Loan Details</Title>
+      <Table dataSource={loanDetails} columns={columns} pagination={false} bordered />
+    </Card>
+  
+    <Divider className="my-6" />
+  
+    <div className="flex justify-center items-center py-4">
+      <h1 className="text-zinc-700 text-xl font-semibold sm:text-lg">Upload Documents For Government Loan</h1>
+    </div>
+  
+    {/* upload documents details */}
+    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4 gap-4">
+      {requiredDocuments.map(({ title, imageKey, isPdf, passwordKey }, index) => (
+        <div key={index} className="p-2">
+          <h2 className="text-zinc-700 font-semibold">{title}</h2>
+          <div className="w-full flex justify-center items-center overflow-hidden rounded-lg border-dashed border-2 bg-zinc-100 h-52 my-2 relative">
+            {images[imageKey] ? (
+              <div className="relative h-full w-full flex justify-center items-center">
+                {isPdf ? (
+                  <>
+                    <FaFilePdf className="text-red-600 text-5xl" />
+                    <span className="text-sm text-zinc-700 mt-2">{images[imageKey].name}</span>
+                  </>
+                ) : (
+                  <img src={images[imageKey]?.preview} alt={`${title} Preview`} className="h-full w-full object-cover" />
+                )}
+                <Button
+                  shape="circle"
+                  icon={<CloseCircleOutlined />}
+                  className="absolute top-2 right-2 bg-white text-zinc-700 hover:bg-red-500 hover:text-white"
+                  onClick={() => handleRemove(imageKey)}
+                />
+              </div>
+            ) : (
+              <Upload
+                showUploadList={false}
+                accept={isPdf ? ".pdf" : "image/*"}
+                beforeUpload={(file) => handleUpload(file, imageKey, isPdf)}
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <FaCloudUploadAlt className="text-3xl text-zinc-500" />
+                  <span className="text-sm text-zinc-700">Drag and Drop file here</span>
+                  <span className="text-sm text-zinc-700">Or</span>
+                  <button className="w-full h-7 border border-zinc-400 text-zinc-700 rounded-md">Browse Files</button>
+                </div>
+              </Upload>
+            )}
+          </div>
+          <div className="flex items-center gap-2 w-full">
+            <Input.Password id={passwordKey} className="w-[80%]" size="large" placeholder="Enter Password" />
+            <Button onClick={() => handleSave(title, imageKey, passwordKey)} className="w-[20%] h-10 bg-green-700 text-white rounded-lg">
+              Save
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+  
   );
 };
 

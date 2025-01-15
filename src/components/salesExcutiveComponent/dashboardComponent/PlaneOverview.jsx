@@ -125,29 +125,34 @@ const PlaneOverview = () => {
   };
   return (
     <div className="px-2">
-      <div className="py-2 flex justify-between ">
-        <h2 className="text-zinc-700 font-semibold text-xl">Plan Overview</h2>
+     <div className="py-2 flex flex-col md:flex-row justify-between items-start md:items-center">
+  <h2 className="text-zinc-700 font-semibold text-xl mb-4 md:mb-0">
+    Plan Overview
+  </h2>
 
-        {/*Search Bar */}
-        <Input
-          placeholder="Search packages..."
-          value={searchText}
-          onChange={(e) => handleSearch(e.target.value)}
-          prefix={<IoSearchOutline />}
-          style={{
-            marginBottom: 16,
-            width: 300,
-            borderRadius: "8px",
-            padding: "10px 15px",
-          }}
-          allowClear
-        />
-      </div>
+  {/* Search Bar */}
+  <Input
+    placeholder="Search packages..."
+    value={searchText}
+    onChange={(e) => handleSearch(e.target.value)}
+    prefix={<IoSearchOutline />}
+    style={{
+      width: "100%",
+      maxWidth: "300px",
+      borderRadius: "8px",
+      padding: "10px 15px",
+    }}
+    className="w-full md:w-auto"
+    allowClear
+  />
+</div>
+
       <Table
         bordered
         columns={columns}
         dataSource={searchText ? filteredData : dataSource}
         pagination={false}
+        scroll={{ x: "max-content" }}
       />
     </div>
   );

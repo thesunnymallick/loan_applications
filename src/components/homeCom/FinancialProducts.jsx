@@ -45,7 +45,7 @@ const FinancialProducts = () => {
 
   return (
     <div className="bg-white min-h-screen flex flex-col items-center py-10 px-4">
-      <h1 className="text-3xl font-bold text-green-600 mb-6 flex flex-col items-center gap-2">
+      <h1 className=" text-2xl md:text-3xl font-bold text-green-600 mb-6 flex flex-col items-center gap-2">
         <span>Our Financial Products for</span>   <span className="text-black">Loan DSA Partners</span>
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl">

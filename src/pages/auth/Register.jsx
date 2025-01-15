@@ -87,142 +87,140 @@ const Register = () => {
 
   return (
     <div className="bg-zinc-100 p-6 flex justify-end items-center h-full relative">
-      {/* Background image section */}
-      <div className="w-[70%]">
-        <img className="w-full object-cover rounded-md" src={loginBg} alt="" />
-      </div>
-
-      {/* Register form section */}
-      <form
-        onSubmit={handleSubmit}
-        className="absolute top-[20%] left-[8%] w-[30%] flex items-center "
-      >
-        <div className="bg-white w-full p-6 rounded-lg shadow-sm">
-          <div className="flex justify-center pb-6">
-            <h1 className="text-2xl text-zinc-700">
-              Apply now
-              <span className="text-zinc-800 font-semibold ml-2">
-                Company Name
-              </span>
-            </h1>
+    {/* Background image section */}
+    <div className="w-[70%] hidden md:block">
+      <img className="w-full object-cover rounded-md" src={loginBg} alt="" />
+    </div>
+  
+    {/* Register form section */}
+    <form
+      onSubmit={handleSubmit}
+      className="absolute top-[20%] left-[0%] w-full md:w-[30%] flex items-center justify-center p-6 md:p-0"
+    >
+      <div className="bg-white w-full p-6 rounded-lg shadow-sm">
+        <div className="flex justify-center pb-6">
+          <h1 className="text-2xl text-zinc-700">
+            Apply now
+            <span className="text-zinc-800 font-semibold ml-2">Company Name</span>
+          </h1>
+        </div>
+  
+        {/* Form fields */}
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <label htmlFor="service">Service</label>
+            <Select
+              size="large"
+              placeholder="Select Service"
+              name="service"
+              onChange={(value) => setFieldValue("service", value)}
+              onBlur={handleBlur}
+              status={touched.service && errors.service ? "error" : ""}
+            >
+              <Select.Option value="DSA">DSA</Select.Option>
+              <Select.Option value="IT">IT</Select.Option>
+            </Select>
+            {touched.service && errors.service ? (
+              <span className="text-red-500 text-sm">{errors.service}</span>
+            ) : null}
           </div>
-
-          {/* Form fields */}
-          <div className="flex flex-col gap-3 ">
-            <div className="flex flex-col gap-1">
-              <label htmlFor="service">Service</label>
-              <Select
-                size="large"
-                placeholder="Selcet Service"
-                name="service"
-                onChange={(value) => setFieldValue("service", value)}
-                onBlur={handleBlur}
-                status={touched.service && errors.service ? "error" : ""}
-              >
-                <Select.Option value="DSA">DSA</Select.Option>
-                <Select.Option value="IT">IT</Select.Option>
-              </Select>
-              {touched.service && errors.service ? (
-                <span className="text-red-500 text-sm">{errors.service}</span>
-              ) : null}
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label htmlFor="name">Name</label>
-              <Input
-                size="large"
-                className="w-full"
-                name="name"
-                value={values.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                status={touched.name && errors.name ? "error" : ""}
-                placeholder="Enter your name"
-              />
-              {touched.name && errors.name ? (
-                <span className="text-red-500 text-sm">{errors.name}</span>
-              ) : null}
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label htmlFor="email">Email</label>
-              <Input
-                size="large"
-                className="w-full"
-                name="email"
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                status={touched.email && errors.email ? "error" : ""}
-                placeholder="Enter your email"
-              />
-              {touched.email && errors.email ? (
-                <span className="text-red-500 text-sm">{errors.email}</span>
-              ) : null}
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label htmlFor="phone">Phone No</label>
-              <Input
-                size="large"
-                className="w-full"
-                name="phone"
-                value={values.phone}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                status={touched.phone && errors.phone ? "error" : ""}
-                placeholder="Enter your phone no"
-              />
-              {touched.phone && errors.phone ? (
-                <span className="text-red-500 text-sm">{errors.phone}</span>
-              ) : null}
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label htmlFor="message">Message</label>
-              <TextArea
-                rows={4}
-                placeholder="Enter Message"
-                name="message"
-                value={values.message}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                status={touched.message && errors.message ? "error" : ""}
-              />
-              {touched.message && errors.message ? (
-                <span className="text-red-500 text-sm">{errors.message}</span>
-              ) : null}
-            </div>
-
-            <div className="mt-0">
-              <Checkbox>I agree to the terms and conditions</Checkbox>
-            </div>
-
-            {/* Login button */}
-            <div className="mt-3">
-              <Button
+  
+          <div className="flex flex-col gap-1">
+            <label htmlFor="name">Name</label>
+            <Input
+              size="large"
+              className="w-full"
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              status={touched.name && errors.name ? "error" : ""}
+              placeholder="Enter your name"
+            />
+            {touched.name && errors.name ? (
+              <span className="text-red-500 text-sm">{errors.name}</span>
+            ) : null}
+          </div>
+  
+          <div className="flex flex-col gap-1">
+            <label htmlFor="email">Email</label>
+            <Input
+              size="large"
+              className="w-full"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              status={touched.email && errors.email ? "error" : ""}
+              placeholder="Enter your email"
+            />
+            {touched.email && errors.email ? (
+              <span className="text-red-500 text-sm">{errors.email}</span>
+            ) : null}
+          </div>
+  
+          <div className="flex flex-col gap-1">
+            <label htmlFor="phone">Phone No</label>
+            <Input
+              size="large"
+              className="w-full"
+              name="phone"
+              value={values.phone}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              status={touched.phone && errors.phone ? "error" : ""}
+              placeholder="Enter your phone no"
+            />
+            {touched.phone && errors.phone ? (
+              <span className="text-red-500 text-sm">{errors.phone}</span>
+            ) : null}
+          </div>
+  
+          <div className="flex flex-col gap-1">
+            <label htmlFor="message">Message</label>
+            <TextArea
+              rows={4}
+              placeholder="Enter Message"
+              name="message"
+              value={values.message}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              status={touched.message && errors.message ? "error" : ""}
+            />
+            {touched.message && errors.message ? (
+              <span className="text-red-500 text-sm">{errors.message}</span>
+            ) : null}
+          </div>
+  
+          <div className="mt-0">
+            <Checkbox>I agree to the terms and conditions</Checkbox>
+          </div>
+  
+          {/* Submit button */}
+          <div className="mt-3">
+            <Button
               loading={loading}
-                htmlType="submit"
-                className="bg-green-600
-                text-white rounded-lg shadow-sm text-lg border-none w-full h-12"
-              >
-                Submit
-              </Button>
-            </div>
-
-            {/* Login link */}
-            <div className="mt-3 flex justify-center pb-3">
-              <span className="text-sm text-zinc-500">
-                all ready have register?
-                <Link to="/partner/login" className="text-green-600 ml-1">
-                  Login
-                </Link>
-              </span>
-            </div>
+              htmlType="submit"
+              className="bg-green-600 text-white rounded-lg shadow-sm text-lg border-none w-full h-12"
+            >
+              Submit
+            </Button>
+          </div>
+  
+          {/* Login link */}
+          <div className="mt-3 flex justify-center pb-3">
+            <span className="text-sm text-zinc-500">
+              Already have an account?
+              <Link to="/partner/login" className="text-green-600 ml-1">
+                Login
+              </Link>
+            </span>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
+  </div>
+  
   );
 };
 

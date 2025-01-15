@@ -44,6 +44,8 @@ import EligiblePanel from './pages/partner/EligiblePanel';
 import InsuranceDocUpload from './pages/partner/InsuranceDocUpload';
 import About from './pages/home/About';
 import ContactUs from './pages/home/ContactUs';
+import Policy from './pages/partner/Policy';
+import InstantLoginCreditCard from './pages/partner/InstantLoginCreditCard';
 
 
  const routes = [
@@ -453,18 +455,35 @@ import ContactUs from './pages/home/ContactUs';
 
 
   {
-    path:"/instant-login-panel",
+    path:"/our-panels/instant-login-panel",
     element: InstantLoginPanel,
     layout: RootLayout,
     protected: true,
     allowedRoles: ['partner'],
     name:"Partner Dashboard",
   },
-  
+  {
+    path:"/our-panels/instant-login-credit-card",
+    element: InstantLoginCreditCard,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+ 
 
   {
-    path:"/i2i-eligible-panel",
+    path:"/our-panels/i2i-eligible-panel",
     element: EligiblePanel,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+
+  {
+    path:"/policy",
+    element: Policy,
     layout: RootLayout,
     protected: true,
     allowedRoles: ['partner'],

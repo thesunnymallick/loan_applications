@@ -1,76 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PanelCard from "../../components/partnerComponet/PanelCard";
-import loanPanelBg from "../../assets/loanPanel.jpg";
-import taxPanelBg from "../../assets/taxPanel.jpg";
-import creditcardPanelBg from "../../assets/creditcardPanel.jpg";
-import insurancePanelBg from "../../assets/insurancePanel.jpg";
-import governmentPanelBg from "../../assets/governmentPanel.jpg";
-import microPanelBg from "../../assets/microPanel.jpg";
+import { getAllPanel, partnerPanelAccess } from "../../api/partner/panelApi";
+
 const OurPanels = () => {
-  // data.js
-  const panels = [
-    {
-      title: "Loan Panel",
-      description: "Explore various loan services tailored to meet your needs.",
-      image: loanPanelBg,
-      services: [
-        "Home Loan",
-        "Business Loan",
-        "Car Loan",
-        "Personal Loan",
-        "Old Car Loan",
-      ],
-      link:"/our-panels/loan-panels"
-    },
-    {
-      title: "Taxation Panel",
-      description: "Our taxation services help you manage taxes efficiently.",
-      image: taxPanelBg,
-      services: ["Tax Filing", "GST Registration", "Income Tax"],
-      link:"/our-panels/taxation-panel",
-    },
-    {
-      title: "Credit Card Panel",
-      description: "Find the perfect credit card with exclusive benefits.",
-      image: creditcardPanelBg,
-      services: ["Rewards Card", "Travel Card", "Cashback Card"],
-      link:"/our-panels/creditCard-panel",
-    },
-    {
-      title: "Micro Panel",
-      description:
-        "Access micro-loans and funding solutions for small businesses.",
-      image: microPanelBg,
-      services: ["Micro Loans", "SME Loans"],
-      link:"",
-    },
-    {
-      title: "Government Panel",
-      description: "Get information on government-backed schemes and support.",
-      image: governmentPanelBg,
-      services: ["Government Schemes", "Subsidized Loans"],
-      link:"/our-panels/govermentLoan",
-    },
-    {
-      title: "Insurance Panel",
-      description: "Secure your future with our range of insurance options.",
-      image: insurancePanelBg,
-      services: ["Life Insurance", "Health Insurance", "Vehicle Insurance"],
-      link:"/our-panels/insurancePanel",
-    },
-  ];
+  const [panelAccess, setPanelAccess] = useState([]);
+  const [allPanel, setAllPanel] = useState([]);
+
+  const fetchPanleAccessPartner = async () => {
+    try {
+      const { data, status } = await partnerPanelAccess();
+      if (status === 200) {
+        setPanelAccess(data?.data?.subscription_details?.panel_access || []);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchAllPanel = async () => {
+    try {
+      const { data, status } = await getAllPanel();
+      if (status === 200) {
+        setAllPanel(data?.data || []);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPanleAccessPartner();
+    // fetchAllPanel();
+  }, []);
+
+  useEffect(()=>{
+     fetchAllPanel();
+  },[])
 
   return (
-    <div className=" p-6">
+    <div className="p-6">
       <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {panels.map((panel, index) => (
+        {allPanel.map((panel, index) => (
           <PanelCard
             key={index}
             title={panel.title}
             description={panel.description}
             image={panel.image}
             services={panel.services}
-            link={panel.link}
+            link={panel.url}
+            isAccessible={panelAccess.includes(panel.uuid)}
+            isAnchar={panel.title==="Micro Panel" || "I2I Elegible Panel"? true :false }
           />
         ))}
       </div>

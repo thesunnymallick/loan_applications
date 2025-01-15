@@ -8,6 +8,8 @@ const loadAuthInfo = () => {
       token: null,
       status:"",
       role: null,
+      subscription_name:"",
+      wallet_balance:"00.00",
       userData: {
         name:"",
         email:"",
@@ -21,6 +23,8 @@ const loadAuthInfo = () => {
       token: null,
       status:"",
       role: null,
+      subscription_name:"",
+      wallet_balance:"00.00",
       userData: {
         name:"",
         email:"",
@@ -46,7 +50,9 @@ const authSlice = createSlice({
       state.role = user.role
       state.userData.name = user.name;
       state.userData.email = user.email;
-      state.userData.userPhoto = null
+      state.userData.userPhoto = user.userPhoto || null
+      state.subscription_name=user.subscription?.subscription_name || null
+      state.wallet_balance=user.wallet_balance || "00.00"
 
 
       // Save entire auth info to local storage
@@ -59,6 +65,8 @@ const authSlice = createSlice({
       state.userData.name=null;
       state.userData.email=null;
       state.userData.userPhoto=null;
+      state.subscription_name= null;
+      state.wallet_balance="00.00";
 
       // Remove auth info from local storage
       localStorage.removeItem('authInfo');

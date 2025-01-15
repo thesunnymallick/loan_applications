@@ -35,18 +35,18 @@ const RegisterProcess = () => {
           <span className="text-green-600 font-semibold">How It Works</span>
         </div>
 
-        <div className="flex justify-center items-center gap-10 py-10">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-10 py-10">
           {/* Display the current step image */}
-          <div className="w-64 h-56 ">
+          <div className="w-full md:w-64 h-56 mb-6 md:mb-0">
             <img
               src={images[currentStep]}
               alt={`Step ${currentStep + 1}`}
-              className="w-full h-full object-contain "
+              className="w-full h-full object-contain"
             />
           </div>
 
           {/* Steps Component */}
-          <div className=" h-64 flex justify-center items-center">
+          <div className="w-full md:w-auto h-auto flex justify-center items-center">
             <Steps
               direction="vertical"
               current={currentStep}

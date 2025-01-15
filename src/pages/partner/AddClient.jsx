@@ -151,17 +151,17 @@ const handleAddClient = async (values) => {
   return (
     <div className="p-6">
       <div className="flex items-center gap-2">
-        <Link
-          to={"/our-panels/taxation-panel"}
-          className="text-zinc-700 font-semibold text-2xl"
-        >
-          <IoMdArrowRoundBack />
-        </Link>
-        <h1 className="text-zinc-700 font-semibold text-xl">Add Client</h1>
-      </div>
+    <Link
+      to={"/our-panels/taxation-panel"}
+      className="text-zinc-700 font-semibold text-xl md:text-2xl"
+    >
+      <IoMdArrowRoundBack />
+    </Link>
+    <h1 className="text-zinc-700 font-semibold text-lg md:text-xl">Add Client</h1>
+  </div>
 
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm p-4 mt-5">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {/* First Name */}
           <InputField
             id="first_name"
@@ -333,17 +333,21 @@ const handleAddClient = async (values) => {
           />
         </div>
 
-        <div className="flex justify-end gap-3 mt-5">
-          <Button 
-          loading={loading}
-          htmlType="submit" 
-          className="px-6 py-2 bg-green-700 text-white rounded-md h-10">
-            Save
-          </Button>
-          <button type="button" className="px-6 bg-zinc-200 text-black py-2 rounded-md">
-            Cancel
-          </button>
-        </div>
+        <div className="flex flex-col sm:flex-row justify-end gap-3 mt-5">
+      <Button
+        loading={loading}
+        htmlType="submit"
+        className="px-6 py-2 bg-green-700 text-white rounded-md h-10"
+      >
+        Save
+      </Button>
+      <button
+        type="button"
+        className="px-6 bg-zinc-200 text-black py-2 rounded-md"
+      >
+        Cancel
+      </button>
+    </div>
       </form>
     </div>
   );

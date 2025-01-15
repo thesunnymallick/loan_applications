@@ -11,7 +11,7 @@ const RootLayout = ({ children, showSidebar = true, showNavbar = true }) => {
           <Sidebar />
           <div className='flex-1 overflow-x-hidden bg-zinc-50'>
             <Navbar />
-            <div className='mt-[6%]'>
+            <div className='mt-[20%] lg:mt-[6%]'>
             {children}
             </div>
           </div>

@@ -1,29 +1,42 @@
 import React from "react";
-import ourCompanyImg from "../../assets/ourCompany.jpg"
+import ourCompanyImg from "../../assets/ourCompany.jpg";
+
 const OurCompany = () => {
   return (
     <div className="p-4">
-      <div className="container mx-auto flex items-center gap-4">
-        <div className=" flex-1 flex flex-col gap-4">
-          <h1 className="text-3xl text-green-700 font-semibold">Our Company</h1>
-          <p className="text-zinc-400">
-            <span className="text-zinc-500 font-semibold">INCOMEKARO SOFTWARE PRIVATE LIMITED</span> uses a custom built ERP-CRM
-            suite for running the business smoothly. We rely on the power of
-            modern age tools to properly manage the business complexities, sales
-            pipelines, and all everything about record keeping. Along with, we
-            also bring into the picture our own Block Chain setup for
-            maintaining absolute Data Distribution, in our enterprise; for
-            establishing a better client monitoring infrastructure. Together,
-            the power to achieve pure data management is infinite. We Try To
-            Give Wings To The Innovative Minds Of India By Implementing The
-            Novel Ideas Of People Which Majorly Aims In Serving Nation In Better
-            Manner.
+      <div className="container mx-auto flex flex-col lg:flex-row items-center gap-4">
+        {/* Text Section */}
+        <div className="lg:w-1/2 flex flex-col gap-4">
+          <h1 className="text-2xl lg:text-3xl text-green-700 font-semibold text-center lg:text-left">
+            Our Company
+          </h1>
+          <p className="text-sm lg:text-base text-gray-500">
+            <span className="font-semibold text-gray-700">
+              INCOMEKARO SOFTWARE PRIVATE LIMITED
+            </span>{" "}
+            uses a custom-built ERP-CRM suite for running the business smoothly.
+            We rely on the power of modern-age tools to properly manage the
+            business complexities, sales pipelines, and everything about record
+            keeping. Along with that, we also bring into the picture our own
+            Blockchain setup for maintaining absolute data distribution in our
+            enterprise, establishing a better client monitoring infrastructure.
+            Together, the power to achieve pure data management is infinite. We
+            try to give wings to the innovative minds of India by implementing
+            the novel ideas of people which majorly aim in serving the nation
+            in a better manner.
           </p>
-          <button className="w-[20%] h-10 bg-green-700 text-white rounded-lg">Know more</button>
+          <button className="w-full lg:w-[20%] h-10 bg-green-700 text-white rounded-lg mx-auto lg:mx-0">
+            Know more
+          </button>
         </div>
 
-        <div className="flex-1" >
-           <img className="w-full object-cover" src={ourCompanyImg} alt="ourCompany" />
+        {/* Image Section */}
+        <div className="lg:w-1/2">
+          <img
+            className="w-full h-auto object-cover"
+            src={ourCompanyImg}
+            alt="Our Company"
+          />
         </div>
       </div>
     </div>

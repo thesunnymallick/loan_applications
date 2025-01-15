@@ -44,7 +44,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="px-8 py-4">
+    <div className=" p-4 md:px-6 py-4">
       <h1 className="text-zinc-800 trext-2xl font-semibold">Dashbaord</h1>
       {/* show card itmes */}
       <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

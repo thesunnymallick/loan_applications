@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Input, AutoComplete } from "antd";
-import { getAllInstantLoginBank } from "../../api/partner/panelApi";
+import { getAllInstantLoginCreditBank } from "../../api/partner/panelApi";
 
-const InstantLoginPanel = () => {
+const InstantLoginCreditCard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [allPanel, setAllPanel] = useState([]);
 
   useEffect(() => {
     const getInstantPanel = async () => {
       try {
-        const { data, status } = await getAllInstantLoginBank();
+        const { data, status } = await getAllInstantLoginCreditBank();
         if (status === 200) {
           setAllPanel(data?.data);
         }
@@ -34,22 +34,22 @@ const InstantLoginPanel = () => {
   return (
     <div className="p-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2 sm:mb-6">
-          Instant Login Panel
+        <h2 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-6">
+          Instant Login Credit Card Panel
         </h2>
 
         {/* Ant Design AutoComplete Component for Search */}
         <AutoComplete
           onSearch={handleSearch}
           value={searchTerm}
-          className="w-full sm:w-[50%] md:w-[30%] lg:w-[20%]"
+          className="w-full sm:w-[50%] md:w-[30%] lg:w-[20%] mb-6"
           placeholder="Search for a bank..."
         >
-          <Input.Search size="large" enterButton />
+          <Input.Search size="large" enterButton style={{ width: "100%" }} />
         </AutoComplete>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {filteredPanel.length > 0 ? (
           filteredPanel.map((panel, index) => (
             <div
@@ -94,4 +94,4 @@ const InstantLoginPanel = () => {
   );
 };
 
-export default InstantLoginPanel;
+export default InstantLoginCreditCard;

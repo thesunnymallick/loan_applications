@@ -8,3 +8,4 @@ export const partnerSendOTP=(payload)=>apiService.post(`/api/v1/partner/sent_otp
 export const partnerOTPVerify=(payload)=>apiService.post(`/api/v1/partner/verify-otp`, payload);
 
 export const getAllMembers=()=>apiService.get(`/api/v1/partner`);
+export const getAllSubscription=()=>apiService.get(`/api/v1/subscriptions`);

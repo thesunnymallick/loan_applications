@@ -13,6 +13,7 @@ import MobileAppAdd from "../../components/homeCom/MobileAppAdd";
 import Services from "../../components/homeCom/Services";
 import OurCompany from "../../components/homeCom/OurCompany";
 import ContactInfo from "../../components/homeCom/ContactInfo";
+
 const Home = () => {
   return (
     <>
@@ -21,24 +22,21 @@ const Home = () => {
       <div className="container mx-auto py-10">
         <AllBanks />
       </div>
-      <div className="container mx-auto py-10">
-      <RegisterProcess/>
-      <SubscriptionPlans />
-      <BusinessOverview/>
-      <FinancialProducts/>
-      <BusinessOverview2/>
-      </div>
-      
-      <MobileAppAdd/>
-      <div className="container mx-auto ">
-      <Services/>
-      <OurCompany/>
-      <ContactInfo/>
-
+      <div className="container mx-auto py-10 space-y-10">
+        <RegisterProcess />
+        <SubscriptionPlans />
+        <BusinessOverview />
+        <FinancialProducts />
+        <BusinessOverview2 />
       </div>
 
-   
-  
+      <MobileAppAdd />
+      <div className="container mx-auto px-4">
+        <Services />
+        <OurCompany />
+        <ContactInfo />
+      </div>
+
       <Footer />
     </>
   );

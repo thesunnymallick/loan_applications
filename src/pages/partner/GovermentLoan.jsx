@@ -233,7 +233,7 @@ const GovermentLoan = () => {
        columns={columns} 
        dataSource={loanInfo} 
        bordered  
-   
+       scroll={{ x: "max-content" }}
        />
       </div>
     </div>

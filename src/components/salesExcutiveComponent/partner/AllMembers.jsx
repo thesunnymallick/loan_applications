@@ -189,39 +189,37 @@ const AllMembers = () => {
 
   return (
     <div>
-      <div className="flex justify-between">
-        <h2 className="text-zinc-700 font-semibold text-xl">Member Overview</h2>
+     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center">
+  <h2 className="text-zinc-700 font-semibold text-xl mb-2 lg:mb-0">Member Overview</h2>
 
-        <div>
-          {/* Search Bar */}
-          <Input
-            placeholder="Search Member..."
-            // value={searchText}
-            // onChange={(e) => handleSearch(e.target.value)}
-            prefix={<IoSearchOutline />} // Add search icon
-            style={{
-              // marginBottom: ,
-              width: 300,
-              borderRadius: "8px",
-              padding: "10px 15px",
-            }}
-            allowClear
-          />
-        </div>
-      </div>
+  <div className="w-full lg:w-auto">
+    {/* Search Bar */}
+    <Input
+      placeholder="Search Member..."
+      prefix={<IoSearchOutline />} // Add search icon
+      style={{
+        width: "100%",
+        maxWidth: "300px",
+        borderRadius: "8px",
+        padding: "10px 15px",
+      }}
+      allowClear
+    />
+  </div>
+</div>
       <div className="px-4 mt-3 flex items-center gap-2">
-        <div className="flex items-center gap-1 text-lg  border-r-2 border-r-zinc-400 px-2 py-1">
+        <div className="flex items-center gap-2 text-base md:text-lg border-r-2 border-r-zinc-400 px-2 py-1">
           <span className="text-blue-800 font-semibold">
             <FaUsers />
           </span>
-          <span className="text-blue-800 font-semibold">55</span>
+          <span className="text-blue-800 font-semibold">{allMembers[0]?.total_partners}</span>
           <span className="text-zinc-400 font-semibold">Total Partner</span>
         </div>
-        <div className="flex items-center gap-1 text-lg border-r-2 border-r-zinc-400 px-2 py-1">
+        <div className="flex items-center gap-2 text-base md:text-lg border-r-2 border-r-zinc-400 px-2 py-1">
           <span className="text-green-800 font-semibold text-lg">
             <FaUserCheck />
           </span>
-          <span className="text-green-800 font-semibold">50</span>
+          <span className="text-green-800 font-semibold">{allMembers[0]?.active_partners}</span>
           <span className="text-zinc-400 font-semibold">Active Partner</span>
         </div>
       </div>

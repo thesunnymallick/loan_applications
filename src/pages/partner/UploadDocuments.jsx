@@ -12,6 +12,7 @@ import {
 } from "../../api/partner/uploadDocApi";
 import { MdOutlineRemoveCircle, MdVerified } from "react-icons/md";
 import VerificationModal from "../../components/partnerComponet/VerificationModal";
+import { useSelector } from "react-redux";
 
 
 const validationSchema = Yup.object().shape({
@@ -35,6 +36,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const UploadDocuments = () => {
+  const {status } = useSelector((state) => state.auth);
   const [images, setImages] = useState({
     userPhoto: null,
     aadhar_front_image: null,
@@ -270,234 +272,172 @@ const UploadDocuments = () => {
   }, [setFieldValue]);
 
   return (
-    <div onSubmit={handleSubmit} className="p-6 flex gap-3">
-      <div className="w-[25%] bg-white rounded-lg shadow-sm p-4 ">
-        <div className="flex justify-between items-center">
-          <h2 className="text-zinc-700 font-semibold">Profile Photo</h2>
-          {info?.is_user_photo_verified === 1 ? (
-            <span
-              className="px-2  bg-green-600
-           text-white rounded-md flex justify-center gap-1 items-center text-sm"
-            >
-              <span>
-                <MdVerified />{" "}
-              </span>
-              <span>Verfied</span>
-            </span>
-          ) : (
-            <span
-              className="px-2  bg-red-600
-          text-white rounded-md flex justify-center gap-1 items-center text-sm"
-            >
-              <span>
-                <MdOutlineRemoveCircle />{" "}
-              </span>
-              <span>Not verfied</span>
-            </span>
-          )}
-        </div>
-        <div
-          className={`w-full flex justify-center
-         items-center overflow-hidden rounded-lg border-dashed border-2
-           bg-zinc-100 h-72 my-2 relative border-zinc-300
-           `}
-        >
-          {images.userPhoto ? (
-            <div className="relative h-full w-full">
-              <Image
-                src={images.userPhoto}
-                alt="Profile Photo"
-                className="h-full w-full object-cover"
-              />
-              <Button
-                disabled={info?.is_user_photo_verified === 1}
-                shape="circle"
-                icon={<CloseCircleOutlined />}
-                className={`absolute top-2 right-2 bg-white  
-                 ${
-                info?.is_user_photo_verified === 1
-                 ? "cursor-not-allowed text-gray-400 bg-gray-100"
-                 : "hover:bg-red-500 hover:text-white text-zinc-700  "
-                 }`}
-                onClick={() => handleRemove("userPhoto")}
-              />
-            </div>
-          ) : (
-            <Upload
-              showUploadList={false}
-              beforeUpload={(file) => handlePreview(file, "userPhoto")}
-            >
-              <div className="flex flex-col items-center gap-2">
-                <FaCloudUploadAlt className="text-3xl text-zinc-500" />
-                <span className="text-sm text-zinc-700">
-                  Drag and Drop file here
-                </span>
-                <span className="text-sm text-zinc-700">Or</span>
-                <button
-                  className="w-full h-7 border-1
-                border-zinc-400 text-zinc-700 rounded-md"
-                >
-                  Browse Files
-                </button>
-              </div>
-            </Upload>
-          )}
-        </div>
-        <div className="px-2">
-          <div className="flex flex-col items-center py-3">
-            <h1 className="text-zinc-700 font-semibold text-2xl">
-              {info?.name}
-            </h1>
-            <span className="flex items-center gap-2 text-base text-zinc-600">
-              (<span>ID:</span>{" "}
-              <span className="font-semibold">{info?.uuid}</span>)
-            </span>
+    <div onSubmit={handleSubmit} className="p-6 flex flex-col md:flex-row gap-6">
+    {/* Profile Photo Section */}
+    <div className="w-full md:w-[25%] bg-white rounded-lg shadow-sm p-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-zinc-700 font-semibold">Profile Photo</h2>
+        {info?.is_user_photo_verified === 1 ? (
+          <span className="px-2 bg-green-600 text-white rounded-md flex justify-center gap-1 items-center text-sm">
+            <MdVerified /> <span>Verified</span>
+          </span>
+        ) : (
+          <span className="px-2 bg-red-600 text-white rounded-md flex justify-center gap-1 items-center text-sm">
+            <MdOutlineRemoveCircle /> <span>Not Verified</span>
+          </span>
+        )}
+      </div>
+  
+      <div className="w-full flex justify-center items-center overflow-hidden rounded-lg border-dashed border-2 bg-zinc-100 h-72 my-2 relative border-zinc-300">
+        {images.userPhoto ? (
+          <div className="relative h-full w-full">
+            <Image
+              src={images.userPhoto}
+              alt="Profile Photo"
+              className="h-full w-full object-cover"
+            />
+            <Button
+              disabled={info?.is_user_photo_verified === 1}
+              shape="circle"
+              icon={<CloseCircleOutlined />}
+              className={`absolute top-2 right-2 bg-white ${info?.is_user_photo_verified === 1 ? "cursor-not-allowed text-gray-400 bg-gray-100" : "hover:bg-red-500 hover:text-white text-zinc-700"}`}
+              onClick={() => handleRemove("userPhoto")}
+            />
           </div>
+        ) : (
+          <Upload
+            showUploadList={false}
+            beforeUpload={(file) => handlePreview(file, "userPhoto")}
+          >
+            <div className="flex flex-col items-center gap-2">
+              <FaCloudUploadAlt className="text-3xl text-zinc-500" />
+              <span className="text-sm text-zinc-700">Drag and Drop file here</span>
+              <span className="text-sm text-zinc-700">Or</span>
+              <button className="w-full h-7 border-1 border-zinc-400 text-zinc-700 rounded-md">
+                Browse Files
+              </button>
+            </div>
+          </Upload>
+        )}
+      </div>
+      <div className="px-2">
+        <div className="flex flex-col items-center py-3">
+          <h1 className="text-zinc-700 font-semibold text-2xl">{info?.name}</h1>
+          <span className="flex items-center gap-2 text-base text-zinc-600">
+            (<span>ID:</span> <span className="font-semibold">{info?.uuid}</span>)
+          </span>
         </div>
       </div>
-
-      <div className="w-[75%] bg-white rounded-lg shadow-sm p-4">
-        <div className="border-b-1 border-b-zinc-100 pb-2 flex justify-between items-center">
-          <h2 className="text-zinc-700 font-semibold text-xl">
-            Upload Documents
-          </h2>
-        </div>
-
-        <form className="p-3">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col gap-1">
-              <label className="text-sm text-zinc-800" htmlFor="">
-                Bank Name
-              </label>
-              <Input
-                name="bank_name"
-                value={values.bank_name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                status={touched.bank_name && errors.bank_name ? "error" : ""}
-                size="large"
-                placeholder="Enter bank name"
-              />
-              {touched.bank_name && errors.bank_name ? (
-                <span className="text-red-500 text-sm">{errors.bank_name}</span>
-              ) : null}
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-sm text-zinc-800" htmlFor="">
-                IFSC Code
-              </label>
-              <Input
-                name="ifsc_code"
-                value={values.ifsc_code}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                status={touched.bank_name && errors.bank_name ? "error" : ""}
-                size="large"
-                placeholder="Enter ifsc code"
-              />
-              {touched.ifsc_code && errors.ifsc_code ? (
-                <span className="text-red-500 text-sm">{errors.ifsc_code}</span>
-              ) : null}
-            </div>
-            <div className="flex flex-col gap-1">
-              <label htmlFor="" className="text-sm text-zinc-800">
-                Bank Account Number
-              </label>
-              <Input
-                name="account_number"
-                value={values.account_number}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                size="large"
-                status={touched.bank_name && errors.bank_name ? "error" : ""}
-                placeholder="Enter bank account number"
-              />
-              {touched.account_number && errors.account_number ? (
-                <span className="text-red-500 text-sm">
-                  {errors.account_number}
-                </span>
-              ) : null}
-            </div>
-            <div className="flex flex-col gap-1">
-              <label htmlFor="" className="text-zinc-800 text-sm">
-                Bank Account Holder Name
-              </label>
-              <Input
-                name="bank_account_holder_name"
-                value={values.bank_account_holder_name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                size="large"
-                status={
-                  touched.bank_account_holder_name &&
-                  errors.bank_account_holder_name
-                    ? "error"
-                    : ""
-                }
-                placeholder="Enter bank account name"
-              />
-              {touched.bank_account_holder_name &&
-              errors.bank_account_holder_name ? (
-                <span className="text-red-500 text-sm">
-                  {errors.bank_account_holder_name}
-                </span>
-              ) : null}
-            </div>
-            <div className="flex flex-col gap-1">
-              <label htmlFor="" className="text-zinc-800 text-sm">
-                Branch
-              </label>
-              <Input
-                name="branch"
-                value={values.branch}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                size="large"
-                status={touched.branch && errors.branch ? "error" : ""}
-                placeholder="Enter branch name"
-              />
-              {touched.branch && errors.branch ? (
-                <span className="text-red-500 text-sm">{errors.branch}</span>
-              ) : null}
-            </div>
-            <div className="mt-6">
-              <Button
-                loading={loading}
-                htmlType="submit"
-                className="w-[50%] h-10 bg-green-700 text-white 
-            rounded-lg"
-              >
-                Submit
-              </Button>
-            </div>
-          </div>
-        </form>
-
-        <div className="grid grid-cols-2 gap-4 mt-5">
-          {renderUploadBox(
-            "Aadhar Front Image",
-            "aadhar_front_image",
-            "is_aadhar_front_verified"
-          )}
-          {renderUploadBox(
-            "Aadhar Back Image",
-            "aadhar_back_image",
-            "is_aadhar_back_verified"
-          )}
-          {renderUploadBox(
-            "Pan Card Image",
-            "pan_card_image",
-            "is_pan_card_verified"
-          )}
-          {renderUploadBox(
-            "Cancel Cheque Photo",
-            "blank_cheque_image",
-            "is_blank_cheque_verified"
-          )}
-        </div>
-      </div>
-      <VerificationModal/>
     </div>
+  
+    {/* Upload Documents Section */}
+    <div className="w-full md:w-[75%] bg-white rounded-lg shadow-sm p-4">
+      <div className="border-b-1 border-b-zinc-100 pb-2 flex justify-between items-center">
+        <h2 className="text-zinc-700 font-semibold text-xl">Upload Documents</h2>
+      </div>
+  
+      <form className="p-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1">
+            <label className="text-sm text-zinc-800" htmlFor="bank_name">Bank Name</label>
+            <Input
+              name="bank_name"
+              value={values.bank_name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              status={touched.bank_name && errors.bank_name ? "error" : ""}
+              size="large"
+              placeholder="Enter bank name"
+            />
+            {touched.bank_name && errors.bank_name && (
+              <span className="text-red-500 text-sm">{errors.bank_name}</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm text-zinc-800" htmlFor="ifsc_code">IFSC Code</label>
+            <Input
+              name="ifsc_code"
+              value={values.ifsc_code}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              status={touched.ifsc_code && errors.ifsc_code ? "error" : ""}
+              size="large"
+              placeholder="Enter IFSC code"
+            />
+            {touched.ifsc_code && errors.ifsc_code && (
+              <span className="text-red-500 text-sm">{errors.ifsc_code}</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm text-zinc-800" htmlFor="account_number">Bank Account Number</label>
+            <Input
+              name="account_number"
+              value={values.account_number}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              size="large"
+              status={touched.account_number && errors.account_number ? "error" : ""}
+              placeholder="Enter bank account number"
+            />
+            {touched.account_number && errors.account_number && (
+              <span className="text-red-500 text-sm">{errors.account_number}</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm text-zinc-800" htmlFor="bank_account_holder_name">Bank Account Holder Name</label>
+            <Input
+              name="bank_account_holder_name"
+              value={values.bank_account_holder_name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              size="large"
+              status={touched.bank_account_holder_name && errors.bank_account_holder_name ? "error" : ""}
+              placeholder="Enter account holder name"
+            />
+            {touched.bank_account_holder_name && errors.bank_account_holder_name && (
+              <span className="text-red-500 text-sm">{errors.bank_account_holder_name}</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm text-zinc-800" htmlFor="branch">Branch</label>
+            <Input
+              name="branch"
+              value={values.branch}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              size="large"
+              status={touched.branch && errors.branch ? "error" : ""}
+              placeholder="Enter branch name"
+            />
+            {touched.branch && errors.branch && (
+              <span className="text-red-500 text-sm">{errors.branch}</span>
+            )}
+          </div>
+          <div className="mt-6">
+            <Button
+              disabled={status==="verified"? true : false}
+              loading={loading}
+              htmlType="submit"
+              className="w-full sm:w-[50%] h-10 bg-green-700 text-white rounded-lg"
+            >
+              Submit
+            </Button>
+          </div>
+        </div>
+      </form>
+  
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
+        {renderUploadBox("Aadhar Front Image", "aadhar_front_image", "is_aadhar_front_verified")}
+        {renderUploadBox("Aadhar Back Image", "aadhar_back_image", "is_aadhar_back_verified")}
+        {renderUploadBox("Pan Card Image", "pan_card_image", "is_pan_card_verified")}
+        {renderUploadBox("Cancel Cheque Photo", "blank_cheque_image", "is_blank_cheque_verified")}
+      </div>
+    </div>
+  
+    {/* Verification Modal */}
+    <VerificationModal />
+  </div>
+  
   );
 };
 

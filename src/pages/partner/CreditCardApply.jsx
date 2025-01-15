@@ -164,21 +164,21 @@ const CreditCardApply = () => {
 
   return (
     <div className="p-6">
-      <div className="flex items-center gap-2">
-        <Link
-          to={`/our-panels/creditCard-panel`}
-          className="text-2xl text-zinc-800 cursor-pointer"
-        >
-          <FaArrowLeft />
-        </Link>
-        <span className="text-zinc-800 font-semibold text-2xl">
-          Create New Credit Card
-        </span>
-      </div>
+        <div className="flex items-center gap-2">
+    <Link
+      to={`/our-panels/creditCard-panel`}
+      className="text-2xl text-zinc-800 cursor-pointer"
+    >
+      <FaArrowLeft />
+    </Link>
+    <span className="text-zinc-800 font-semibold text-lg md:text-2xl text-center">
+      Create New Credit Card
+    </span>
+  </div>
 
       <div className="bg-white rounded-lg shadow-sm p-4 mt-4">
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* First Name */}
             <InputField
               label="First Name"
@@ -400,18 +400,21 @@ const CreditCardApply = () => {
             {/* Add other fields similarly */}
           </div>
 
-          <div className="flex justify-end gap-4 mt-4">
-            <Button
-              loading={loading}
-              htmlType="submit"
-              className="bg-green-700 text-white px-6 py-2 rounded h-10 w-[10%]"
-            >
-              Save
-            </Button>
-            <Button type="button" className="bg-zinc-400 text-white px-6 py-2 rounded w-[10%] h-10">
-              Cancel
-            </Button>
-          </div>
+          <div className="flex flex-col sm:flex-row justify-end gap-4 mt-6">
+        <Button
+          loading={loading}
+          htmlType="submit"
+          className="bg-green-700 text-white px-6 py-2 rounded w-full sm:w-auto h-10"
+        >
+          Save
+        </Button>
+        <Button
+          type="button"
+          className="bg-zinc-400 text-white px-6 py-2 rounded w-full sm:w-auto h-10"
+        >
+          Cancel
+        </Button>
+      </div>
         </form>
       </div>
     </div>

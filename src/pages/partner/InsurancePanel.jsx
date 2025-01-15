@@ -14,11 +14,9 @@ import { getAllCreditCards } from "../../api/partner/creditcardApi";
 import { EyeOutlined } from "@ant-design/icons";
 import { getAllInsurance } from "../../api/partner/InsuranceApi";
 
-const InsurancePanel= () => {
-
-  const [allInsurance, setAllInsurance]=useState([]);
-  const navigate=useNavigate();
-
+const InsurancePanel = () => {
+  const [allInsurance, setAllInsurance] = useState([]);
+  const navigate = useNavigate();
 
   const cards = [
     {
@@ -71,8 +69,6 @@ const InsurancePanel= () => {
     },
   ];
 
-
-
   // Columns definition
   const columns = [
     {
@@ -83,15 +79,15 @@ const InsurancePanel= () => {
     {
       title: "Name",
       key: "name",
-      render : (text, record)=>{
-        return(
+      render: (text, record) => {
+        return (
           <div className="flex items-center gap-1">
-             <span>{record?.first_name}</span>
-             <span>{record?.middle_name}</span>
-             <span>{record?.last_name}</span>
+            <span>{record?.first_name}</span>
+            <span>{record?.middle_name}</span>
+            <span>{record?.last_name}</span>
           </div>
-        )
-      }
+        );
+      },
     },
     {
       title: "Email",
@@ -117,7 +113,7 @@ const InsurancePanel= () => {
         { text: "Login", value: "login" },
         { text: "Hold", value: "hold" },
       ],
-  
+
       onFilter: (value, record) => record.status.includes(value),
       render: (text) => {
         const statusMapping = {
@@ -151,8 +147,10 @@ const InsurancePanel= () => {
       key: "actions",
       render: (text, record) => (
         <Space
-         className="cursor-pointer"
-         onClick={()=>navigate(`/our-panels/insurance/upload-doc/${record.file_no}`)}
+          className="cursor-pointer"
+          onClick={() =>
+            navigate(`/our-panels/insurance/upload-doc/${record.file_no}`)
+          }
         >
           <EyeOutlined />
         </Space>
@@ -160,28 +158,20 @@ const InsurancePanel= () => {
     },
   ];
 
-
-  useEffect(()=>{
-    const fetchAllCreditCard=async()=>{
+  useEffect(() => {
+    const fetchAllCreditCard = async () => {
       try {
-        const {data,status}=await getAllInsurance();
-        if(status===200){
-        setAllInsurance(data?.data?.data)
+        const { data, status } = await getAllInsurance();
+        if (status === 200) {
+          setAllInsurance(data?.data?.data);
         }
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-
+    };
 
     fetchAllCreditCard();
-  },[])
-
-
-
-
-
+  }, []);
 
   return (
     <div className="p-6">
@@ -199,28 +189,30 @@ const InsurancePanel= () => {
       </div>
 
       <div className="p-4 bg-white rounded-lg shadow-sm">
-        <div className="flex justify-between items-center py-4 px-2">
-          <h1 className="text-zinc-700 font-semibold text-2xl">
+        <div className="flex justify-between items-center py-4 px-2 flex-wrap">
+          <h1 className="text-zinc-700 font-semibold text-2xl w-full sm:w-auto">
             All Applied Insurance
           </h1>
 
           <button
-           onClick={()=>navigate(`/our-panels/insurancePanel/insurance/apply`)}
-           className="
-            w-[10%]
+            onClick={() =>
+              navigate(`/our-panels/insurancePanel/insurance/apply`)
+            }
+            className="
+            w-full sm:w-[10%]
             h-10
             bg-green-700
             text-white rounded-lg shadow-sm 
             flex 
             justify-center 
-            items-center"
+            items-center 
+            mt-4 sm:mt-0"
           >
             <span className="text-xl">
               <IoAddOutline />
             </span>
             <span>Apply</span>
           </button>
-
         </div>
 
         <Table

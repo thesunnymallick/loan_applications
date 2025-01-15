@@ -82,7 +82,7 @@ const validationSchema = Yup.object({
   experience_in_current_business: Yup.number()
     .min(0, "Experience cannot be negative.")
     .required("Experience in current business is required."),
-    duration_of_loan: Yup.string()
+  duration_of_loan: Yup.string()
     .oneOf(loanDurations, "Please select a valid loan duration.")
     .required("Duration of loan is required."),
   type_of_residence_property: Yup.string().required(
@@ -143,8 +143,8 @@ const validationSchema = Yup.object({
 const GovermentLoanForm = () => {
   const { loanType } = useParams();
   const { Option } = Select;
-  const [loading, setLoading]=useState(false);
-  const navigate=useNavigate();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Initial values for the form fields
   const initialValues = {
@@ -191,18 +191,17 @@ const GovermentLoanForm = () => {
       "HDFC Bank, Account No: 987654321098, IFSC: HDFC0005678",
   };
 
-
-
-// Apply Goverment Loan
+  // Apply Goverment Loan
   const handleGovermentLoan = async (payload) => {
     try {
-       setLoading(true);
+      setLoading(true);
       const { status } = await applyGovermentLoan(payload);
       if (status === 200 || status === 201) {
         setLoading(false);
         notification.success({
-          message: 'Loan Application Successful',
-          description: 'Your application for a government loan has been successfully submitted.',
+          message: "Loan Application Successful",
+          description:
+            "Your application for a government loan has been successfully submitted.",
           duration: 2, // Duration of the notification (in seconds)
         });
         navigate(`/our-panels/govermentLoan`);
@@ -212,8 +211,9 @@ const GovermentLoanForm = () => {
       setLoading(false);
       console.log(error);
       notification.error({
-        message: 'Loan Application Failed',
-        description: 'There was an error submitting your application. Please try again later.',
+        message: "Loan Application Failed",
+        description:
+          "There was an error submitting your application. Please try again later.",
         duration: 2,
       });
     }
@@ -226,24 +226,23 @@ const GovermentLoanForm = () => {
     onSubmit: (values) => {
       console.log(values);
 
-       const payload={
+      const payload = {
         ...values,
         applicant_dob: dayjs(values.applicant_dob).format("YYYY-MM-DD"),
-        business_operating_since:dayjs(values.business_operating_since).format("YYYY-MM-DD")
-       }
+        business_operating_since: dayjs(values.business_operating_since).format(
+          "YYYY-MM-DD"
+        ),
+      };
 
-       if(loanType==="MUDRALoan"){
-         setFieldValue("loan", "MUDRA" );
-       }
-       else if(loanType==="MSMELoan"){
-        setFieldValue("loan", "MSME" );
-       }
-       else if(loanType==="PMEGPLoan"){
-        setFieldValue("loan", "PMEGP" );
-       }
-       else if(loanType==="ODCC"){
-        setFieldValue("loan", "ODCC" );
-       }
+      if (loanType === "MUDRALoan") {
+        setFieldValue("loan", "MUDRA");
+      } else if (loanType === "MSMELoan") {
+        setFieldValue("loan", "MSME");
+      } else if (loanType === "PMEGPLoan") {
+        setFieldValue("loan", "PMEGP");
+      } else if (loanType === "ODCC") {
+        setFieldValue("loan", "ODCC");
+      }
 
       handleGovermentLoan(payload);
     },
@@ -280,7 +279,7 @@ const GovermentLoanForm = () => {
         onSubmit={handleSubmit}
         className="bg-white rounded-lg shadow-sm p-6 mt-5"
       >
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Input Fields */}
           <div className="flex flex-col gap-1">
             <label className="text-sm text-zinc-800 font-semibold">
@@ -664,7 +663,7 @@ const GovermentLoanForm = () => {
             ) : null}
           </div>
 
-          <div className="flex flex-col gap-1 col-span-4">
+          <div className="flex flex-col gap-1 md:col-span-4">
             <label className="text-sm text-zinc-800 font-semibold">
               Brief us! What client will do by the loan amount
             </label>
@@ -773,7 +772,7 @@ const GovermentLoanForm = () => {
               className="w-full"
               name="duration_of_loan"
               value={values.duration_of_loan}
-              onChange={(value)=>setFieldValue("duration_of_loan", value)}
+              onChange={(value) => setFieldValue("duration_of_loan", value)}
               onBlur={handleBlur}
               status={
                 touched.duration_of_loan && errors.duration_of_loan
@@ -920,7 +919,9 @@ const GovermentLoanForm = () => {
               placeholder="Enter Business Operating Since"
               name="business_operating_since"
               value={values.business_operating_since}
-              onChange={(value)=>setFieldValue("business_operating_since", value)}
+              onChange={(value) =>
+                setFieldValue("business_operating_since", value)
+              }
               onBlur={handleBlur}
               status={
                 touched.business_operating_since &&
@@ -1083,7 +1084,7 @@ const GovermentLoanForm = () => {
             ) : null}
           </div>
 
-          <div className="flex flex-col gap-1 col-span-4">
+          <div className="flex flex-col gap-1 md:col-span-4">
             <label className="text-sm text-zinc-800 font-semibold">
               If any other loan is running, provide details
             </label>
@@ -1201,7 +1202,7 @@ const GovermentLoanForm = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 col-span-4 mt-2">
+        <div className="flex flex-col gap-1 md:col-span-4 mt-2">
           <label className="text-sm text-zinc-800 font-semibold">
             Other Bank(IF Any):- Name, Account Number, IFSC Code
           </label>
@@ -1249,15 +1250,19 @@ const GovermentLoanForm = () => {
         </div>
 
         {/* Submit Section */}
-        <div className="flex justify-end gap-4 mt-6">
-          <Button size="large" className="rounded-lg w-[10%] h-10" danger>
+        <div className="flex justify-end gap-4 mt-6 flex-wrap">
+          <Button
+            size="large"
+            className="rounded-lg w-full sm:w-[10%] h-10"
+            danger
+          >
             Cancel
           </Button>
           <Button
             loading={loading}
             htmlType="submit"
             size="large"
-            className="bg-green-700 text-white rounded-lg w-[10%] h-10"
+            className="bg-green-700 text-white rounded-lg w-full sm:w-[10%] h-10"
           >
             Save
           </Button>

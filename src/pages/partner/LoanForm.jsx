@@ -170,168 +170,176 @@ const LoanForm = ({ loanType }) => {
     formik;
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Link
-            to={"/our-panels/loan-panels"}
-            className="text-zinc-800 text-xl"
-          >
-            <FaArrowLeft />
-          </Link>
-          <h2 className="text-zinc-800 font-semibold text-xl">{loanHeading}</h2>
-        </div>
-      </div>
+<div className="p-4 sm:p-6">
+  <div className=" gap-4 mt-3">
+    <div className="flex gap-2">
+      <Link to="/our-panels/loan-panels" className="text-zinc-800 text-xl">
+        <FaArrowLeft />
+      </Link>
+      <h2 className="text-zinc-800 font-semibold text-lg sm:text-xl">
+        {loanHeading}
+      </h2>
+    </div>
+  </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="p-6 bg-white rounded-lg shadow-sm my-3"
-      >
-        <div className="grid grid-cols-4 gap-4">
-          {/* Dynamically render each form field */}
-          {Object.keys(initialValues).map((key) => (
-            <div key={key} className="flex flex-col gap-1">
-              <label className="text-sm text-zinc-800" htmlFor={key}>
-                {key.replace("_", " ").toUpperCase()}
-              </label>
-              {key === "dob" ? (
-                <DatePicker
+  <form
+    onSubmit={handleSubmit}
+    className="p-4 sm:p-6 bg-white rounded-lg shadow-sm my-3"
+  >
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Dynamically render each form field */}
+      {Object.keys(initialValues).map((key) => (
+        <div key={key} className="flex flex-col gap-1">
+          <label className="text-sm text-zinc-800" htmlFor={key}>
+            {key.replace("_", " ").toUpperCase()}
+          </label>
+          {key === "dob" ? (
+            <DatePicker
+               size="large"
+              id={key}
+              name={key}
+              onChange={(date, dateString) =>
+                formik.setFieldValue(key, dateString)
+              }
+              onBlur={handleBlur}
+              status={touched[key] && errors[key] ? "error" : ""}
+              style={{ width: "100%" }}
+            />
+          ) : key.includes("type") ||
+            key.includes("mode") ||
+            key.includes("tenure") ? (
+            <>
+              {key.includes("loan_mode") && (
+                <Select
+                size="large"
                   id={key}
                   name={key}
-                  onChange={(date, dateString) =>
-                    formik.setFieldValue(key, dateString)
-                  }
-                  onBlur={handleBlur}
-                  status={touched[key] && errors[key] ? "error" : ""}
-                  style={{ width: "100%" }}
-                />
-              ) : key.includes("type") ||
-                key.includes("mode") ||
-                key.includes("tenure") ? (
-                <>
-                  {key.includes("loan_mode") && (
-                    <Select
-                      id={key}
-                      name={key}
-                      onChange={(value) => formik.setFieldValue(key, value)}
-                      onBlur={handleBlur}
-                      value={values[key]}
-                      status={touched[key] && errors[key] ? "error" : ""}
-                      placeholder={`Select ${key}`}
-                    >
-                      <Select.Option value="new">New</Select.Option>
-                      <Select.Option value="top up">Top Up</Select.Option>
-                      <Select.Option value="bt">BT</Select.Option>
-                      <Select.Option value="card to card">
-                        Card To Card
-                      </Select.Option>
-                    </Select>
-                  )}
-
-                  {key.includes("employment_type") && (
-                    <Select
-                      id={key}
-                      name={key}
-                      onChange={(value) => formik.setFieldValue(key, value)}
-                      onBlur={handleBlur}
-                      value={values[key]}
-                      status={touched[key] && errors[key] ? "error" : ""}
-                      placeholder={`Select ${key}`}
-                    >
-                      <Select.Option value="salaried">Salaried</Select.Option>
-                      <Select.Option value="self_employed">
-                        Self Employed
-                      </Select.Option>
-                    </Select>
-                  )}
-
-                  {key.includes("company_type") && (
-                    <Select
-                      id={key}
-                      name={key}
-                      onChange={(value) => formik.setFieldValue(key, value)}
-                      onBlur={handleBlur}
-                      value={values[key]}
-                      status={touched[key] && errors[key] ? "error" : ""}
-                      placeholder={`Select ${key}`}
-                    >
-                      <Option value="Public Limited Company">
-                        Public Limited Company
-                      </Option>
-                      <Option value="One Person Company">
-                        One Person Company
-                      </Option>
-                      <Option value="Private Limited Company">
-                        Private Limited Company
-                      </Option>
-                      <Option value="Joint-Venture Company">
-                        Joint-Venture Company
-                      </Option>
-                      <Option value="Partnership Firm">Partnership Firm</Option>
-                      <Option value="Sole Proprietorship">
-                        Sole Proprietorship
-                      </Option>
-                      <Option value="Branch Office">Branch Office</Option>
-                      <Option value="Non-Government Organization (NGO)">
-                        Non-Government Organization (NGO)
-                      </Option>
-                    </Select>
-                  )}
-
-                  {key.includes("tenure") && (
-                    <Select
-                      id={key}
-                      name={key}
-                      onChange={(value) => formik.setFieldValue(key, value)}
-                      onBlur={handleBlur}
-                      value={values[key]}
-                      status={touched[key] && errors[key] ? "error" : ""}
-                      placeholder={`Select ${key}`}
-                    >
-                      {Array.from({ length: 30 }, (_, index) => {
-                        const months = (index + 1) * 12;
-                        return (
-                          <Option key={months} value={`${months} Months`}>
-                            {`${months} Months`}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  )}
-                </>
-              ) : (
-                <Input
-                  id={key}
-                  name={key}
-                  type={key.includes("email") ? "email" : "text"}
-                  onChange={handleChange}
+                  onChange={(value) => formik.setFieldValue(key, value)}
                   onBlur={handleBlur}
                   value={values[key]}
                   status={touched[key] && errors[key] ? "error" : ""}
-                  placeholder={`Enter ${key}`}
-                />
+                  placeholder={`Select ${key}`}
+                  style={{ width: "100%" }}
+                >
+                  <Select.Option value="new">New</Select.Option>
+                  <Select.Option value="top up">Top Up</Select.Option>
+                  <Select.Option value="bt">BT</Select.Option>
+                  <Select.Option value="card to card">Card To Card</Select.Option>
+                </Select>
               )}
-              {touched[key] && errors[key] && (
-                <span className="text-red-500 text-sm">{errors[key]}</span>
-              )}
-            </div>
-          ))}
-        </div>
 
-        <div className="flex justify-end gap-4 mt-4">
-          <Button className="bg-gray-300" onClick={() => formik.resetForm()}>
-            Cancel
-          </Button>
-          <Button
-            loading={loading}
-            className="bg-green-700 text-white"
-            htmlType="submit"
-          >
-            Save
-          </Button>
+              {key.includes("employment_type") && (
+                <Select
+                 size="large"
+                  id={key}
+                  name={key}
+                  onChange={(value) => formik.setFieldValue(key, value)}
+                  onBlur={handleBlur}
+                  value={values[key]}
+                  status={touched[key] && errors[key] ? "error" : ""}
+                  placeholder={`Select ${key}`}
+                  style={{ width: "100%" }}
+                >
+                  <Select.Option value="salaried">Salaried</Select.Option>
+                  <Select.Option value="self_employed">
+                    Self Employed
+                  </Select.Option>
+                </Select>
+              )}
+
+              {key.includes("company_type") && (
+                <Select
+                 size="large"
+                  id={key}
+                  name={key}
+                  onChange={(value) => formik.setFieldValue(key, value)}
+                  onBlur={handleBlur}
+                  value={values[key]}
+                  status={touched[key] && errors[key] ? "error" : ""}
+                  placeholder={`Select ${key}`}
+                  style={{ width: "100%" }}
+                >
+                  <Option value="Public Limited Company">
+                    Public Limited Company
+                  </Option>
+                  <Option value="One Person Company">
+                    One Person Company
+                  </Option>
+                  <Option value="Private Limited Company">
+                    Private Limited Company
+                  </Option>
+                  <Option value="Joint-Venture Company">
+                    Joint-Venture Company
+                  </Option>
+                  <Option value="Partnership Firm">Partnership Firm</Option>
+                  <Option value="Sole Proprietorship">
+                    Sole Proprietorship
+                  </Option>
+                  <Option value="Branch Office">Branch Office</Option>
+                  <Option value="Non-Government Organization (NGO)">
+                    Non-Government Organization (NGO)
+                  </Option>
+                </Select>
+              )}
+
+              {key.includes("tenure") && (
+                <Select
+                 size="large"
+                  id={key}
+                  name={key}
+                  onChange={(value) => formik.setFieldValue(key, value)}
+                  onBlur={handleBlur}
+                  value={values[key]}
+                  status={touched[key] && errors[key] ? "error" : ""}
+                  placeholder={`Select ${key}`}
+                  style={{ width: "100%" }}
+                >
+                  {Array.from({ length: 30 }, (_, index) => {
+                    const months = (index + 1) * 12;
+                    return (
+                      <Option key={months} value={`${months} Months`}>
+                        {`${months} Months`}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </>
+          ) : (
+            <Input
+              size="large"
+              id={key}
+              name={key}
+              type={key.includes("email") ? "email" : "text"}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values[key]}
+              status={touched[key] && errors[key] ? "error" : ""}
+              placeholder={`Enter ${key}`}
+            />
+          )}
+          {touched[key] && errors[key] && (
+            <span className="text-red-500 text-sm">{errors[key]}</span>
+          )}
         </div>
-      </form>
+      ))}
     </div>
+
+    <div className="flex flex-col sm:flex-row justify-end gap-4 mt-4">
+      <Button className="bg-gray-300 w-full sm:w-auto h-10" onClick={() => formik.resetForm()}>
+        Cancel
+      </Button>
+      <Button
+        loading={loading}
+        className="bg-green-700 text-white w-full sm:w-auto h-10"
+        htmlType="submit"
+      >
+        Save
+      </Button>
+    </div>
+  </form>
+</div>
+
   );
 };
 

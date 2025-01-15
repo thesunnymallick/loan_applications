@@ -5,26 +5,6 @@ import {
   FaUserClock,
   FaRegCheckCircle,
 } from "react-icons/fa";
-import { Bar, Pie } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-} from "chart.js";
-import OurPanels from "./OurPanels";
-
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement
-);
 
 const PartnerDashboard = () => {
   const loanAnalysisData = {
@@ -120,7 +100,7 @@ const PartnerDashboard = () => {
         <h2 className="text-xl font-semibold text-gray-700 mb-4">
           Loan Analysis
         </h2>
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {loanAnalysisCards.map(({ label, value, gradient, icon }, index) => (
             <div
               key={index}
@@ -139,7 +119,7 @@ const PartnerDashboard = () => {
         <h2 className="text-xl font-semibold text-gray-700 mb-4">
           Taxation Analysis
         </h2>
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {taxationAnalysisCards.map(
             ({ label, value, gradient, icon }, index) => (
               <div
@@ -157,15 +137,13 @@ const PartnerDashboard = () => {
 
       <div>
         <div className="flex justify-center flex-col items-center text-center my-8">
-          <h1 className="text-4xl font-extrabold  text-zinc-900">
-          Powerful Panels for a Smarter Future
+          <h1 className="text-4xl font-extrabold text-zinc-900">
+            Powerful Panels for a Smarter Future
           </h1>
           <p className="text-lg text-zinc-600 mt-2">
             Explore the various services we offer in different domains.
           </p>
         </div>
-
-        <OurPanels />
       </div>
     </div>
   );

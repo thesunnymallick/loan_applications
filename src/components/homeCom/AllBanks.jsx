@@ -78,7 +78,7 @@ const AllBanks = () => {
   };
 
   return (
-    <div className="p-4 relative">
+    <div className=" p-6 md:p-4 relative">
       <div className="text-center mb-6">
         <h1 className="text-zinc-800 font-semibold text-3xl">
           We've Partnered with 68+ Banks
