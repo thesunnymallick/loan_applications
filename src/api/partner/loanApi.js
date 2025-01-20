@@ -23,3 +23,5 @@ export const getAllLoansPartner = (params) => {
 
 
   export const getAllClient=()=>apiService.get(`/api/v1/user/partner/taxtation_user_list`)
+
+  export const getGovermentLoanCount=()=>apiService.get(`/api/v1/user/count_government_loan`)

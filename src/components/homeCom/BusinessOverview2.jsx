@@ -1,7 +1,9 @@
 import React from "react";
 import menImage from "../../assets/men.png";
+import { useNavigate } from "react-router-dom";
 
 const BusinessOverview2 = () => {
+  const navigate=useNavigate();
   return (
     <div className="p-4">
       <div className="py-6 flex justify-center">
@@ -27,20 +29,21 @@ const BusinessOverview2 = () => {
           {/* Text Content */}
           <div className="w-full md:w-[70%] flex flex-col items-center md:items-end text-center md:text-right">
             <h1 className="text-white text-lg md:text-xl font-bold mb-4">
-              Earn in Lakhs as a Loan DSA & Credit Card DSA by selling Loans,
-              Credit Cards, Insurance and more!
+              Earn Big as a Loan & Credit Card DSA! Partner with leading banks
+              and NBFCs and start earning today! As a DSA Partner, you can:
             </h1>
             <p className="text-white opacity-80 mb-6">
-              Register as a Loan DSA and Credit Card DSA Partner, start your
-              Loan DSA Business, and sell a wide variety of financial products
-              such as Loans, Credit Cards, Insurance (General Insurance, Health
-              Insurance and Life Insurance), Demat Accounts, Savings Accounts,
-              FD, Mutual Funds, Stocks, and many more in India. Become a DSA of
-              68+ Banks and NBFCs, start DSA for Loan.
+              Sell Loans, Credit Cards, Insurance (Life, Health, and General)
+              Offer Demat Accounts, Savings Accounts, FDs, Mutual Funds, and
+              Stocks Collaborate with 68+ Banks and NBFCs in India Kickstart
+              your Loan DSA Business now and tap into India’s growing financial
+              market!
             </p>
 
             {/* Button */}
-            <button className="bg-white text-green-700 py-2 px-4 rounded-md">
+            <button
+                onClick={()=>navigate(`/partner-apply`)}
+             className="bg-white text-green-700 py-2 px-4 rounded-md">
               Register
             </button>
           </div>
@@ -51,4 +54,3 @@ const BusinessOverview2 = () => {
 };
 
 export default BusinessOverview2;
-

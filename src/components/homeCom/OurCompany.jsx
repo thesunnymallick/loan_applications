@@ -1,7 +1,9 @@
 import React from "react";
 import ourCompanyImg from "../../assets/ourCompany.jpg";
+import { useNavigate } from "react-router-dom";
 
 const OurCompany = () => {
+  const navigate=useNavigate();
   return (
     <div className="p-4">
       <div className="container mx-auto flex flex-col lg:flex-row items-center gap-4">
@@ -14,18 +16,12 @@ const OurCompany = () => {
             <span className="font-semibold text-gray-700">
               INCOMEKARO SOFTWARE PRIVATE LIMITED
             </span>{" "}
-            uses a custom-built ERP-CRM suite for running the business smoothly.
-            We rely on the power of modern-age tools to properly manage the
-            business complexities, sales pipelines, and everything about record
-            keeping. Along with that, we also bring into the picture our own
-            Blockchain setup for maintaining absolute data distribution in our
-            enterprise, establishing a better client monitoring infrastructure.
-            Together, the power to achieve pure data management is infinite. We
-            try to give wings to the innovative minds of India by implementing
-            the novel ideas of people which majorly aim in serving the nation
-            in a better manner.
+            Our Company uses a custom built ERP-CRM ecosystem to ensure seamless operational flow and streamlined customer relationship management. Our systems are fortified with advanced predictive analytics and machine learning algorithms to forecast market trends, optimize resources, and improve decision-making. Complementing this, we integrate secure Blockchain technology to facilitate transparent data exchange and uphold data integrity across all business functions. By merging these capabilities, we empower businesses with unmatched efficiency and scalability.
+
           </p>
-          <button className="w-full lg:w-[20%] h-10 bg-green-700 text-white rounded-lg mx-auto lg:mx-0">
+          <button
+           onClick={()=>navigate("/about")}
+           className="w-full lg:w-[20%] h-10 bg-green-700 text-white rounded-lg mx-auto lg:mx-0">
             Know more
           </button>
         </div>

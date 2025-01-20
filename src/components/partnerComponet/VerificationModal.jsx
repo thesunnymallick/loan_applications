@@ -1,16 +1,58 @@
-import React, { useState } from "react";
-import { Modal, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { Modal, Button, Checkbox } from "antd";
 import { MdVerified } from "react-icons/md";
 import { FaExclamationTriangle } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  accpectAgrement,
+  downloadAgrement,
+  getAgrementDetails,
+} from "../../api/partner/uploadDocApi";
+import { updateAgrement } from "../../features/authSlice";
+import AgreementPDF from "../../pages/partner/AgreementPDF";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 const VerificationModal = () => {
-  const { status: userStatus } = useSelector((state) => state.auth);
+  const { status: userStatus, is_agreement } = useSelector(
+    (state) => state.auth
+  );
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false)
+  const [aggrementDetails, setAgreementDeatils]=useState(null)
+
+  const dispatch = useDispatch();
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+
+
+  const handleAcceptAgreement = async () => {
+    try {
+      const { status } = await accpectAgrement({ agreement: 1 });
+      if (status === 200) {
+        dispatch(updateAgrement({ is_agreement: true }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(()=>{
+  const fetchAgrementDetails=async()=>{
+   try {
+    const {data, status}=await getAgrementDetails();
+    if(status===200){
+      setAgreementDeatils(data)
+    }
+   } catch (error) {
+    console.log(error)
+   }
+  }
+  fetchAgrementDetails()
+  },[])
 
   return (
     <Modal
@@ -21,7 +63,7 @@ const VerificationModal = () => {
       bodyStyle={{
         padding: "32px",
         textAlign: "center",
-        backgroundColor: "#f9f9f9", // Light gray background
+        backgroundColor: "#f3f4f6",
         borderRadius: "12px",
       }}
       title={
@@ -37,14 +79,14 @@ const VerificationModal = () => {
           )}
           <span className="font-semibold text-xl">
             {userStatus === "verified"
-              ? "Congratulations, Your Account is Verified!"
-              : "Verification Required to Access Full Features"}
+              ? "Account Verification Complete"
+              : "Account Not Verified"}
           </span>
         </div>
       }
     >
-      <div>
-        {userStatus === "verified" ? (
+      {userStatus === "verified" &&
+        (is_agreement ? (
           <div className="text-green-600">
             <p className="text-lg">
               🎉 Your account verification is complete, and you're ready to
@@ -58,34 +100,87 @@ const VerificationModal = () => {
               You can now access premium services like transaction tracking,
               analytics, and more.
             </p>
+            <Button
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md mt-6"
+              onClick={handleCloseModal}
+            >
+              Explore Services
+            </Button>
           </div>
         ) : (
-          <div className="text-red-500">
-            <p className="text-lg">
-              ⚠️ Your account isn't verified yet. Verification is essential to
-              secure your account and unlock all features.
+          <div>
+            <p className="text-gray-700 text-lg mb-4">
+              Please review and accept the agreement to complete your account
+              verification.
             </p>
-            <p className="text-gray-600 mt-2">
-              Please complete the process to enjoy benefits like secure
-              transactions, account insights, and personalized services.
-            </p>
+            <div className="text-left bg-white p-4 rounded-md shadow-md border mb-4">
+              <p className="text-gray-600">
+                <strong>Agreement Terms:</strong> Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit. Phasellus interdum lectus at ex
+                auctor, nec venenatis nulla vehicula. Vivamus feugiat metus nec
+                massa varius, sed tincidunt lacus venenatis.
+              </p>
+              <p className="text-gray-600 mt-2">
+                By accepting this agreement, you acknowledge and agree to the
+                terms and conditions stated here.
+              </p>
+            </div>
+            <Checkbox
+              className="mb-4 text-sm text-gray-700"
+              onChange={(e) => setIsChecked(e.target.checked)}
+            >
+              I accept the terms and conditions of the agreement.
+            </Checkbox>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md"
+                disabled={!isChecked}
+                // onClick={handleDownloadAgreement}
+              >
+                <PDFDownloadLink
+                  document={<AgreementPDF aggrementDetails={aggrementDetails} />}
+                  fileName="Agreement.pdf"
+                  // style={{
+                  //   textDecoration: "none",
+                  //   padding: "10px 20px",
+                  //   color: "#fff",
+                  //   backgroundColor: "#28a745",
+                  //   borderRadius: 5,
+                  // }}
+                >
+                  {({ loading }) =>
+                    loading ? "Preparing document..." : "Download Agreement"
+                  }
+                </PDFDownloadLink>
+              </Button>
+              <Button
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
+                disabled={!isChecked}
+                onClick={handleAcceptAgreement}
+              >
+                Accept and Continue
+              </Button>
+            </div>
           </div>
-        )}
-        <div className="mt-6">
+        ))}
+      {!userStatus === "verified" && (
+        <div className="text-red-500">
+          <p className="text-lg">
+            ⚠️ Your account isn't verified yet. Verification is essential to
+            secure your account and unlock all features.
+          </p>
+          <p className="text-gray-600 mt-2">
+            Please complete the process to enjoy benefits like secure
+            transactions, account insights, and personalized services.
+          </p>
           <Button
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
+            className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-6 py-2 rounded-md mt-6"
             onClick={handleCloseModal}
           >
-            {userStatus === "verified" ? "Explore Services" : "Start Verification"}
+            Start Verification
           </Button>
-          {userStatus !== "verified" && (
-            <div className="mt-4 text-gray-500 text-sm">
-              Need help? Contact our{" "}
-              <span className="text-green-600 font-medium">support team</span>.
-            </div>
-          )}
         </div>
-      </div>
+      )}
     </Modal>
   );
 };

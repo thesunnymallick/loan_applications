@@ -43,7 +43,7 @@ const validationSchema = Yup.object({
     .max(50, "State cannot exceed 50 characters"),
   insurance_type: Yup.string()
     .required("Insurance type is required")
-    .oneOf(["Bike", "Car", "Other"], "Invalid insurance type"),
+    .oneOf(["Bike", "Car", "Others"], "Invalid insurance type"),
   bike_or_car_number: Yup.string()
     .matches(/^[A-Z]{2}\d{2}[A-Z]{2}\d{4}$/, "Invalid vehicle number format")
     .required("Vehicle number is required"),

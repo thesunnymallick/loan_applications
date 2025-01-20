@@ -47,22 +47,41 @@ const AllMembers = () => {
   const [email, setEmail]=useState("");
   const [isOpen, setIsOpen]=useState(false);
   const [loading, setLoading]=useState(false);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
 
   // fetch all memebers
-  useEffect(() => {
-    const fetchAllMembers = async () => {
-      try {
-        const {data,status} = await getAllMembers();
-        if (status === 200) {
-          console.log(data);
-          setAllMembers(data?.partners);
-        }
-      } catch (error) {
-        console.log(error);
+
+  const fetchAllMembers = async (page=1) => {
+    try {
+       setLoading(true);
+      const {data,status} = await getAllMembers(page);
+      if (status === 200) {
+        setLoading(false);
+        setAllMembers(data?.partners);
+        setPagination({
+          current: data?.pagination?.current_page || 1,
+          pageSize: data?.pagination?.per_page || 10,
+          total: data?.pagination?.total || 0,
+      });
       }
-    };
-    fetchAllMembers();
-  }, []);
+    } catch (error){ 
+      setLoading(false);
+     console.log(error)
+    }
+  };
+  useEffect(() => {
+   
+    fetchAllMembers(pagination.current);
+  }, [pagination.current]);
+
+
+  const handleTableChange = (pagination) => {
+    fetchAllMembers(pagination.current);
+  };
 
 
   // handel Send otp
@@ -104,6 +123,15 @@ const AllMembers = () => {
 
 
   const columns = [
+    {
+      title: "Sl. No",
+      key: "serialNumber",
+      render: (text, record, index) => {
+        // Calculate the serial number based on the current page and page size
+        return (pagination.current - 1) * pagination.pageSize + index + 1;
+      },
+      width: 100,
+    },
     {
       title: "Account ID",
       dataIndex: "uuid",
@@ -230,6 +258,14 @@ const AllMembers = () => {
           dataSource={allMembers}
           size="small"
           scroll={{ x: "max-content" }}
+          loading={loading}
+          pagination={{
+            current: pagination.current,
+            pageSize: pagination.pageSize,
+            total: pagination.total,
+            showSizeChanger: true,
+          }}
+          onChange={handleTableChange}
         />
       </div>
 

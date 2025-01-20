@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, Dropdown, Button } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
-import logo from '../assets/logo/logo1.png';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, Dropdown, Button } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
+import logo from "../assets/logo/logo1.png";
 
-const HomeNavbar = ({ textColor = 'text-black' }) => {
+const HomeNavbar = ({ textColor = "text-black" }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
+  const navigate=useNavigate();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -17,28 +17,29 @@ const HomeNavbar = ({ textColor = 'text-black' }) => {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   const menuItems = [
     {
-      key: 'home',
+      key: "home",
       label: <Link to="/">Home</Link>,
     },
     {
-      key: 'about',
+      key: "about",
       label: <Link to="/about">About</Link>,
     },
     {
-      key: 'contact',
+      key: "contact",
       label: <Link to="/contact">Contact</Link>,
     },
+
   ];
 
   const menu = (
@@ -47,9 +48,9 @@ const HomeNavbar = ({ textColor = 'text-black' }) => {
         ...item,
         label: (
           <Link
-            to={item.key === 'home' ? '/' : `/${item.key}`}
+            to={item.key === "home" ? "/" : `/${item.key}`}
             className={`text-lg font-medium hover:text-green-500 ${
-              isScrolled ? 'text-zinc-900' : textColor
+              isScrolled ? "text-zinc-900" : textColor
             }`}
           >
             {item.label.props.children}
@@ -63,34 +64,49 @@ const HomeNavbar = ({ textColor = 'text-black' }) => {
     <div
       className={`fixed top-0 z-50 w-full transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/80 backdrop-blur-md border-b-[1px] border-zinc-200'
-          : 'bg-transparent'
+          ? "bg-white/80 backdrop-blur-md border-b-[1px] border-zinc-200"
+          : "bg-transparent"
       }`}
     >
       <div className="container mx-auto flex justify-between items-center py-4 px-4">
         <img className="w-40 h-auto object-cover" src={logo} alt="Logo" />
         {isMobile ? (
-          <Dropdown overlay={menu} trigger={['click']}>
+          <div className="flex items-center gap-2">
+             <Link to="/partner/login">
+           <Button className="text-lg 
+           font-medium bg-gradient-to-r from-green-500 to-green-700 text-white hover:from-green-600 hover:to-green-800 rounded-full px-6 py-2 shadow-lg transition-all duration-300">
+             Login 
+           </Button>
+         </Link>
+          <Dropdown overlay={menu} trigger={["click"]}>
             <Button
               type="text"
               icon={<MenuOutlined className="text-2xl" />}
               className="text-lg font-medium"
             />
           </Dropdown>
+          </div>
         ) : (
           <ul className="flex items-center gap-10">
-            {menuItems.map((item) => (
+            {menuItems.slice(0, 3).map((item) => (
               <li key={item.key}>
                 <Link
-                  to={item.key === 'home' ? '/' : `/${item.key}`}
+                  to={item.key === "home" ? "/" : `/${item.key}`}
                   className={`${
-                    isScrolled ? 'text-zinc-900' : textColor
+                    isScrolled ? "text-zinc-900" : textColor
                   } text-lg font-medium hover:text-green-500`}
                 >
                   {item.label.props.children}
                 </Link>
               </li>
             ))}
+            <li key="login">
+              <Link to="/partner/login">
+                <Button className="text-lg font-medium bg-gradient-to-r from-green-500 to-green-700 text-white hover:from-green-600 hover:to-green-800 rounded-full px-6 py-2 shadow-lg transition-all duration-300">
+                  Login
+                </Button>
+              </Link>
+            </li>
           </ul>
         )}
       </div>

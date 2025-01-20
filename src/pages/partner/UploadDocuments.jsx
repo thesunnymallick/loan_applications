@@ -271,6 +271,10 @@ const UploadDocuments = () => {
     fetchDocumentInfo();
   }, [setFieldValue]);
 
+
+
+  
+
   return (
     <div onSubmit={handleSubmit} className="p-6 flex flex-col md:flex-row gap-6">
     {/* Profile Photo Section */}

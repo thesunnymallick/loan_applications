@@ -51,9 +51,9 @@ const About = () => {
               />
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-green-700 mb-4">Why Choose Incomekaro?</h2>
+              <h2 className="text-3xl font-bold text-green-700 mb-4"> DID YOU KNOW?</h2>
               <p className="text-gray-700 text-lg">
-                We are providing developments in digital technology. Incomekaro helps partners find the best CRM support & financial products most suited to their customers’ needs. Every year, over Rs. 25,000 crore loans are disbursed.
+             IncomeKaro doesn't charge any amount in the name of Loan Approval, Loan Disbursal, or Loan Processing Fees in cash or in kind. IncomeKaro doesn't deal in like Death Certificates Birth Certificates | Driving License Passport | Voter Card and  If found or came to your notice then please complain on the given number at the website or email us at support@incomekaro.in
               </p>
             </div>
           </div>
@@ -66,7 +66,7 @@ const About = () => {
           <div className="bg-green-100 p-8 rounded-lg shadow-lg">
             <h3 className="text-2xl font-bold text-green-700 mb-4">Our Mission</h3>
             <p className="text-gray-700 text-lg">
-              To lead the charge in digital technology, helping partners achieve their financial goals with innovative solutions.
+            Fostering Innovation and Empowering Change — we work passionately to bring transformative ideas to life, nurturing talent, and contributing to societal betterment through cutting-edge solutions.
             </p>
           </div>
           <div className="bg-green-100 p-8 rounded-lg shadow-lg">

@@ -20,7 +20,7 @@ const ContactInfo = () => {
         <div className="flex flex-col sm:flex-row items-start gap-3">
           <FaMapMarkerAlt className="text-2xl flex-shrink-0" />
           <p className="text-base sm:text-lg text-center sm:text-left">
-            Corporate Office: 2nd Floor, 206 Webel IT Park (Phase-1), DH Block (Newtown), Action Area 1, Newtown, Kolkata 700156
+          443,EKFORD ROAD,SUKCHAR KHARDAH, KOLKATA 700115
           </p>
         </div>
         {/* Phone */}
@@ -28,10 +28,14 @@ const ContactInfo = () => {
           <FaPhoneAlt className="text-2xl flex-shrink-0" />
           <p className="text-base sm:text-lg">+91 7864951543</p>
         </div>
+        <div className="flex flex-col sm:flex-row items-start gap-3">
+          <FaPhoneAlt className="text-2xl flex-shrink-0" />
+          <p className="text-base sm:text-lg">++91 87778 34218</p>
+        </div>
         {/* Email */}
         <div className="flex flex-col sm:flex-row items-start gap-3">
           <FaEnvelope className="text-2xl flex-shrink-0" />
-          <p className="text-base sm:text-lg">Email Id - support@income.in</p>
+          <p className="text-base sm:text-lg">Email Id - support@incomekaro.in</p>
         </div>
       </div>
       {/* Social Icons */}

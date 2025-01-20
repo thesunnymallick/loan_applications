@@ -1,6 +1,6 @@
 import { Input, Select, Button, DatePicker, notification } from "antd";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -22,7 +22,7 @@ const loanDurations = [
   "more-than-10-years",
 ];
 const validationSchema = Yup.object({
-  loan: Yup.string().required("Loan type is required."),
+  loan: Yup.string(),
   loan_amount_requirement: Yup.number()
     .min(1, "Loan amount must be greater than zero.")
     .required("Loan amount is required."),
@@ -146,49 +146,51 @@ const GovermentLoanForm = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  console.log(loanType)
+
   // Initial values for the form fields
   const initialValues = {
-    loan: "MSME",
+    loan: "",
     loan_amount_requirement: "",
     type_of_applicant: "",
-    type_of_activity: "Trading",
-    applicant_name: "John Doe",
-    applicant_email: "johndoe@example.com",
+    type_of_activity: "",
+    applicant_name: "",
+    applicant_email: "",
     applicant_dob: "",
-    gender: "Male",
-    applicant_pan_number: "ABCDE1234F",
-    father_name: "Richard Doe",
-    mobile_number: "9876543210",
-    alternate_number: "9123456789",
-    applicant_marital_status: "Married",
+    gender: "",
+    applicant_pan_number: "",
+    father_name: "",
+    mobile_number: "",
+    alternate_number: "",
+    applicant_marital_status: "",
     if_married: "",
 
-    number_of_children: 2,
-    purpose_of_loan: "To expand the trading business.",
+    number_of_children: "",
+    purpose_of_loan: "",
     brief_us: "",
-    type_of_loan: "Business Loan",
-    monthly_salary: 45000,
+    type_of_loan: "",
+    monthly_salary: "",
 
-    experience_in_current_business: 5,
-    duration_of_loan: 36,
-    type_of_residence_property: "Owned",
-    type_of_official_shop_property: "Rented",
-    applicant_residence_pincode: "560001",
-    applicant_profession: "Trader",
+    experience_in_current_business: "",
+    duration_of_loan: "",
+    type_of_residence_property: "",
+    type_of_official_shop_property: "",
+    applicant_residence_pincode: "",
+    applicant_profession: "",
     business_operating_since: "",
-    experience_in_current_business_line: 8,
-    duration_at_current_address: 6,
-    does_applicant_file_itr: true,
-    is_applicant_gst_registered: true,
-    any_other_loan_running: true,
+    experience_in_current_business_line: "",
+    duration_at_current_address: "",
+    does_applicant_file_itr: "",
+    is_applicant_gst_registered: "",
+    any_other_loan_running: "",
     other_running_loan_details:
-      "Loan from XYZ Bank, remaining balance: 200,000",
-    specify_caste_of_client: "General",
-    bank_name: "State Bank of India",
-    account_number: "123456789012",
-    ifsc_code: "SBIN0001234",
+      "",
+    specify_caste_of_client: "",
+    bank_name: "",
+    account_number: "",
+    ifsc_code: "",
     other_bank_details:
-      "HDFC Bank, Account No: 987654321098, IFSC: HDFC0005678",
+      "",
   };
 
   // Apply Goverment Loan
@@ -234,19 +236,25 @@ const GovermentLoanForm = () => {
         ),
       };
 
-      if (loanType === "MUDRALoan") {
-        setFieldValue("loan", "MUDRA");
-      } else if (loanType === "MSMELoan") {
-        setFieldValue("loan", "MSME");
-      } else if (loanType === "PMEGPLoan") {
-        setFieldValue("loan", "PMEGP");
-      } else if (loanType === "ODCC") {
-        setFieldValue("loan", "ODCC");
-      }
 
       handleGovermentLoan(payload);
     },
   });
+
+
+  // Use `useEffect` to update `loan` field when `loanType` changes
+useEffect(() => {
+  const loanMapping = {
+    MUDRALoan: "MUDRA",
+    MSMELoan: "MSME",
+    PMEGPLoan: "PMEGP",
+    ODCC: "ODCC",
+  };
+
+  if (loanType) {
+    formik.setFieldValue("loan", loanMapping[loanType] || "");
+  }
+}, [loanType]);
 
   // Destructure Formik's properties for easier use
   const {
@@ -447,9 +455,9 @@ const GovermentLoanForm = () => {
               Gender
             </label>
             <Select
-              name="applicant_dob"
+              name="gender"
               value={values.gender}
-              onChange={(value) => setFieldValue("applicant_dob", value)}
+              onChange={(value) => setFieldValue("gender", value)}
               onBlur={handleBlur}
               status={touched.gender && errors.gender ? "error" : ""}
               size="large"

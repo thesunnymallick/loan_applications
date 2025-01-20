@@ -5,9 +5,9 @@ import { useSelector } from "react-redux";
 import { Button, Result } from "antd";
 
 const ProtectedRoute = ({ element: Component, isProtected, allowedRoles, loanType}) => {
-     const { isLoggedIn, role, status } = useSelector((state) => state.auth);
+     const { isLoggedIn, role, status, is_agreement } = useSelector((state) => state.auth);
 
-  
+   
     
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,7 +21,7 @@ const ProtectedRoute = ({ element: Component, isProtected, allowedRoles, loanTyp
 
 
   useEffect(() => {
-    if (role === "partner" && status === "pending") {
+    if (role === "partner" && (status === "pending" || is_agreement===false)) {
       // Redirect to the upload-doc page if the user is a "partner" with "pending" status
       navigate("/partner/upload-doc");
     }

@@ -7,6 +7,7 @@ const loadAuthInfo = () => {
       isLoggedIn: false,
       token: null,
       status:"",
+      is_agreement:false,
       role: null,
       subscription_name:"",
       wallet_balance:"00.00",
@@ -22,6 +23,7 @@ const loadAuthInfo = () => {
       isLoggedIn: false,
       token: null,
       status:"",
+      is_agreement:false,
       role: null,
       subscription_name:"",
       wallet_balance:"00.00",
@@ -43,10 +45,11 @@ const authSlice = createSlice({
     setLogin: (state, action) => {
 
       console.log("action payload", action.payload)
-      const {token, status, user}=action.payload
+      const {token, status, user,}=action.payload
       state.isLoggedIn = true;
       state.token = token;
       state.status=status;
+      state.is_agreement=user.is_agreement===0? false : true;
       state.role = user.role
       state.userData.name = user.name;
       state.userData.email = user.email;
@@ -74,8 +77,20 @@ const authSlice = createSlice({
       // remove token from cookies
       Cookies.remove('authToken');
     },
+
+    updateAgrement:(state, action)=>{
+      state.is_agreement=action.payload.is_agreement;
+      localStorage.setItem('authInfo', JSON.stringify(state));
+    },
+
+    updateWalletBalance:(state, action)=>{
+      state.wallet_balance=action.payload.wallet_balance;
+      localStorage.setItem('authInfo', JSON.stringify(state));
+    }
+
+
   },
 });
 
-export const { setLogin, setLogout } = authSlice.actions;
+export const { setLogin, setLogout, updateAgrement, updateWalletBalance } = authSlice.actions;
 export default authSlice.reducer;

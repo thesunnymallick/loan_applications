@@ -20,18 +20,19 @@ import { CgNotes } from "react-icons/cg";
 import { Modal } from "antd";
 import { setLogout } from "../features/authSlice";
 import { closeSidebar } from "../features/toggleSidebarSlice";
-
+import { PiCertificate } from "react-icons/pi";
 
 const Sidebar = () => {
-  // Navigate 
+  // Navigate
   const { isSidebarOpen } = useSelector((state) => state.mobileSidebar);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const location = useLocation(); // Get the current location (URL)
-  const { role, subscription_name, wallet_balance, userData  } = useSelector((state) => state.auth);
+  const location = useLocation(); 
+  const { role, subscription_name, wallet_balance, userData } = useSelector(
+    (state) => state.auth
+  );
 
   const adminMenus = [
     {
@@ -71,28 +72,19 @@ const Sidebar = () => {
       link: "/our-panels",
       icon: HiOutlineClipboardList,
     },
-    // {
-    //   name: "I2I Eligible Panel",
-    //   link: "/i2i-eligible-panel",
-    //   icon: MdAccountBalance,
-    // },
 
-    // {
-    //   name: "Instant Login Panel",
-    //   link: "/instant-login-panel",
-    //   icon: LuLayoutPanelLeft,
-    // },
-    // {
-    //   name: "Instant Login Card",
-    //   link: "/instant-login-card",
-    //   icon:  LuLayoutPanelTop,
-    // },
+    {
+      name: "Certificate",
+      link: "/certificate",
+      icon: PiCertificate,
+    },
+    
+
     {
       name: "Policy",
       link: "/policy",
-      icon:  CgNotes,
+      icon: CgNotes,
     },
-    
   ];
 
   const rmMenus = [
@@ -128,14 +120,15 @@ const Sidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
-
   const confirmationLogout = () => {
     Modal.confirm({
       title: "Confirm Logout",
       content: "Are you sure you want to log out?",
       okText: "Logout",
       cancelText: "Cancel",
-      okButtonProps: { style: { backgroundColor: "green", borderColor: "green" } },
+      okButtonProps: {
+        style: { backgroundColor: "green", borderColor: "green" },
+      },
       onOk: () => {
         // Add your logout dispatch action here
         dispatch(setLogout());
@@ -145,8 +138,8 @@ const Sidebar = () => {
   };
 
   const handleMenuClick = () => {
-    dispatch(closeSidebar())
- };
+    dispatch(closeSidebar());
+  };
 
   return (
     <>
@@ -200,7 +193,7 @@ const Sidebar = () => {
         </div>
 
         {/* Bottom Section */}
-       {role === "partner" && (
+        {role === "partner" && (
           <div className="px-5 pb-5 space-y-4 border-t border-green-700">
             {/* User Profile */}
             <div
@@ -208,19 +201,21 @@ const Sidebar = () => {
             ${!sidebarOpen && "justify-center"}`}
             >
               <img
-                src={userData?.userPhoto ||  userCricle} // Replace with actual image path
+                src={userData?.userPhoto || userCricle} // Replace with actual image path
                 alt="User Avatar"
                 className={`${
                   sidebarOpen ? "w-12 h-12" : "w-8 h-8"
                 } rounded-full object-cover  shadow-md`}
               />
               {sidebarOpen && (
-               <div className="overflow-hidden">
-               <h3 className="text-white font-bold text-lg">{userData.name}</h3>
-               <p className="text-gray-300 text-xs overflow-hidden whitespace-nowrap text-ellipsis">
-                 {userData.email}
-               </p>
-             </div>
+                <div className="overflow-hidden">
+                  <h3 className="text-white font-bold text-lg">
+                    {userData.name}
+                  </h3>
+                  <p className="text-gray-300 text-xs overflow-hidden whitespace-nowrap text-ellipsis">
+                    {userData.email}
+                  </p>
+                </div>
               )}
             </div>
 
@@ -233,7 +228,9 @@ const Sidebar = () => {
               <MdSubscriptions className="text-3xl text-yellow-400" />
               {sidebarOpen && (
                 <div>
-                  <span className="text-white font-semibold">{subscription_name}</span>
+                  <span className="text-white font-semibold">
+                    {subscription_name}
+                  </span>
                   <p className="text-gray-400 text-sm">Subscription</p>
                 </div>
               )}
@@ -241,7 +238,7 @@ const Sidebar = () => {
 
             {/* Wallet Balance */}
             <div
-              onClick={()=>navigate(`/partner/wallet`)}
+              onClick={() => navigate(`/partner/wallet`)}
               className={`flex items-center gap-x-4 p-2 bg-gradient-to-r from-green-800 to-green-700 rounded-lg shadow-md cursor-pointer ${
                 !sidebarOpen && "justify-center"
               }`}
@@ -249,7 +246,9 @@ const Sidebar = () => {
               <MdAccountBalanceWallet className="text-3xl text-orange-500" />
               {sidebarOpen && (
                 <div>
-                  <span className="text-white font-semibold">₹ {wallet_balance}</span>
+                  <span className="text-white font-semibold">
+                    ₹ {wallet_balance}
+                  </span>
                   <p className="text-gray-400 text-sm">Wallet Balance</p>
                 </div>
               )}
@@ -257,7 +256,7 @@ const Sidebar = () => {
 
             {/* Logout */}
             <button
-               onClick={confirmationLogout}
+              onClick={confirmationLogout}
               className={`w-full flex items-center justify-center gap-x-4 px-2 py-3 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-200 ${
                 !sidebarOpen && "justify-center"
               }`}
@@ -268,9 +267,8 @@ const Sidebar = () => {
           </div>
         )}
 
-
-          {/* Bottom Section */}
-       {role === "Sales Executive" && (
+        {/* Bottom Section */}
+        {role === "Sales Executive" && (
           <div className="px-5 pb-5 space-y-4 border-t border-green-700">
             {/* User Profile */}
             <div
@@ -278,29 +276,27 @@ const Sidebar = () => {
             ${!sidebarOpen && "justify-center"}`}
             >
               <img
-                src={userData?.userPhoto ||  userCricle} // Replace with actual image path
+                src={userData?.userPhoto || userCricle} // Replace with actual image path
                 alt="User Avatar"
                 className={`${
                   sidebarOpen ? "w-12 h-12" : "w-8 h-8"
                 } rounded-full object-cover  shadow-md`}
               />
               {sidebarOpen && (
-               <div className="overflow-hidden">
-               <h3 className="text-white font-bold text-lg">{userData.name}</h3>
-               <p className="text-gray-300 text-xs overflow-hidden whitespace-nowrap text-ellipsis">
-                 {userData.email}
-               </p>
-             </div>
+                <div className="overflow-hidden">
+                  <h3 className="text-white font-bold text-lg">
+                    {userData.name}
+                  </h3>
+                  <p className="text-gray-300 text-xs overflow-hidden whitespace-nowrap text-ellipsis">
+                    {userData.email}
+                  </p>
+                </div>
               )}
             </div>
 
-         
-
-          
-
             {/* Logout */}
             <button
-               onClick={confirmationLogout}
+              onClick={confirmationLogout}
               className={`w-full flex items-center justify-center gap-x-4 px-2 py-3 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-200 ${
                 !sidebarOpen && "justify-center"
               }`}
@@ -310,8 +306,6 @@ const Sidebar = () => {
             </button>
           </div>
         )}
-
-       
 
         {/* Sidebar Toggle */}
         <span
@@ -326,41 +320,40 @@ const Sidebar = () => {
         </span>
       </div>
 
-      
-    {/* Mobile Sidebar */}
+      {/* Mobile Sidebar */}
 
-{/* Sidebar Transition Effect */}
-<div
-  className={`lg:hidden fixed top-0 left-0 z-50 w-64 h-[100vh] bg-gradient-to-b from-green-900 to-green-800 transform transition-all duration-300 ease-in-out ${
-    isSidebarOpen ? 'translate-x-0' : '-translate-x-full opacity-0'
-  }`}
->
-  {/* Logo */}
-  <div className="px-5 py-4 flex justify-center">
-      <img className="w-[90%] object-cover" src={logo2} alt="logo" />
-    </div>
+      {/* Sidebar Transition Effect */}
+      <div
+        className={`lg:hidden fixed top-0 left-0 z-50 w-64 h-[100vh] bg-gradient-to-b from-green-900 to-green-800 transform transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full opacity-0"
+        }`}
+      >
+        {/* Logo */}
+        <div className="px-5 py-4 flex justify-center">
+          <img className="w-[90%] object-cover" src={logo2} alt="logo" />
+        </div>
 
-    {/* Menu Items */}
-    <ul className="px-5 space-y-2">
-      {menus.map((menu, index) => (
-        <Link
-          onClick={handleMenuClick}
-          to={menu.link}
-          key={index}
-          className="flex items-center gap-x-4 text-gray-300 cursor-pointer p-3 hover:bg-gradient-to-r from-green-700 to-green-600 rounded-lg transform transition-all duration-200 ease-in-out hover:scale-105"
-        >
-          <span className="text-2xl text-white">
-            {React.createElement(menu.icon)}
-          </span>
-          <span className="font-semibold text-base text-white">
-            {menu.name}
-          </span>
-        </Link>
-      ))}
-    </ul>
+        {/* Menu Items */}
+        <ul className="px-5 space-y-2">
+          {menus.map((menu, index) => (
+            <Link
+              onClick={handleMenuClick}
+              to={menu.link}
+              key={index}
+              className="flex items-center gap-x-4 text-gray-300 cursor-pointer p-3 hover:bg-gradient-to-r from-green-700 to-green-600 rounded-lg transform transition-all duration-200 ease-in-out hover:scale-105"
+            >
+              <span className="text-2xl text-white">
+                {React.createElement(menu.icon)}
+              </span>
+              <span className="font-semibold text-base text-white">
+                {menu.name}
+              </span>
+            </Link>
+          ))}
+        </ul>
 
- {/* Bottom Section */}
- {role === "partner" && (
+        {/* Bottom Section */}
+        {role === "partner" && (
           <div className="px-5 pb-5 space-y-4 border-t border-green-700">
             {/* User Profile */}
             <div
@@ -368,19 +361,21 @@ const Sidebar = () => {
             ${!sidebarOpen && "justify-center"}`}
             >
               <img
-                src={userData?.userPhoto ||  userCricle} // Replace with actual image path
+                src={userData?.userPhoto || userCricle} // Replace with actual image path
                 alt="User Avatar"
                 className={`${
                   sidebarOpen ? "w-12 h-12" : "w-8 h-8"
                 } rounded-full object-cover  shadow-md`}
               />
               {sidebarOpen && (
-               <div className="overflow-hidden">
-               <h3 className="text-white font-bold text-lg">{userData.name}</h3>
-               <p className="text-gray-300 text-xs overflow-hidden whitespace-nowrap text-ellipsis">
-                 {userData.email}
-               </p>
-             </div>
+                <div className="overflow-hidden">
+                  <h3 className="text-white font-bold text-lg">
+                    {userData.name}
+                  </h3>
+                  <p className="text-gray-300 text-xs overflow-hidden whitespace-nowrap text-ellipsis">
+                    {userData.email}
+                  </p>
+                </div>
               )}
             </div>
 
@@ -393,7 +388,9 @@ const Sidebar = () => {
               <MdSubscriptions className="text-3xl text-yellow-400" />
               {sidebarOpen && (
                 <div>
-                  <span className="text-white font-semibold">{subscription_name}</span>
+                  <span className="text-white font-semibold">
+                    {subscription_name}
+                  </span>
                   <p className="text-gray-400 text-sm">Subscription</p>
                 </div>
               )}
@@ -401,7 +398,7 @@ const Sidebar = () => {
 
             {/* Wallet Balance */}
             <div
-              onClick={()=>navigate(`/partner/wallet`)}
+              onClick={() => navigate(`/partner/wallet`)}
               className={`flex items-center gap-x-4 p-2 bg-gradient-to-r from-green-800 to-green-700 rounded-lg shadow-md cursor-pointer ${
                 !sidebarOpen && "justify-center"
               }`}
@@ -409,7 +406,9 @@ const Sidebar = () => {
               <MdAccountBalanceWallet className="text-3xl text-orange-500" />
               {sidebarOpen && (
                 <div>
-                  <span className="text-white font-semibold">₹ {wallet_balance}</span>
+                  <span className="text-white font-semibold">
+                    ₹ {wallet_balance}
+                  </span>
                   <p className="text-gray-400 text-sm">Wallet Balance</p>
                 </div>
               )}
@@ -417,7 +416,7 @@ const Sidebar = () => {
 
             {/* Logout */}
             <button
-               onClick={confirmationLogout}
+              onClick={confirmationLogout}
               className={`w-full flex items-center justify-center gap-x-4 px-2 py-3 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-200 ${
                 !sidebarOpen && "justify-center"
               }`}
@@ -428,8 +427,8 @@ const Sidebar = () => {
           </div>
         )}
 
-           {/* Bottom Section */}
-       {role === "Sales Executive" && (
+        {/* Bottom Section */}
+        {role === "Sales Executive" && (
           <div className="px-5 pb-5 space-y-4 border-t border-green-700">
             {/* User Profile */}
             <div
@@ -437,29 +436,27 @@ const Sidebar = () => {
             ${!sidebarOpen && "justify-center"}`}
             >
               <img
-                src={userData?.userPhoto ||  userCricle} // Replace with actual image path
+                src={userData?.userPhoto || userCricle} // Replace with actual image path
                 alt="User Avatar"
                 className={`${
                   sidebarOpen ? "w-12 h-12" : "w-8 h-8"
                 } rounded-full object-cover  shadow-md`}
               />
               {sidebarOpen && (
-               <div className="overflow-hidden">
-               <h3 className="text-white font-bold text-lg">{userData.name}</h3>
-               <p className="text-gray-300 text-xs overflow-hidden whitespace-nowrap text-ellipsis">
-                 {userData.email}
-               </p>
-             </div>
+                <div className="overflow-hidden">
+                  <h3 className="text-white font-bold text-lg">
+                    {userData.name}
+                  </h3>
+                  <p className="text-gray-300 text-xs overflow-hidden whitespace-nowrap text-ellipsis">
+                    {userData.email}
+                  </p>
+                </div>
               )}
             </div>
 
-         
-
-          
-
             {/* Logout */}
             <button
-               onClick={confirmationLogout}
+              onClick={confirmationLogout}
               className={`w-full flex items-center justify-center gap-x-4 px-2 py-3 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-200 ${
                 !sidebarOpen && "justify-center"
               }`}
@@ -469,8 +466,7 @@ const Sidebar = () => {
             </button>
           </div>
         )}
-</div>
-
+      </div>
     </>
   );
 };

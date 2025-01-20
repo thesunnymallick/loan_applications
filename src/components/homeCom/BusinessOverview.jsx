@@ -1,8 +1,10 @@
 import React from "react";
 import discuss from "../../assets/discuss.jpg";
 import menImage from "../../assets/men.png";
+import { useNavigate } from "react-router-dom";
 
 const BusinessOverview = () => {
+  const navigate=useNavigate();
   return (
     <div className="p-4">
       <div className="flex flex-col items-center gap-1">
@@ -62,18 +64,19 @@ const BusinessOverview = () => {
           {/* Text Content */}
           <div className="w-full md:w-[70%] text-center sm:text-left">
             <h1 className="text-white text-xl font-bold mb-4">
-              Start Your Loan DSA Business, Earn In Lakhs as a Pan India Loan
-              and Credit Card DSA With Minimum Investment!
+            Join the Fast-Growing Loan DSA Industry and Earn Big!
+            Become a Pan-India Loan and Credit Card DSA with Low Investment!
+
             </h1>
             <p className="text-white opacity-80 mb-6">
-              Start selling a wide range of loan and other financial products
-              such as online loans, credit cards, multiple insurance policies,
-              and investment plans online as a credit card DSA company, become a
-              loan DSA.
+            Start offering personal loans, business loans, home loans, credit cards, insurance policies, and more online.
+            Expand your financial portfolio as a trusted Loan DSA partner today
             </p>
 
             {/* Button */}
-            <button className="bg-white text-green-700 py-2 px-4 rounded-md">
+            <button 
+             onClick={()=>navigate(`/partner-apply`)}
+            className="bg-white text-green-700 py-2 px-4 rounded-md">
               Register
             </button>
           </div>
@@ -83,9 +86,9 @@ const BusinessOverview = () => {
             <img
               src={menImage}
               alt="Business Person"
-              className="absolute bottom-[7rem] md:-bottom-6 z-10 w-[70%] md:w-[95%] mx-auto sm:mx-0"
+              className="absolute bottom-[7rem] md:-bottom-[5rem] z-10 w-[70%] md:w-[95%] mx-auto sm:mx-0"
             />
-            <div className="absolute -top-[20rem] md:-top-1 left-[50%] md:left-[60%] transform -translate-x-1/2 sm:translate-x-0 bg-green-400 w-56 h-56 rounded-full"></div>
+            <div className="absolute -top-[20rem] md:-top-[8rem] left-[50%] md:left-[30%] transform -translate-x-1/2 sm:translate-x-0 bg-green-400 w-56 h-56 rounded-full"></div>
           </div>
         </div>
       </div>

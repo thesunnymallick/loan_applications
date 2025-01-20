@@ -2,8 +2,10 @@ import React from "react";
 import heroImage from "../../assets/hero.jpg";
 import heroMobile from "../../assets/heroMobile.png";
 import ServicesView from "./ServicesView";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate=useNavigate();
   return (
     <div className="w-full h-auto md:h-[800px] flex flex-col md:flex-row justify-end relative bg-[#e8e9ed]">
       {/* Left Side Content */}
@@ -16,8 +18,6 @@ const Hero = () => {
       flex-col 
       justify-start
       md:justify-center 
-
-     
       md:items-start
       px-4 
       md:px-16 z-10 text-black 
@@ -45,6 +45,7 @@ const Hero = () => {
           India’s No. 1 Fast Payout Provider.
         </p>
         <button
+         onClick={()=>navigate(`/partner/login`)}
           className="mt-6 md:mt-8 px-6 py-3 md:px-10 md:py-4 bg-green-800 bg-gradient-to-b from-green-950 text-white text-sm md:text-lg font-semibold rounded-full shadow-xl transform transition duration-300 ease-in-out focus:outline-none w-[60%] md:w-[50%]"
           style={{ fontFamily: "'Poppins', sans-serif" }}
         >

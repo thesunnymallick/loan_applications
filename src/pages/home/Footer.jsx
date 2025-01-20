@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo/logo2.png"
 const Footer = () => {
+  const navigate=useNavigate();
   return (
     <footer className="bg-gray-900 text-white py-10 px-5 relative  bttom-0 ">
       <div className="container mx-auto">
@@ -16,7 +17,9 @@ const Footer = () => {
               Growth Your Business, Take Your Step with Us!
             </h2>
           </div>
-          <button className="bg-green-700 hover:bg-green-800 text-white font-semibold px-6 py-3 rounded-full">
+          <button 
+           onClick={()=>navigate("/contact")}
+          className="bg-green-700 hover:bg-green-800 text-white font-semibold px-6 py-3 rounded-full">
             Contact Us
           </button>
         </div>
@@ -75,12 +78,10 @@ const Footer = () => {
         {/* Bottom Info */}
         <div className="text-xs text-gray-400 space-y-4">
           <p>
-          INCOMEKARO SOFTWARE PRIVATE LIMITED is present in more than 27+
-            states of India: Andhra Pradesh, Assam, Bihar, Chandigarh, etc.
+          IncomeKaro is present in more than 27 states of India- ANDAMAN AND NICOBAR| ANDHRA PRADESH | ASSAM | BIHAR | CHANDIGARH | CHHATTISGARH | DELHI | GUJARAT | GOA| HIMACHAL PRADESH | HARYANA | JHARKHAND | JAMMU AND KASHMIR | KARNATAKA | KERALA| MAHARASHTRA | MADHYA PRADESH | MANIPUR| ODISHA | PUNJAB | RAJASTHAN | SIKKIM | TAMIL NADU | TELANGANA | UTTARAKHAND | UTTAR PRADESH | WEST BENGAL. With lots of ❤ from Team IncomeKaro.
           </p>
           <p>
-            <span className="text-green-600 font-bold">Attention:</span> INCOMEKARO SOFTWARE PRIVATE LIMITED does not ask any sensitive details
-            like debit card, credit card, CVV, or OTP.
+            <span className="text-green-600 font-bold">Attention:</span> Team Incomekaro never asks any details related to debit cards and credit cards and Net Banking like CVV, OTP, SMS or any other highly confidential information. If an Incomekaro  customer receives any such mail or phone call, then they should understand that this is an online trick to steal their money. For any report, kindly email us at support@incomekaro.in
           </p>
           <p>CIN: </p>
         </div>

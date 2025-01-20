@@ -1,56 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Tag } from 'antd';
+import { Button, Input, Table, Tag } from 'antd';
 import { FaRegBuilding, FaBusinessTime, FaIndustry } from 'react-icons/fa';
 import { BsArrowRight } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
-import { EyeOutlined } from "@ant-design/icons";
+import { EyeOutlined, SearchOutlined } from "@ant-design/icons";
 import { getAllGovermentLoan } from '../../api/partner/govermentLoanApi';
 import dayjs from 'dayjs';
+import { getGovermentLoanCount } from '../../api/partner/loanApi';
 const GovermentLoan = () => {
   const navigate=useNavigate();
   
+  const [searchText, setSearchText] = useState("");
+  const [filteredInfo, setFilteredInfo] = useState({});
   const [loanInfo, setLoanInfo]=useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [pageSize, setPageSize] = useState(10); 
+  const [totalItems, setTotalItems] = useState(0); 
+  const [loanCount, setLoanCount]=useState("")
 
 
-  const loans = [
-    {
-      type: 'Small Size Business',
-      title: 'MUDRA Loan',
-      count: 2,
-      loanRange: '₹ 50.00K - 10.00L',
-      icon: <FaRegBuilding />,
-      gradient: 'from-green-400 to-teal-500',
-      link:"/our-panels/govermentLoan/MUDRALoan"
-    },
-    {
-      type: 'Large Size Business',
-      title: 'MSME Loan',
-      count: 0,
-      loanRange: '₹ 10.01L - 25.00CR',
-      icon: <FaBusinessTime />,
-      gradient: 'from-blue-500 to-cyan-600',
-      link:"/our-panels/govermentLoan/MSMELoan"
-    },
-    {
-      type: 'Industry Business',
-      title: 'PMEGP Loan',
-      count: 0,
-      tradingRange: '₹ 20.00L',
-      manufacturingRange: '₹ 50.00L',
-      icon: <FaIndustry />,
-      gradient: 'from-purple-500 to-pink-500',
-       link:"/our-panels/govermentLoan/PMEGPLoan"
-    },
-    {
-      type: 'Small Size Business',
-      title: 'OD-CC',
-      count: 0,
-      loanRange: '₹ 50.00K - 10.00L',
-      icon: <FaRegBuilding />,
-      gradient: 'from-orange-400 to-red-500',
-      link:"/our-panels/govermentLoan/ODCC"
-    },
-  ];
+ 
 
 
 
@@ -59,12 +29,121 @@ const GovermentLoan = () => {
     navigate(`/our-panels/govermentLoan/${loanType}/uploadDoc/${fileNo}`)
  }
 
+  
+
+  const fetchGovermentLoan=async(params = {})=>{
+    try {
+       setLoading(true);
+      const {data,status}=await getAllGovermentLoan(params);
+      if(status===200){
+        setLoading(false);
+        setLoanInfo(data?.data?.data);
+        setTotalItems(data?.data?.total || 0); // Set total items
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchGovermentLoan({
+      page: currentPage,
+      pageSize,
+      search: searchText,
+      ...filteredInfo,
+    });
+  }, [currentPage, pageSize, searchText, filteredInfo]); // Dependency array updated
+
+
+
+   // Handle table changes (pagination, filters)
+   const handleTableChange = (pagination, filters) => {
+    setCurrentPage(pagination.current); // Update current page
+    setPageSize(pagination.pageSize); // Update page size
+    setFilteredInfo(filters); // Update filters
+  };
+
+  // Handle search
+  const handleSearch = () => {
+    // Reset to the first page when searching
+    setCurrentPage(1);
+    fetchGovermentLoan({
+      page: 1,
+      pageSize,
+      search: searchText,
+      ...filteredInfo,
+    });
+  };
+
+
   const columns = [
+
     {
-      title: 'File No',
-      dataIndex: 'file_no',
-      key: 'file_no',
+      title: "Sl. No",
+      key: "serialNumber",
+      render: (text, record, index) => (currentPage - 1) * pageSize + index + 1, 
     },
+
+    {
+      title: "File No",
+      dataIndex: "file_no",
+      key: "file_no",
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder="Search File No"
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() => confirm()}
+            style={{ marginBottom: 8, display: "block" }}
+          />
+          <Button
+            type="primary"
+            onClick={() => confirm()}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: "100%" }}
+          >
+            Search
+          </Button>
+        </div>
+      ),
+      onFilter: (value, record) => record.file_no.includes(value),
+    },
+
+    {
+      title: "Loan Type",
+      dataIndex: "loan",
+      key: "loan",
+      render: (text) => {
+        const loanTypeMapping = {
+          "OD-CC": { label: "OD-CC", color: "#004085" },
+          "PMEGP": { label: "PMEGP", color: "#28a745" },
+          "MSME": { label: "MSME", color: "#ffc107" },
+          "MUDRA": { label: "MUDRA", color: "#dc3545" },
+        };
+    
+        const loanType = loanTypeMapping[text] || { label: text, color: "#595959" };
+    
+        return (
+          <Tag
+            style={{
+              backgroundColor: loanType.color,
+              color: "#fff",
+              border: "none",
+            }}
+          >
+            {loanType.label}
+          </Tag>
+        );
+      },
+    },
+    
+  
+
     {
       title: 'Applicant Name',
       dataIndex: 'applicant_name',
@@ -90,10 +169,32 @@ const GovermentLoan = () => {
         )
       }
     },
+  
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      filters: [
+        { text: "Fresh Lead", value: "fresh_lead" },
+        { text: "Upload Documents", value: "upload_documents" },
+        { text: "Banking Pendency", value: "banking_pendency" },
+        { text: "Assign", value: "assign" },
+        { text: "Reject", value: "reject" },
+        { text: "Login", value: "login" },
+        { text: "Hold", value: "hold" },
+        { text: "Disbursed", value: "disbursed" },
+        { text: "Docs Pending", value: "docs_pending" },
+        { text: "Docs Pendancy", value: "docs_pendancy" },
+        { text: "Approved", value: "approved" },
+        { text: "Rejected", value: "rejected" },
+        { text: "Dispatched", value: "dispatched" },
+        { text: "Completed", value: "completed" },
+        { text: "Soft Approval", value: "soft_approval" },
+        { text: "Commission Due", value: "commission_due" },
+        { text: "Partner Hold", value: "partner_hold" },
+      ],
+      filteredValue: filteredInfo.status || null,
+      onFilter: (value, record) => record.status.includes(value),
       render: (text) => {
         const statusMapping = {
           fresh_lead: { label: "Fresh Lead", color: "#004085" },
@@ -103,9 +204,19 @@ const GovermentLoan = () => {
           reject: { label: "Reject", color: "#8b0000" },
           login: { label: "Login", color: "#7b6400" },
           hold: { label: "Hold", color: "#4b0082" },
+          disbursed: { label: "Disbursed", color: "#2e8b57" },
+          docs_pending: { label: "Docs Pending", color: "#1e90ff" },
+          docs_pendancy: { label: "Docs Pendancy", color: "#1c7430" },
+          approved: { label: "Approved", color: "#32cd32" },
+          rejected: { label: "Rejected", color: "#dc143c" },
+          dispatched: { label: "Dispatched", color: "#ffa500" },
+          completed: { label: "Completed", color: "#20b2aa" },
+          soft_approval: { label: "Soft Approval", color: "#4682b4" },
+          commission_due: { label: "Commission Due", color: "#daa520" },
+          partner_hold: { label: "Partner Hold", color: "#8a2be2" },
         };
         const status = statusMapping[text] || { label: text, color: "#595959" };
-
+    
         return (
           <Tag
             style={{
@@ -119,6 +230,7 @@ const GovermentLoan = () => {
         );
       },
     },
+    
 
     {
       title: "",
@@ -130,44 +242,64 @@ const GovermentLoan = () => {
   
   ];
 
-  const data = [
-    {
-      key: '1',
-      fileNo: 'LDGV-1045',
-      applicantName: 'JADAV HOLDER',
-      email: 'rahitmondal053@gmail.com',
-      mobileNumber: '9091963351',
-      createdDate: '5 Jun 2024',
-      status: 'REJECTED',
-    },
-    {
-      key: '2',
-      fileNo: 'LDGV-1043',
-      applicantName: 'MASOOD ALAM RANA',
-      email: 'MASOOD@GMAIL.COM',
-      mobileNumber: '7003425263',
-      createdDate: '16 May 2024',
-      status: 'REJECTED',
-    },
-  ];
-
 
   useEffect(()=>{
 
-    const fetchGovermentLoan=async()=>{
-      try {
-        const {data,status}=await getAllGovermentLoan();
-        if(status===200){
-          setLoanInfo(data?.data?.data)
+    const fetchGovermentLoanCount=async()=>{
+        try {
+          const {data, status}=await getGovermentLoanCount();
+
+          if(status===200){
+            setLoanCount(data?.data);
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-      }
     }
 
-    fetchGovermentLoan();
+    fetchGovermentLoanCount();
 
-  }, [])
+  },[])
+
+  const loans = [
+    {
+      type: 'Small Size Business',
+      title: 'MUDRA Loan',
+      count: loanCount?.MUDRA,
+      loanRange: '₹ 50.00K - 10.00L',
+      icon: <FaRegBuilding />,
+      gradient: 'from-green-400 to-teal-500',
+      link:"/our-panels/govermentLoan/MUDRALoan"
+    },
+    {
+      type: 'Large Size Business',
+      title: 'MSME Loan',
+      count: loanCount?.MSME,
+      loanRange: '₹ 10.01L - 25.00CR',
+      icon: <FaBusinessTime />,
+      gradient: 'from-blue-500 to-cyan-600',
+      link:"/our-panels/govermentLoan/MSMELoan"
+    },
+    {
+      type: 'Industry Business',
+      title: 'PMEGP Loan',
+      count: loanCount?.PMEGP,
+      tradingRange: '₹ 20.00L',
+      manufacturingRange: '₹ 50.00L',
+      icon: <FaIndustry />,
+      gradient: 'from-purple-500 to-pink-500',
+       link:"/our-panels/govermentLoan/PMEGPLoan"
+    },
+    {
+      type: 'Small Size Business',
+      title: 'OD-CC',
+      count: loanCount?.ODCC,
+      loanRange: '₹ 50.00K - 10.00L',
+      icon: <FaRegBuilding />,
+      gradient: 'from-orange-400 to-red-500',
+      link:"/our-panels/govermentLoan/ODCC"
+    },
+  ];
 
   return (
     <div className="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
@@ -226,14 +358,33 @@ const GovermentLoan = () => {
 
       <div className='bg-white rounded-lg shadow-md  p-4 mt-10'>
 
-        <div className='flex justify-between items-center py-4'>
+        <div className='flex flex-col sm:flex-row justify-between py-4 gap-3'>
             <h1 className='text-zinc-700 text-xl font-semibold'>All Goverments Loans</h1>
+
+        <div className="flex justify-end mb-4">
+        <Input
+           size='large'
+          placeholder="Search by File No"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          onPressEnter={handleSearch}
+          style={{ width: "100%", maxWidth: 250 }}
+        />
+      </div>
         </div>
        <Table 
        columns={columns} 
        dataSource={loanInfo} 
        bordered  
        scroll={{ x: "max-content" }}
+       loading={loading}
+        pagination={{
+          current: currentPage,
+          pageSize,
+          total: totalItems,
+          onChange: (page) => setCurrentPage(page),
+        }}
+        onChange={handleTableChange}
        />
       </div>
     </div>

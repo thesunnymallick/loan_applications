@@ -53,7 +53,7 @@ const Login = ({ loginType }) => {
           ...data?.partner,
           role:"partner"
         }
-        dispatch(setLogin({ token: data?.token, status:data?.status, user:modifyData  }));
+        dispatch(setLogin({ token: data?.token, status:data?.status,   user:modifyData  }));
         // Success notification
         notification.success({
           message: 'Login Successful',
@@ -84,7 +84,7 @@ const Login = ({ loginType }) => {
         setLoading(false);
         // Save token in cookies
         Cookies.set('authToken', data.token, { expires: 7 });
-        dispatch(setLogin({ token: data?.token, status:"active", user: data?.userInfo }));
+        dispatch(setLogin({ token: data?.token, status:"active",  user: data?.userInfo }));
         // Success notification
         notification.success({
           message: 'Login Successful',

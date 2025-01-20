@@ -46,6 +46,7 @@ import About from './pages/home/About';
 import ContactUs from './pages/home/ContactUs';
 import Policy from './pages/partner/Policy';
 import InstantLoginCreditCard from './pages/partner/InstantLoginCreditCard';
+import Certificate from './pages/partner/Certificate';
 
 
  const routes = [
@@ -484,6 +485,15 @@ import InstantLoginCreditCard from './pages/partner/InstantLoginCreditCard';
   {
     path:"/policy",
     element: Policy,
+    layout: RootLayout,
+    protected: true,
+    allowedRoles: ['partner'],
+    name:"Partner Dashboard",
+  },
+
+  {
+    path:"/certificate",
+    element: Certificate,
     layout: RootLayout,
     protected: true,
     allowedRoles: ['partner'],

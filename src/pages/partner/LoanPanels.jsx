@@ -19,9 +19,9 @@ const LoanPanels = () => {
   const [filteredInfo, setFilteredInfo] = useState({});
   const [allLons, setAllLoans] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); // Separate state for current page
-  const [pageSize, setPageSize] = useState(10); // Separate state for page size
-  const [totalItems, setTotalItems] = useState(0); // Separate state for total items
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [pageSize, setPageSize] = useState(10); 
+  const [totalItems, setTotalItems] = useState(0); 
   const [loanCount, setLoanCount]=useState("")
 
 
@@ -107,7 +107,7 @@ const LoanPanels = () => {
     {
       title: "Sl. No",
       key: "serialNumber",
-      render: (text, record, index) => (currentPage - 1) * pageSize + index + 1, // Calculate serial number
+      render: (text, record, index) => (currentPage - 1) * pageSize + index + 1, 
     },
     {
       title: "File No",
@@ -233,6 +233,16 @@ const LoanPanels = () => {
         { text: "Reject", value: "reject" },
         { text: "Login", value: "login" },
         { text: "Hold", value: "hold" },
+        { text: "Disbursed", value: "disbursed" },
+        { text: "Docs Pending", value: "docs_pending" },
+        { text: "Docs Pendancy", value: "docs_pendancy" },
+        { text: "Approved", value: "approved" },
+        { text: "Rejected", value: "rejected" },
+        { text: "Dispatched", value: "dispatched" },
+        { text: "Completed", value: "completed" },
+        { text: "Soft Approval", value: "soft_approval" },
+        { text: "Commission Due", value: "commission_due" },
+        { text: "Partner Hold", value: "partner_hold" },
       ],
       filteredValue: filteredInfo.status || null,
       onFilter: (value, record) => record.status.includes(value),
@@ -245,9 +255,19 @@ const LoanPanels = () => {
           reject: { label: "Reject", color: "#8b0000" },
           login: { label: "Login", color: "#7b6400" },
           hold: { label: "Hold", color: "#4b0082" },
+          disbursed: { label: "Disbursed", color: "#2e8b57" },
+          docs_pending: { label: "Docs Pending", color: "#1e90ff" },
+          docs_pendancy: { label: "Docs Pendancy", color: "#1c7430" },
+          approved: { label: "Approved", color: "#32cd32" },
+          rejected: { label: "Rejected", color: "#dc143c" },
+          dispatched: { label: "Dispatched", color: "#ffa500" },
+          completed: { label: "Completed", color: "#20b2aa" },
+          soft_approval: { label: "Soft Approval", color: "#4682b4" },
+          commission_due: { label: "Commission Due", color: "#daa520" },
+          partner_hold: { label: "Partner Hold", color: "#8a2be2" },
         };
         const status = statusMapping[text] || { label: text, color: "#595959" };
-
+    
         return (
           <Tag
             style={{

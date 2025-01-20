@@ -6,7 +6,7 @@ import { Button,  Input, notification, Upload } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { getCustomerDetails, uploadDocForLoan } from "../../api/partner/loanApi";
 import dayjs from "dayjs";
-import { uploadTaxDoc } from "../../api/partner/taxationpanel";
+import { getTaxtationsDetails, uploadTaxDoc } from "../../api/partner/taxationpanel";
 
 
 
@@ -136,7 +136,7 @@ const handleUpload = (file, key, isPdf) => {
     // Fetch Loan Deatils
     const fetchLoanCustomerDetails=async()=>{
       try {
-        const  {data, status}=await getCustomerDetails(fileNo);
+        const  {data, status}=await getTaxtationsDetails(fileNo);
          if(status===200){
            setCustomerDetails(data);
          }
@@ -158,6 +158,9 @@ const handleUpload = (file, key, isPdf) => {
     { title: "Pan Card Image", imageKey: "pan", passwordKey: "pan_password" },
     { title: "Passport Photo", imageKey: "passport_photo", passwordKey: "passport_photo_password" },
   ]
+
+
+
 
 
   return (
@@ -236,70 +239,69 @@ const handleUpload = (file, key, isPdf) => {
   
       {/* Loan form details */}
       <div className="w-full lg:w-[30%]">
-        <div className="flex flex-col gap-4">
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex justify-center mb-4">
-              <div className="w-20 h-20 rounded-full border-[1px] border-green-700 overflow-hidden">
-                <img className="w-full h-full object-cover" src={userCricle} alt="userImage" />
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <h1 className="text-lg text-zinc-800 font-semibold text-center">
-                {customerDetails?.partner?.name}
-              </h1>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-zinc-700">Email</span>
-                <span className="text-zinc-700 font-semibold">{customerDetails?.partner?.email}</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-zinc-700">Phone</span>
-                <span className="text-zinc-700 font-semibold">
-                  {customerDetails?.partner?.mobile_number}
-                </span>
-              </div>
-              <h2 className="text-zinc-800 font-bold">
-                <span>{customerDetails?.data?.loan_type}</span> Of Rs{" "}
-                <span>
-                  {customerDetails?.data?.loan_amount} <span>{customerDetails?.data?.tenure}</span>
-                </span>
-              </h2>
-            </div>
-          </div>
-  
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <h2 className="text-lg text-zinc-800 font-semibold mb-4">Customer Details</h2>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              {[
-                { label: "Pan", value: customerDetails?.data?.pan },
-                { label: "DOB", value: dayjs(customerDetails?.data?.dob).format("DD-MM-YYYY") },
-                { label: "Pincode", value: customerDetails?.data?.residence_pincode },
-                { label: "Residence Address", value: customerDetails?.data?.residence_address },
-                { label: "Mother Name", value: customerDetails?.data?.mother_name },
-                { label: "Reference1", value: `${customerDetails?.data?.reference_name_1} - ${customerDetails?.data?.reference_phone_1}` },
-                { label: "Reference2", value: `${customerDetails?.data?.reference_name_2} - ${customerDetails?.data?.reference_phone_2}` },
-                { label: "Employment Type", value: customerDetails?.data?.employment_type },
-                { label: "Company Name", value: customerDetails?.data?.company_name },
-                { label: "Company Type", value: customerDetails?.data?.company_type },
-                { label: "Monthly Income", value: customerDetails?.data?.employment_type },
-                {
-                  label: "Managed By",
-                  value: (
-                    <>
-                      <span>Executive: NA</span>
-                      <span>Team Leader: NA</span>
-                    </>
-                  ),
-                },
-              ].map(({ label, value }, idx) => (
-                <div key={idx} className="flex flex-col gap-1">
-                  <span className="text-zinc-600">{label}</span>
-                  <span className="text-zinc-700 font-semibold">{value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+  <div className="flex flex-col gap-4">
+    {/* Partner Information Card */}
+    <div className="bg-white rounded-lg shadow-sm p-4">
+      <div className="flex justify-center mb-4">
+        <div className="w-20 h-20 rounded-full border-[1px] border-green-700 overflow-hidden">
+          <img className="w-full h-full object-cover" src={userCricle} alt="userImage" />
         </div>
       </div>
+      <div className="flex flex-col gap-2">
+        <h1 className="text-lg text-zinc-800 font-semibold text-center">
+          {customerDetails?.partner?.name || "N/A"}
+        </h1>
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-zinc-700">Email:</span>
+          <span className="text-zinc-700 font-semibold">
+            {customerDetails?.partner?.email || "N/A"}
+          </span>
+        </div>
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-zinc-700">Phone:</span>
+          <span className="text-zinc-700 font-semibold">
+            {customerDetails?.partner?.mobile_number || "N/A"}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {/* Customer Details Card */}
+    <div className="bg-white rounded-lg shadow-sm p-4">
+      <h2 className="text-lg text-zinc-800 font-semibold mb-4">Customer Details</h2>
+      <div className="grid grid-cols-2 gap-3 text-sm">
+        {[
+          { label: "File Number", value: customerDetails?.data?.file_no || "N/A" },
+          { label: "Partner ID", value: customerDetails?.data?.partner_id || "N/A" },
+          { label: "Unique ID", value: customerDetails?.data?.unique_id || "N/A" },
+          { label: "First Name", value: customerDetails?.data?.first_name || "N/A" },
+          { label: "Middle Name", value: customerDetails?.data?.middle_name || "N/A" },
+          { label: "Last Name", value: customerDetails?.data?.last_name || "N/A" },
+          { label: "Email", value: customerDetails?.data?.email || "N/A" },
+          { label: "Phone", value: customerDetails?.data?.phone || "N/A" },
+          { label: "Pan", value: customerDetails?.data?.pan || "N/A" },
+          { label: "Aadhar", value: customerDetails?.data?.aadhar || "N/A" },
+          { label: "Residence Address", value: customerDetails?.data?.residence_address || "N/A" },
+          { label: "Residence City", value: customerDetails?.data?.residence_city || "N/A" },
+          { label: "Residence Pincode", value: customerDetails?.data?.residence_pincode || "N/A" },
+          { label: "Residence State", value: customerDetails?.data?.residence_state || "N/A" },
+          { label: "Office Address", value: customerDetails?.data?.office_address || "N/A" },
+          { label: "Office City", value: customerDetails?.data?.office_city || "N/A" },
+          { label: "Office Pincode", value: customerDetails?.data?.office_pincode || "N/A" },
+          { label: "Office State", value: customerDetails?.data?.office_state || "N/A" },
+          { label: "Status", value: customerDetails?.data?.status || "N/A" },
+        ].map(({ label, value }, idx) => (
+          <div key={idx} className="flex flex-col gap-1">
+            <span className="text-zinc-600">{label}</span>
+            <span className="text-zinc-700 font-semibold">{value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
     </div>
   </div>
   

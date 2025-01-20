@@ -3,12 +3,12 @@ import React from 'react';
 const services = [
   {
     title: "Web Development",
-    description: "With a powerful team of expert coders and programmers, your website and web apps receive that extra attention to stand out from the rest.",
+    description: "Creating and maintaining websites or web applications, including front-end (user interface) and back-end (server-side) development.",
     icon: "🌐", 
   },
   {
     title: "Mobile App Development",
-    description: "Launch your business application across all Operating Systems; be it Android, iOS, MacOS, or Windows. Your brand is now on all devices.",
+    description: "Developing applications for mobile devices on platforms such as iOS, Android, or cross-platform.",
     icon: "📱",
   },
   {
@@ -18,7 +18,7 @@ const services = [
   },
   {
     title: "Software Development",
-    description: "Cloud data storage, which enables you to run your enterprise smoothly with a perfect data synchronization environment.",
+    description: "Offering expert advice on system architecture, best practices, technology stack selection, and improving software efficiency.",
     icon: "💻",
   },
   {

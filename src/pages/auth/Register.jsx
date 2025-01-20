@@ -95,7 +95,7 @@ const Register = () => {
     {/* Register form section */}
     <form
       onSubmit={handleSubmit}
-      className="absolute top-[20%] left-[0%] w-full md:w-[30%] flex items-center justify-center p-6 md:p-0"
+      className="absolute top-[20%] left-[0%] md:left-[5%] w-full md:w-[30%] flex items-center justify-center p-6 md:p-0"
     >
       <div className="bg-white w-full p-6 rounded-lg shadow-sm">
         <div className="flex justify-center pb-6">

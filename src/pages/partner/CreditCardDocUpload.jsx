@@ -6,7 +6,7 @@ import { Button,  Input, notification, Upload } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { getCustomerDetails, uploadDocForLoan } from "../../api/partner/loanApi";
 import dayjs from "dayjs";
-import { uploadCreditCardDoc } from "../../api/partner/creditcardApi";
+import { getCreditCardCustomerDetails, uploadCreditCardDoc } from "../../api/partner/creditcardApi";
 
 
 
@@ -136,7 +136,7 @@ const handleUpload = (file, key, isPdf) => {
     // Fetch Loan Deatils
     const fetchLoanCustomerDetails=async()=>{
       try {
-        const  {data, status}=await getCustomerDetails(fileNo);
+        const  {data, status}=await  getCreditCardCustomerDetails(fileNo);
          if(status===200){
            setCustomerDetails(data);
          }
@@ -235,98 +235,55 @@ const handleUpload = (file, key, isPdf) => {
       </div>
   
       {/* Loan form details */}
+    
       <div className="w-full md:w-[30%]">
-        <div className="flex flex-col gap-4">
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex justify-center">
-              <div className="w-20 h-20 rounded-full border-[1px] border-green-700 overflow-hidden">
-                <img className="w-full h-full object-cover" src={userCricle} alt="userImage" />
-              </div>
-            </div>
-  
-            <div className="flex flex-col gap-2">
-              <h1 className="text-lg text-zinc-800 font-semibold text-center">{customerDetails?.partner?.name}</h1>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-zinc-700">Email</span>
-                <span className="text-zinc-700 font-semibold">{customerDetails?.partner?.email}</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-zinc-700">Phone</span>
-                <span className="text-zinc-700 font-semibold">{customerDetails?.partner?.mobile_number}</span>
-              </div>
-              <h2 className="text-zinc-800 font-bold">
-                <span>{customerDetails?.data?.loan_type}</span> Of Rs <span>{customerDetails?.data?.loan_amount} <span>{customerDetails?.data?.tenure}</span></span>
-              </h2>
+      <div className="flex flex-col gap-4">
+        {/* Partner Information */}
+        <div className="bg-white rounded-lg shadow-sm p-4">
+          <div className="flex justify-center">
+            <div className="w-20 h-20 rounded-full border-[1px] border-green-700 overflow-hidden">
+              <img className="w-full h-full object-cover" src={userCricle} alt="User" />
             </div>
           </div>
-  
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <h2 className="text-lg text-zinc-800 font-semibold">Customer Details</h2>
-  
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 p-4 text-sm">
-              {/* Column 1 */}
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">Pan</span>
-                <span className="text-zinc-700 font-semibold">{customerDetails?.data?.pan}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">DOB</span>
-                <span className="text-zinc-700 font-semibold">
-                  {dayjs(customerDetails?.data?.dob).format("DD-MM-YYYY")}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">Pincode</span>
-                <span className="text-zinc-700 font-semibold">{customerDetails?.data?.residence_pincode}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">Residence Address</span>
-                <span className="text-zinc-700 font-semibold">{customerDetails?.data?.residence_address}</span>
-              </div>
-              {/* Column 2 */}
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">Mother Name</span>
-                <span className="text-zinc-700 font-semibold">{customerDetails?.data?.mother_name}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">Reference1</span>
-                <span className="text-zinc-700 font-semibold">
-                  {customerDetails?.data?.reference_name_1} - {customerDetails?.data?.reference_phone_1}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">Reference2</span>
-                <span className="text-zinc-700 font-semibold">
-                  {customerDetails?.data?.reference_name_2} - {customerDetails?.data?.reference_phone_2}
-                </span>
-              </div>
-              {/* Column 3 */}
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">Employment Type</span>
-                <span className="text-zinc-700 font-semibold capitalize">{customerDetails?.data?.employment_type}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">Company Name</span>
-                <span className="text-zinc-700 font-semibold">{customerDetails?.data?.company_name}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">Company Type</span>
-                <span className="text-zinc-700 font-semibold">{customerDetails?.data?.company_type}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">Monthly Income</span>
-                <span className="text-zinc-700 font-semibold">{customerDetails?.data?.employment_type}</span>
-              </div>
-              {/* Column 4 */}
-              <div className="flex flex-col gap-1">
-                <span className="text-zinc-600">Managed By</span>
-                <span className="text-zinc-700 font-semibold">Executive: NA</span>
-                <span className="text-zinc-700 font-semibold">Team Leader: NA</span>
-              </div>
+          <div className="flex flex-col gap-2">
+            <h1 className="text-lg text-zinc-800 font-semibold text-center">
+              {customerDetails?.partner?.name}
+            </h1>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-zinc-700">Email:</span>
+              <span className="text-zinc-700 font-semibold">{customerDetails?.partner?.email}</span>
             </div>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-zinc-700">Phone:</span>
+              <span className="text-zinc-700 font-semibold">{customerDetails?.partner?.mobile_number}</span>
+            </div>
+            <h2 className="text-zinc-800 font-bold">
+          Credit Limit: Rs <span>{customerDetails?.data?.credit_limit || "Not Available"}</span>
+        </h2>
+          </div>
+        </div>
+
+        {/* Customer Details */}
+        <div className="bg-white rounded-lg shadow-sm p-4">
+          <h2 className="text-lg text-zinc-800 font-semibold">Customer Details</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 p-4 text-sm">
+            {Object.entries(customerDetails?.data || {})
+              .filter(([key]) => !["created_at", "updated_at"].includes(key)) // Exclude created_at and updated_at
+              .map(([key, value]) => (
+                <div key={key} className="flex flex-col gap-1">
+                  <span className="text-zinc-600 capitalize">{key.replace(/_/g, " ")}</span>
+                  <span className="text-zinc-700 font-semibold">
+                    {key === "date_of_birth"
+                      ? dayjs(value).format("DD-MM-YYYY")
+                      : value || "N/A"}
+                  </span>
+                </div>
+              ))}
           </div>
         </div>
       </div>
+    </div>
+
     </div>
   </div>
   
