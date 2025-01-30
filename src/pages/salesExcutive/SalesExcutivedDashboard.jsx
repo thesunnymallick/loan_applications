@@ -7,6 +7,7 @@ import { MdArrowOutward } from "react-icons/md";
 import { Line, Bar, Doughnut, Scatter } from "react-chartjs-2";
 import { salesExDashboard } from "../../api/salesExecutive/dasboardApi";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PointElement, LineElement } from 'chart.js';
+import ErrorHandler from "../../utils/ErrorHandler";
 
 // Registering the necessary components for different charts
 ChartJS.register(
@@ -32,7 +33,7 @@ const SalesExcutivedDashboard = () => {
           setDashboardData(data?.data);
         }
       } catch (error) {
-        console.log(error);
+        ErrorHandler.handleError(error);
       }
     };
 

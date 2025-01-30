@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { addLoan } from "../../api/partner/loanApi";
 import dayjs from "dayjs";
+import ErrorHandler from "../../utils/ErrorHandler";
 
 const { Option } = Select;
 
@@ -148,13 +149,7 @@ const LoanForm = ({ loanType }) => {
       }
     } catch (error) {
       setLoading(false);
-      notification.error({
-        message: "Error Occurred",
-        description:
-          error?.message ||
-          "An unexpected error occurred. Please try again later.",
-        placement: "topRight",
-      });
+      ErrorHandler.handleError(error);
     }
   };
 

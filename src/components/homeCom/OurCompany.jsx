@@ -1,6 +1,7 @@
 import React from "react";
 import ourCompanyImg from "../../assets/ourCompany.jpg";
 import { useNavigate } from "react-router-dom";
+import LazyImage from "../LazyImage";
 
 const OurCompany = () => {
   const navigate=useNavigate();
@@ -28,7 +29,7 @@ const OurCompany = () => {
 
         {/* Image Section */}
         <div className="lg:w-1/2">
-          <img
+          <LazyImage
             className="w-full h-auto object-cover"
             src={ourCompanyImg}
             alt="Our Company"

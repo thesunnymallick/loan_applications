@@ -9,13 +9,15 @@ import { FiUpload } from "react-icons/fi";
 import { BsListCheck } from "react-icons/bs";
 import { Button, Input, Space, Table, Tag } from "antd";
 import { IoAddOutline } from "react-icons/io5";
-import { Link, useFetcher, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EyeOutlined, SearchOutlined } from "@ant-design/icons";
 import {
   getAllInsurance,
   getInsuranceCount,
 } from "../../api/partner/InsuranceApi";
 import { FaArrowLeft } from "react-icons/fa";
+import ErrorHandler from "../../utils/ErrorHandler";
+import Loader from "../../components/Loader";
 
 const InsurancePanel = () => {
   const [allInsurance, setAllInsurance] = useState([]);
@@ -26,18 +28,22 @@ const InsurancePanel = () => {
   const [pageSize, setPageSize] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
   const [insuranceCount, setInsuranceCount] = useState("");
+  const [pageLoading, setPageLoading]=useState(false);
 
   const navigate = useNavigate();
 
   const fetchAllInsurance = async (params = {}) => {
     try {
+       setLoading(true);
       const { data, status } = await getAllInsurance(params);
       if (status === 200) {
         setAllInsurance(data?.data?.data);
         setTotalItems(data?.data?.total || 0); // Set total items
+        setLoading(false);
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      ErrorHandler.handleError(error);
     }
   };
 
@@ -71,11 +77,16 @@ const InsurancePanel = () => {
   useEffect(() => {
     const fetchInsuranceCount = async () => {
       try {
+        setPageLoading(true)
         const { data, status } = await getInsuranceCount();
         if (status === 200) {
           setInsuranceCount(data);
+          setPageLoading(false);
         }
-      } catch (error) {}
+      } catch (error) {
+        setPageLoading(false);
+        ErrorHandler.handleError(error);
+      }
     };
 
     fetchInsuranceCount();
@@ -272,86 +283,90 @@ const InsurancePanel = () => {
   ];
 
   return (
-    <div className="p-6">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Left Section */}
-        <div className="flex items-center gap-2">
-          <Link to="/our-panels">
-            <FaArrowLeft className="text-lg md:text-xl text-zinc-800 font-semibold" />
-          </Link>
-          <span className="text-lg md:text-2xl text-zinc-800 font-semibold">
-            Insurance
-          </span>
-        </div>
-
-        {/* Right Section */}
-        <button
-          onClick={() => navigate(`/our-panels/insurancePanel/insurance/apply`)}
-          className="
-            w-full sm:w-[10%]
-            h-10
-            bg-green-700
-            text-white rounded-lg shadow-sm 
-            flex 
-            justify-center 
-            items-center 
-            mt-4 sm:mt-0"
-        >
-          <span className="text-xl">
-            <IoAddOutline />
-          </span>
-          <span>Apply</span>
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
-        {cards.map((card, index) => (
-          <div
-            key={index}
-            className={`p-6 rounded-lg shadow-lg text-white bg-gradient-to-r ${card.gradient} flex flex-col items-center`}
+   <>
+    {
+      pageLoading!==true ?(<div className="p-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Left Section */}
+          <div className="flex items-center gap-2">
+            <Link to="/our-panels">
+              <FaArrowLeft className="text-lg md:text-xl text-zinc-800 font-semibold" />
+            </Link>
+            <span className="text-lg md:text-2xl text-zinc-800 font-semibold">
+              Insurance
+            </span>
+          </div>
+  
+          {/* Right Section */}
+          <button
+            onClick={() => navigate(`/our-panels/insurancePanel/insurance/apply`)}
+            className="
+              w-full sm:w-[10%]
+              h-10
+              bg-green-700
+              text-white rounded-lg shadow-sm 
+              flex 
+              justify-center 
+              items-center 
+              mt-4 sm:mt-0"
           >
-            <div className="text-3xl mb-2">{card.icon}</div>
-            <h2 className="text-xl font-bold">{card.title}</h2>
-            <p className="text-2xl font-semibold mt-2">({card.count})</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="p-4 bg-white rounded-lg shadow-sm">
-        <div className="flex flex-col md:flex-row justify-between items-center py-4 px-2 gap-3">
-          <h1 className="text-zinc-700 font-semibold text-2xl w-full sm:w-auto">
-            All Applied Insurance
-          </h1>
-
-          <div className="flex justify-end mb-4">
-            <Input
-              size="large"
-              placeholder="Search by File No"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              onPressEnter={handleSearch}
-              style={{ width: "100%", maxWidth: 250 }}
-            />
-          </div>
+            <span className="text-xl">
+              <IoAddOutline />
+            </span>
+            <span>Apply</span>
+          </button>
         </div>
-
-        <Table
-          bordered
-          columns={columns}
-          dataSource={allInsurance}
-          scroll={{ x: "max-content" }}
-          loading={loading}
-          pagination={{
-            current: currentPage,
-            pageSize,
-            total: totalItems,
-            onChange: (page) => setCurrentPage(page),
-          }}
-          onChange={handleTableChange}
-          rowKey="key"
-        />
-      </div>
-    </div>
+  
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
+          {cards.map((card, index) => (
+            <div
+              key={index}
+              className={`p-6 rounded-lg shadow-lg text-white bg-gradient-to-r ${card.gradient} flex flex-col items-center`}
+            >
+              <div className="text-3xl mb-2">{card.icon}</div>
+              <h2 className="text-xl font-bold">{card.title}</h2>
+              <p className="text-2xl font-semibold mt-2">({card.count})</p>
+            </div>
+          ))}
+        </div>
+  
+        <div className="p-4 bg-white rounded-lg shadow-sm">
+          <div className="flex flex-col md:flex-row justify-between items-center py-4 px-2 gap-3">
+            <h1 className="text-zinc-700 font-semibold text-2xl w-full sm:w-auto">
+              All Applied Insurance
+            </h1>
+  
+            <div className="flex justify-end mb-4">
+              <Input
+                size="large"
+                placeholder="Search by File No"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                onPressEnter={handleSearch}
+                style={{ width: "100%", maxWidth: 250 }}
+              />
+            </div>
+          </div>
+  
+          <Table
+            bordered
+            columns={columns}
+            dataSource={allInsurance}
+            scroll={{ x: "max-content" }}
+            loading={loading}
+            pagination={{
+              current: currentPage,
+              pageSize,
+              total: totalItems,
+              onChange: (page) => setCurrentPage(page),
+            }}
+            onChange={handleTableChange}
+            rowKey="key"
+          />
+        </div>
+      </div>) : (<Loader/>)
+    }
+   </>
   );
 };
 

@@ -194,7 +194,11 @@ const PersonalInfo = ({
         onBlur={handleBlur}
         status={touched.payment_mode && errors.payment_mode ? "error" : ""}
       >
-        <Select.Option value="cash">Cash</Select.Option>
+        <Select.Option value="Cash">Cash</Select.Option>
+        <Select.Option value="Card">Card</Select.Option>
+        <Select.Option value="UPI">UPI</Select.Option>
+        <Select.Option value="Credit Card">Credit Card</Select.Option>
+        <Select.Option value="Net Banking">Net Banking</Select.Option>
       </Select>
       {touched.payment_mode && errors.payment_mode && (
         <span className="text-red-500 text-sm">{errors.payment_mode}</span>

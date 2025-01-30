@@ -3,7 +3,8 @@ import { toPng } from 'html-to-image';
 import certificate from "../../assets/certificate.png";
 import authorisation from "../../assets/authorisation.png";
 import { getCertificateDetails } from '../../api/partner/uploadDocApi';
-
+import LazyImage from "../../components/LazyImage"
+import ErrorHandler from '../../utils/ErrorHandler';
 const Certificate = () => {
   const certificateRef = useRef(null);
   const authorisationRef = useRef(null);
@@ -19,7 +20,8 @@ const Certificate = () => {
           link.click();
         })
         .catch((error) => {
-          console.error(`Error while downloading ${fileName}:`, error);
+          ErrorHandler.handleError(error);
+
         });
     }
   };
@@ -34,7 +36,7 @@ const Certificate = () => {
            setCertificateDetails(data);
          }
       } catch (error) {
-        console.log(error)
+        ErrorHandler.handleError(error);
       }
     }
 
@@ -70,7 +72,7 @@ const Certificate = () => {
         className="w-full max-w-lg h-auto relative bg-white shadow-lg rounded-lg overflow-hidden"
         ref={certificateRef}
       >
-        <img className="w-full h-full object-cover" src={certificate} alt="Certificate" />
+        <LazyImage className="w-full h-full object-cover" src={certificate} alt="Certificate" />
         <h1 className="absolute top-[42%] 
         left-[50%] transform -translate-x-[50%] -translate-y-[50%] text-sm md:text-lg font-serif font-semibold text-green-700 text-center italic" style={{ fontFamily: 'Playfair Display, serif' }}>
   {PARTNER_NAME}
@@ -101,7 +103,7 @@ const Certificate = () => {
         className="w-full max-w-lg h-auto relative bg-white shadow-lg rounded-lg overflow-hidden"
         ref={authorisationRef}
       >
-        <img
+        <LazyImage
           className="w-full h-full object-contain"
           src={authorisation}
           alt="Authorization Document"

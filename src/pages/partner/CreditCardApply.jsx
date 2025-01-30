@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { applyCreditCard } from "../../api/partner/creditcardApi";
 import dayjs from "dayjs";
+import ErrorHandler from "../../utils/ErrorHandler";
 
 const { Option } = Select;
 
@@ -90,6 +91,7 @@ const CreditCardApply = () => {
 
   const navigate=useNavigate();
   const [loading, setLoading]=useState(false);
+
   const initialValues = {
     first_name: "",
     last_name: "",
@@ -131,10 +133,7 @@ const CreditCardApply = () => {
       }
     } catch (error) {
       setLoading(false);
-      notification.error({
-        message: 'Application Failed',
-        description: error.response?.data?.message || 'An error occurred while applying for the credit card.',
-      });
+      ErrorHandler.handleError(error);
     }
   };
   

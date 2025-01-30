@@ -9,9 +9,12 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { EyeOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getAllOrders, taxtaionCount } from "../../api/partner/taxationpanel";
 import dayjs from "dayjs";
+import ErrorHandler from "../../utils/ErrorHandler";
+import { FaArrowLeft } from "react-icons/fa";
+import Loader from "../../components/Loader";
 
 const TaxationPanel = () => {
   const [searchText, setSearchText] = useState("");
@@ -20,18 +23,26 @@ const TaxationPanel = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
-  const [taxCount, setTaxCount]=useState(0);
+  const [taxCount, setTaxCount] = useState(0);
+  const [loading, setLoading]=useState(false);
+  const [pageLoading, setPageLoading]=useState(false);
   const navigate = useNavigate();
+  
 
   // Fetch all orders
   const fetchAllOrder = async (params = {}) => {
     try {
+        setLoading(true)
       const { data, status } = await getAllOrders(params);
       if (status === 200) {
+        setLoading(false);
         setAllOrders(data?.data?.data || []);
         setTotalItems(data?.data?.total || 0); // Set total items
       }
-    } catch (error) {}
+    } catch (error) {
+       setLoading(false);
+      ErrorHandler.handleError(error);
+    }
   };
 
   // fetch all taxations
@@ -44,23 +55,23 @@ const TaxationPanel = () => {
     });
   }, [currentPage, pageSize, searchText, filteredInfo]);
 
-
-  useEffect(()=>{
-
-    const taxtationCount=async()=>{
+  useEffect(() => {
+    const taxtationCount = async () => {
       try {
-        const {data, status}=await taxtaionCount()
-        if(status===200){
-          setTaxCount(data?.data)
+         setPageLoading(true);
+        const { data, status } = await taxtaionCount();
+        if (status === 200) {
+          setPageLoading(false);
+          setTaxCount(data?.data);
         }
       } catch (error) {
-        console.log(error)
+        setPageLoading(false);
+        ErrorHandler.handleError(error);
       }
-    }
+    };
 
     taxtationCount();
-
-  },[])
+  }, []);
 
   // Handle table changes (pagination, filters)
   const handleTableChange = (pagination, filters) => {
@@ -86,7 +97,7 @@ const TaxationPanel = () => {
       title: "#",
       dataIndex: "index",
       key: "index",
-      render: (text, record, index) => (currentPage - 1) * pageSize + index + 1, 
+      render: (text, record, index) => (currentPage - 1) * pageSize + index + 1,
     },
 
     {
@@ -117,7 +128,6 @@ const TaxationPanel = () => {
       ),
       onFilter: (value, record) => record.file_no.includes(value),
     },
-
 
     {
       title: "Applicant Name",
@@ -158,7 +168,6 @@ const TaxationPanel = () => {
         return <span>{dayjs(record?.created_at).format("YYYY-MM-DD")}</span>;
       },
     },
-   
 
     {
       title: "Status",
@@ -205,8 +214,11 @@ const TaxationPanel = () => {
           commission_due: { label: "Commission Due", color: "#daa520" },
           partner_hold: { label: "Partner Hold", color: "#8a2be2" },
         };
-        const status = statusMapping[record.taxation.status] || { label: record.taxation.status, color: "#595959" };
-    
+        const status = statusMapping[record.taxation.status] || {
+          label: record.taxation.status,
+          color: "#595959",
+        };
+
         return (
           <Tag
             style={{
@@ -237,137 +249,147 @@ const TaxationPanel = () => {
     },
   ];
 
-
-
-
-
-
   return (
-    <div className="bg-gray-50 p-8">
-      {/* Action Buttons Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-        {/* Place Order Card */}
-        <Card
-          onClick={() => navigate("/our-panels/taxation-panel/place-order")}
-          hoverable
-          className="rounded-lg shadow-lg text-center border-none cursor-pointe"
-          bodyStyle={{
-            padding: "24px",
-            background: "linear-gradient(135deg, #FFB75E, #ED8F03)", // Premium gold gradient
-          }}
-        >
-          <AppstoreOutlined className="text-white text-4xl mb-4" />
-          <h3 className="text-xl font-semibold mb-1 text-white">Place Order</h3>
-          <p className="text-white opacity-90">Add new order here</p>
-        </Card>
-
-        {/* Add Client Card */}
-        <Card
-          onClick={() => navigate("/our-panels/taxation-panel/add-client")}
-          hoverable
-          className="rounded-lg shadow-lg text-center border-none cursor-pointe"
-          bodyStyle={{
-            padding: "24px",
-            background: "linear-gradient(135deg, #00C9FF, #92FE9D)", // Premium aqua to green gradient
-          }}
-        >
-          <UserOutlined className="text-white text-4xl mb-4" />
-          <h3 className="text-xl font-semibold mb-1 text-white">Add Client</h3>
-          <p className="text-white opacity-90">Create new client here</p>
-        </Card>
-      </div>
-
-      {/* Overview Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Orders Card */}
-        <Card
-          hoverable
-          className="rounded-lg shadow-lg text-center border-none cursor-pointe"
-          bodyStyle={{
-            padding: "24px",
-            background: "linear-gradient(135deg, #FF512F, #DD2476)", // Premium fiery red to pink
-          }}
-        >
-          <CalendarOutlined className="text-white text-4xl mb-4" />
-          <h3 className="text-xl font-semibold mb-1 text-white">Orders  ({taxCount?.place_order_count})</h3>
-          <p className="text-white opacity-90 flex items-center justify-center gap-2">
-            View <span className="text-white">➔</span>
-          </p>
-        </Card>
-
-        {/* Clients Card */}
-        <Card
-          onClick={() => navigate(`/our-panels/taxation-panel/all-client`)}
-          hoverable
-          className="rounded-lg shadow-lg text-center border-none cursor-pointer"
-          bodyStyle={{
-            padding: "24px",
-            background: "linear-gradient(135deg, #11998E, #38EF7D)", // Premium teal gradient
-          }}
-        >
-          <TeamOutlined className="text-white text-4xl mb-4" />
-          <h3 className="text-xl font-semibold mb-1 text-white">
-            Clients ({taxCount?.clients_count})
-          </h3>
-          <p className="text-white opacity-90 flex items-center justify-center gap-2">
-            View <span className="text-white">➔</span>
-          </p>
-        </Card>
-
-        {/* Services Card */}
-        <Card
-          hoverable
-          className="rounded-lg shadow-lg text-center border-none"
-          bodyStyle={{
-            padding: "24px",
-            background: "linear-gradient(135deg, #373B44, #4286F4)", // Premium charcoal to blue
-          }}
-        >
-          <ProfileOutlined className="text-white text-4xl mb-4" />
-          <h3 className="text-xl font-semibold mb-1 text-white">
-            Services ({taxCount?.services_count})
-          </h3>
-          <p className="text-white opacity-90 flex items-center justify-center gap-2">
-            View <span className="text-white">➔</span>
-          </p>
-        </Card>
-      </div>
-
-      <div className="bg-white p-4 rounded-lg shadow-sm mt-10">
-        <div>
-          <div className="flex justify-end mb-6">
-            <Input
-              size="large"
-              placeholder="Search by keyword..."
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              onPressEnter={handleSearch}
-              prefix={<SearchOutlined style={{ color: "#888" }} />}
-              style={{
-                borderRadius: "8px",
-                padding: "8px 12px",
-                width: "100%",
-                maxWidth: "400px",
-              }}
-            />
+    <>
+     {
+        pageLoading!==true ? (  <div className="bg-gray-50 p-8">
+          <div className="flex items-center gap-2 pb-4">
+            <Link to="/our-panels" className="">
+              <FaArrowLeft className="text-xl text-zinc-800 font-semibold" />
+            </Link>
+            <span className="text-2xl text-zinc-800 font-semibold">
+              Taxation Panle
+            </span>
           </div>
-          <Table
-            bordered
-            columns={columns}
-            dataSource={allOrders}
-            rowKey="fileNo"
-            scroll={{ x: "max-content" }}
-            pagination={{
-              current: currentPage,
-              pageSize,
-              total: totalItems,
-              onChange: (page) => setCurrentPage(page),
-            }}
-            onChange={handleTableChange}
-          />
-        </div>
-      </div>
-    </div>
+          {/* Action Buttons Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+            {/* Place Order Card */}
+            <Card
+              onClick={() => navigate("/our-panels/taxation-panel/place-order")}
+              hoverable
+              className="rounded-lg shadow-lg text-center border-none cursor-pointe"
+              bodyStyle={{
+                padding: "24px",
+                background: "linear-gradient(135deg, #FFB75E, #ED8F03)", // Premium gold gradient
+              }}
+            >
+              <AppstoreOutlined className="text-white text-4xl mb-4" />
+              <h3 className="text-xl font-semibold mb-1 text-white">Place Order</h3>
+              <p className="text-white opacity-90">Add new order here</p>
+            </Card>
+    
+            {/* Add Client Card */}
+            <Card
+              onClick={() => navigate("/our-panels/taxation-panel/add-client")}
+              hoverable
+              className="rounded-lg shadow-lg text-center border-none cursor-pointe"
+              bodyStyle={{
+                padding: "24px",
+                background: "linear-gradient(135deg, #00C9FF, #92FE9D)", // Premium aqua to green gradient
+              }}
+            >
+              <UserOutlined className="text-white text-4xl mb-4" />
+              <h3 className="text-xl font-semibold mb-1 text-white">Add Client</h3>
+              <p className="text-white opacity-90">Create new client here</p>
+            </Card>
+          </div>
+    
+          {/* Overview Section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Orders Card */}
+            <Card
+              hoverable
+              className="rounded-lg shadow-lg text-center border-none cursor-pointe"
+              bodyStyle={{
+                padding: "24px",
+                background: "linear-gradient(135deg, #FF512F, #DD2476)", // Premium fiery red to pink
+              }}
+            >
+              <CalendarOutlined className="text-white text-4xl mb-4" />
+              <h3 className="text-xl font-semibold mb-1 text-white">
+                Orders ({taxCount?.place_order_count})
+              </h3>
+              <p className="text-white opacity-90 flex items-center justify-center gap-2">
+                View <span className="text-white">➔</span>
+              </p>
+            </Card>
+    
+            {/* Clients Card */}
+            <Card
+              onClick={() => navigate(`/our-panels/taxation-panel/all-client`)}
+              hoverable
+              className="rounded-lg shadow-lg text-center border-none cursor-pointer"
+              bodyStyle={{
+                padding: "24px",
+                background: "linear-gradient(135deg, #11998E, #38EF7D)", // Premium teal gradient
+              }}
+            >
+              <TeamOutlined className="text-white text-4xl mb-4" />
+              <h3 className="text-xl font-semibold mb-1 text-white">
+                Clients ({taxCount?.clients_count})
+              </h3>
+              <p className="text-white opacity-90 flex items-center justify-center gap-2">
+                View <span className="text-white">➔</span>
+              </p>
+            </Card>
+    
+            {/* Services Card */}
+            <Card
+              hoverable
+              className="rounded-lg shadow-lg text-center border-none"
+              bodyStyle={{
+                padding: "24px",
+                background: "linear-gradient(135deg, #373B44, #4286F4)", // Premium charcoal to blue
+              }}
+            >
+              <ProfileOutlined className="text-white text-4xl mb-4" />
+              <h3 className="text-xl font-semibold mb-1 text-white">
+                Services ({taxCount?.services_count})
+              </h3>
+              <p className="text-white opacity-90 flex items-center justify-center gap-2">
+                View <span className="text-white">➔</span>
+              </p>
+            </Card>
+          </div>
+    
+          <div className="bg-white p-4 rounded-lg shadow-sm mt-10">
+            <div>
+              <div className="flex justify-end mb-6">
+                <Input
+                  size="large"
+                  placeholder="Search by keyword..."
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                  onPressEnter={handleSearch}
+                  prefix={<SearchOutlined style={{ color: "#888" }} />}
+                  style={{
+                    borderRadius: "8px",
+                    padding: "8px 12px",
+                    width: "100%",
+                    maxWidth: "400px",
+                  }}
+                />
+              </div>
+              <Table
+                bordered
+                loading={loading}
+                columns={columns}
+                dataSource={allOrders}
+                rowKey="fileNo"
+                scroll={{ x: "max-content" }}
+                pagination={{
+                  current: currentPage,
+                  pageSize,
+                  total: totalItems,
+                  onChange: (page) => setCurrentPage(page),
+                }}
+                onChange={handleTableChange}
+              />
+            </div>
+          </div>
+        </div>) : (<Loader/>)
+     }
+    </>
   );
 };
 

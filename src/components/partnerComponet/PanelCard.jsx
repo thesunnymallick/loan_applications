@@ -1,9 +1,8 @@
 import React from "react";
 import { Card, Tooltip } from "antd";
 import { useNavigate, Link } from "react-router-dom";
-
+import LazyIamge from "../LazyImage"
 const PanelCard = ({ title, description, image, services, link, isAccessible }) => {
-  const navigate = useNavigate();
   console.log("Title", title);
 
   // Check if the title matches the condition
@@ -16,7 +15,7 @@ const PanelCard = ({ title, description, image, services, link, isAccessible }) 
     >
       <Card
         hoverable={isAccessible}
-        cover={<img alt={title} src={image} className="h-auto w-full object-cover rounded-t-lg" />}
+        cover={<LazyIamge alt={title} src={image} className="h-auto w-full object-cover rounded-t-lg" />}
         className={`rounded-lg shadow-md relative pb-6 ${
           !isAccessible ? "cursor-not-allowed opacity-60" : ""
         }`}

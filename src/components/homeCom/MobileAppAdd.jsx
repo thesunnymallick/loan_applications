@@ -1,6 +1,7 @@
 import React from 'react';
 import mobileApp from "../../assets/mobileApp.png";
 import { useNavigate } from 'react-router-dom';
+import LazyImage from '../LazyImage';
 
 const MobileAppAdd = () => {
 
@@ -25,7 +26,7 @@ const MobileAppAdd = () => {
 
         {/* Image Section */}
         <div className="w-full lg:w-[50%] flex justify-center lg:justify-end items-center">
-          <img
+          <LazyImage
             className="w-[70%] md:w-[50%] object-cover"
             src={mobileApp}
             alt="Mobile App"

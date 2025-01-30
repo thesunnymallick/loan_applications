@@ -3,6 +3,7 @@ import { Steps, ConfigProvider } from "antd";
 import process1 from "../../assets/process1.png";
 import process2 from "../../assets/process2.png";
 import process3 from "../../assets/process3.png";
+import LazyImage from "../LazyImage";
 
 const descriptions = [
   "Register your account by providing basic details.",
@@ -38,7 +39,7 @@ const RegisterProcess = () => {
         <div className="flex flex-col md:flex-row justify-center items-center gap-10 py-10">
           {/* Display the current step image */}
           <div className="w-full md:w-64 h-56 mb-6 md:mb-0">
-            <img
+            <LazyImage
               src={images[currentStep]}
               alt={`Step ${currentStep + 1}`}
               className="w-full h-full object-contain"

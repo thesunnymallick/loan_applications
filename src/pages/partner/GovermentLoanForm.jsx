@@ -7,6 +7,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { applyGovermentLoan } from "../../api/partner/govermentLoanApi";
 import dayjs from "dayjs";
+import ErrorHandler from "../../utils/ErrorHandler";
 
 const loanDurations = [
   "1-year",
@@ -212,12 +213,7 @@ const GovermentLoanForm = () => {
     } catch (error) {
       setLoading(false);
       console.log(error);
-      notification.error({
-        message: "Loan Application Failed",
-        description:
-          "There was an error submitting your application. Please try again later.",
-        duration: 2,
-      });
+      ErrorHandler.handleError(error);
     }
   };
 

@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container mx-auto">
         {/* Top Section */}
         <div className="py-3">
-        <img className="w-60 h-auto object-cover" src={logo} alt="logo" />
+        <img className="w-60!important h-auto object-cover" src={logo} alt="logo" />
         </div>
         <div className="flex flex-wrap justify-between items-center mb-10">
           <div>

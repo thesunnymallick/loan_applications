@@ -24,8 +24,8 @@ const toggleSidebarSlice = createSlice({
   },
 });
 
-// Export the actions
+
 export const { toggleSidebar, openSidebar, closeSidebar } = toggleSidebarSlice.actions;
 
-// Export the reducer
+
 export default toggleSidebarSlice.reducer;

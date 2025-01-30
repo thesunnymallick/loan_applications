@@ -1,97 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { getAllSubscriptions } from "../../api/partner/homeApi";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const SubscriptionPlans = () => {
-   
-  const [plans, setPlans]=useState([]);
-  const navigate=useNavigate();
-  
-  // const plans = [
-  //   {
-  //     title: "DSA LITE",
-  //     price: "₹ 1,499",
-  //     gst: "Incl. 18% GST",
-  //     features: [
-  //       "Private Bank Loan Panel",
-  //       "Govt Bank Loan Panel",
-  //       "Offline Credit Card Panel",
-  //     ],
-  //   },
-  //   {
-  //     title: "DSA LITE PRO",
-  //     price: "₹ 4,999",
-  //     gst: "Incl. 18% GST",
-  //     features: [
-  //       "Private Bank Loan Panel",
-  //       "Govt Bank Loan Panel",
-  //       "Offline Credit Card Panel",
-  //       "Tax, GST, ROC Service Panel",
-  //       "Instant Normal Payout",
-  //       "RM Support",
-  //     ],
-  //   },
-  //   {
-  //     title: "DSA DELIGHT",
-  //     price: "₹ 9,999",
-  //     gst: "Incl. 18% GST",
-  //     features: [
-  //       "Private Bank Loan Panel",
-  //       "Govt Bank Loan Panel",
-  //       "Online Credit Card Panel",
-  //       "Tax, GST, ROC Service Panel",
-  //       "Monthly Highly Payout",
-  //       "RM Support",
-  //     ],
-  //   },
-  //   {
-  //     title: "DSA DELIGHT PRO",
-  //     price: "₹ 18,999",
-  //     gst: "Incl. 18% GST",
-  //     features: [
-  //       "Private Bank Loan Panel",
-  //       "Govt Bank Loan Panel",
-  //       "Online Credit Card Panel",
-  //       "Tax, GST, ROC Service Panel",
-  //       "Micro Panel Instant & Direct Login Panel",
-  //       "AADHAR CARD & PAN CARD LOAN PANEL",
-  //       "Credit Score Check Panel",
-  //       "Instant Highly Payout & Special RM Team Support",
-  //     ],
-  //   },
-  //   {
-  //     title: "Franchise Plan",
-  //     price: "For pricing call +91 9091963351",
-  //     features: [
-  //       "DSA Delight Pro Active",
-  //       "Up Front Income",
-  //       "Passive Income",
-  //       "Instant Income",
-  //       "RM Support",
-  //       "BM Support",
-  //       "Lead Support",
-  //     ],
-  //     badge: "Pre Booking Deposit 40%",
-  //   },
-  // ];
+  const [plans, setPlans] = useState([]);
+  const navigate = useNavigate();
 
-   useEffect(()=>{
-    const fetchSubcriptions=async()=>{
-     try {
-      const {data, status}=await getAllSubscriptions();
-      if(status===200){
-        console.log(data)
-        setPlans(data?.data)
+  useEffect(() => {
+    const fetchSubcriptions = async () => {
+      try {
+        const { data, status } = await getAllSubscriptions();
+        if (status === 200) {
+          console.log(data);
+          setPlans(data?.data);
+        }
+      } catch (error) {
+        console.log(error);
       }
-     } catch (error) {
-      console.log(error);
-     }
-    }
+    };
 
     fetchSubcriptions();
-   },[])
-
-
+  }, []);
 
   return (
     <div className="py-10 px-5">
@@ -103,49 +33,60 @@ const SubscriptionPlans = () => {
       </p>
       {/* Grid Layout */}
       <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-  {plans.map((plan, index) => (
-    <div
-      key={index}
-      className={`relative p-6 rounded-xl shadow-md transform transition duration-300 ${
-        plan.is_offer
-          ? "bg-green-700 text-white"
-          : "bg-white border border-gray-300 hover:border-green-500"
-      }`}
-    >
-      {plan.is_offer ? (
-        <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-          Offer Active
-        </div>
-      ) : null}
-      <h3 className="text-xl font-bold mb-4">{plan.subscription_name}</h3>
-      <p className="text-2xl font-semibold">
-        ₹{plan.offer_price || plan.price}{" "}
-        <span className="text-sm">
-          (Incl. GST: {plan.gst}%)
-        </span>
-      </p>
-      <ul className="mt-4 space-y-2">
-        {plan.services.map((service, i) => (
-          <li key={i} className="text-sm">
-            <span className="text-green-500 font-bold">•</span> {service}
-          </li>
+        {plans.map((plan, index) => (
+          <motion.div
+            key={index}
+            className={`relative p-6 rounded-xl shadow-md transform transition duration-300 ${
+              plan.is_offer
+                ? "bg-green-700 text-white"
+                : "bg-white border border-gray-300 hover:border-green-500"
+            }`}
+            initial={{ opacity: 0, y: 50 }} // Start from below
+            whileInView={{
+              opacity: 1,
+              y: 0, // Move to normal position
+              transition: {
+                duration: 0.7, // Smooth animation duration
+                delay: index * 0.15, // Staggered animation effect
+                ease: "easeOut",
+              },
+            }} // Animation triggers when in view
+            viewport={{ once: true }} // Trigger once when the element enters the viewport
+            whileHover={{
+              scale: 1.03, // Slight scale up on hover
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)", // Add shadow effect on hover
+            }}
+          >
+            {plan.is_offer ? (
+              <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                Offer Active
+              </div>
+            ) : null}
+            <h3 className="text-xl font-bold mb-4">{plan.subscription_name}</h3>
+            <p className="text-2xl font-semibold">
+              ₹{plan.offer_price || plan.price}{" "}
+              <span className="text-sm">(Incl. GST: {plan.gst}%)</span>
+            </p>
+            <ul className="mt-4 space-y-2">
+              {plan.services.map((service, i) => (
+                <li key={i} className="text-sm">
+                  <span className="text-green-500 font-bold">•</span> {service}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => navigate(`/partner-apply`)}
+              className={`mt-6 px-4 py-2 w-full rounded-full font-semibold transition duration-300 ${
+                plan.is_offer
+                  ? "bg-white text-green-700 hover:bg-gray-100"
+                  : "bg-green-700 text-white hover:bg-green-800"
+              }`}
+            >
+              Choose Plan
+            </button>
+          </motion.div>
         ))}
-      </ul>
-   
-      <button
-        onClick={()=>navigate(`/partner-apply`)}
-        className={`mt-6 px-4 py-2 w-full rounded-full font-semibold transition duration-300 ${
-          plan.is_offer
-            ? "bg-white text-green-700 hover:bg-gray-100"
-            : "bg-green-700 text-white hover:bg-green-800"
-        }`}
-      >
-        Choose Plan
-      </button>
-    </div>
-  ))}
-</div>
-
+      </div>
     </div>
   );
 };

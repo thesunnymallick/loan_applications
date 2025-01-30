@@ -1,10 +1,8 @@
 import React from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { VscUnverified } from "react-icons/vsc";
-import aadhaarCard from "../../../assets/aadhaarcard.png";
-import panCard from "../../../assets/pancard.png";
-import checkBook from "../../../assets/checkBook.png";
-import userProfile from "../../../assets/user.jpg";
+import LazyImage from "../../LazyImage";
+
 const UploadDocView = ({ info }) => {
   return (
     <div className="h-[40vh] overflow-x-auto">
@@ -32,9 +30,9 @@ const UploadDocView = ({ info }) => {
             </div>
           </div>
           <div className="w-full h-60 border-zinc-200 border-[1px] rounded-md mt-2 overflow-hidden">
-            <img
+            <LazyImage
               className="w-full h-full object-cover"
-              src={info?.documents?.aadhar_front_image}
+              src={info?.documents?.aadhar_front_image }
               alt="Aadhar Card Front"
             />
           </div>
@@ -53,7 +51,7 @@ const UploadDocView = ({ info }) => {
               } 
              px-3 py-1 rounded-lg text-sm`}
             >
-              <VscUnverified />
+                 <RiVerifiedBadgeFill />
               <span>
               {info?.document_verifications?.is_aadhar_back_verified === 1
                   ? "Verify"
@@ -62,7 +60,7 @@ const UploadDocView = ({ info }) => {
             </div>
           </div>
           <div className="w-full h-60 border-zinc-200 border-[1px] rounded-md mt-2 overflow-hidden">
-            <img
+            <LazyImage
               className="w-full h-full object-cover"
               src={info?.documents?.aadhar_front_image}
               alt="Aadhar Card Back"
@@ -93,7 +91,7 @@ const UploadDocView = ({ info }) => {
             </div>
           </div>
           <div className="w-full h-60 border-zinc-200 border-[1px] rounded-md mt-2 overflow-hidden">
-            <img
+            <LazyImage
               className="w-full h-full object-cover"
               src={info?.documents?.pan_card_image}
               alt="Pan Card"
@@ -114,7 +112,7 @@ const UploadDocView = ({ info }) => {
           } 
          px-3 py-1 rounded-lg text-sm`}
             >
-              <VscUnverified />
+                <RiVerifiedBadgeFill />
               <span>
               {info?.document_verifications?.is_blank_cheque_verified === 1
                   ? "Verify"
@@ -123,9 +121,39 @@ const UploadDocView = ({ info }) => {
             </div>
           </div>
           <div className="w-full h-60 border-zinc-200 border-[1px] rounded-md mt-2 overflow-hidden">
-            <img
+            <LazyImage
               className="w-full h-full object-cover"
               src={info?.documents?.blank_cheque_image}
+              alt="Cancel Cheque"
+            />
+          </div>
+ 
+        </div>
+         {/* Educations Photo */}
+         <div className="bg-zinc-50 rounded-lg shadow-sm px-4 py-2">
+          <div className="flex justify-between">
+            <h3 className="text-zinc-600 font-semibold">Education Qualification</h3>
+            <div
+              className={`flex items-center gap-1
+               border-[1px] ${
+            info?.document_verifications?.is_education_qualification_verified === 1
+              ? "bg-green-100 text-green-600  border-green-600"
+              : "bg-red-100 text-red-600 border-red-600"
+          } 
+         px-3 py-1 rounded-lg text-sm`}
+            >
+                <RiVerifiedBadgeFill />
+              <span>
+              {info?.document_verifications?.is_education_qualification_verified === 1
+                  ? "Verify"
+                  : "Not Verified"}
+              </span>
+            </div>
+          </div>
+          <div className="w-full h-60 border-zinc-200 border-[1px] rounded-md mt-2 overflow-hidden">
+            <LazyImage
+              className="w-full h-full object-cover"
+              src={info?.documents?.education_qualification}
               alt="Cancel Cheque"
             />
           </div>
@@ -154,7 +182,7 @@ const UploadDocView = ({ info }) => {
             </div>
           </div>
           <div className="w-full h-60 border-zinc-200 border-[1px] rounded-md mt-2 overflow-hidden">
-            <img
+            <LazyImage
               className="w-full h-full object-cover"
               src={info?.documents?.userPhoto}
               alt="profile image"

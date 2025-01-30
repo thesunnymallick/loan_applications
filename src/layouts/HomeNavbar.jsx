@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Menu, Dropdown, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import logo from "../assets/logo/logo1.png";
-
+import LazyImage from "../components/LazyImage"
 const HomeNavbar = ({ textColor = "text-black" }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -69,7 +69,7 @@ const HomeNavbar = ({ textColor = "text-black" }) => {
       }`}
     >
       <div className="container mx-auto flex justify-between items-center py-4 px-4">
-        <img className="w-40 h-auto object-cover" src={logo} alt="Logo" />
+        <LazyImage className="w-[10rem] h-auto object-cover" src={logo} alt="Logo" />
         {isMobile ? (
           <div className="flex items-center gap-2">
              <Link to="/partner/login">

@@ -11,6 +11,7 @@ import {
 import { updateAgrement } from "../../features/authSlice";
 import AgreementPDF from "../../pages/partner/AgreementPDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import ErrorHandler from "../../utils/ErrorHandler";
 
 const VerificationModal = () => {
   const { status: userStatus, is_agreement } = useSelector(
@@ -36,7 +37,7 @@ const VerificationModal = () => {
         dispatch(updateAgrement({ is_agreement: true }));
       }
     } catch (error) {
-      console.log(error);
+      ErrorHandler.handleError(error);
     }
   };
 
@@ -48,7 +49,7 @@ const VerificationModal = () => {
       setAgreementDeatils(data)
     }
    } catch (error) {
-    console.log(error)
+    ErrorHandler.handleError(error);
    }
   }
   fetchAgrementDetails()
@@ -140,13 +141,6 @@ const VerificationModal = () => {
                 <PDFDownloadLink
                   document={<AgreementPDF aggrementDetails={aggrementDetails} />}
                   fileName="Agreement.pdf"
-                  // style={{
-                  //   textDecoration: "none",
-                  //   padding: "10px 20px",
-                  //   color: "#fff",
-                  //   backgroundColor: "#28a745",
-                  //   borderRadius: 5,
-                  // }}
                 >
                   {({ loading }) =>
                     loading ? "Preparing document..." : "Download Agreement"

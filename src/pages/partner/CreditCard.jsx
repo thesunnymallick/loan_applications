@@ -13,8 +13,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { getAllCreditCards, getcreditCardCount } from "../../api/partner/creditcardApi";
 import { EyeOutlined, SearchOutlined } from "@ant-design/icons";
 import { FaArrowLeft } from "react-icons/fa";
-import { render } from "@testing-library/react";
+
 import dayjs from "dayjs";
+import ErrorHandler from "../../utils/ErrorHandler";
+import Loader from "../../components/Loader";
 
 const CreditCard = () => {
   const [allCreditCards, setAllCreditCards] = useState([]);
@@ -26,8 +28,7 @@ const CreditCard = () => {
   const [pageSize, setPageSize] = useState(10); 
   const [totalItems, setTotalItems] = useState(0); 
   const [cardCount, setCardCount]=useState("")
-
-
+  const [pageLoading, setPageLoading]=useState(false);
 
  
 
@@ -42,7 +43,7 @@ const CreditCard = () => {
         setTotalItems(data?.data?.total || 0); 
       }
     } catch (error) {
-      console.log(error);
+      ErrorHandler.handleError(error);
     }
   };
 
@@ -290,12 +291,15 @@ const CreditCard = () => {
 
       const fetchCreditCardCount=async()=>{
         try {
+           setPageLoading(true)
           const {data, status}=await getcreditCardCount();
           if(status===200){
             setCardCount(data?.data)
+            setPageLoading(false);
           }
         } catch (error) {
-          console.log(error);
+          setPageLoading(false);
+          ErrorHandler.handleError(error);
         }
       }
 
@@ -361,91 +365,95 @@ const CreditCard = () => {
 
 
     return (
-    <div className="p-6">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Left Section */}
-        <div className="flex items-center gap-2">
-          <Link to="/our-panels">
-            <FaArrowLeft className="text-lg md:text-xl text-zinc-800 font-semibold" />
-          </Link>
-          <span className="text-lg md:text-2xl text-zinc-800 font-semibold">
-            Credit Card
-          </span>
-        </div>
-
-        {/* Right Section */}
-        <button
-          onClick={() =>
-            navigate(`/our-panels/creditCard-panel/creditcard-apply`)
-          }
-          className="
-          w-full md:w-auto
-          h-10
-          bg-green-700
-          text-white 
-          rounded-lg 
-          shadow-sm 
-          flex 
-          justify-center 
-          items-center 
-          gap-2 
-          px-4
-        "
-        >
-          <span className="text-lg md:text-xl">
-            <IoAddOutline />
-          </span>
-          <span>Apply</span>
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
-        {cards.map((card, index) => (
-          <div
-            key={index}
-            className={`p-6 rounded-lg shadow-lg text-white bg-gradient-to-r ${card.gradient} flex flex-col items-center`}
-          >
-            <div className="text-3xl mb-2">{card.icon}</div>
-            <h2 className="text-xl font-bold">{card.title}</h2>
-            <p className="text-2xl font-semibold mt-2">({card.count})</p>
+     <> 
+      {
+        pageLoading!==true ? ( <div className="p-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            {/* Left Section */}
+            <div className="flex items-center gap-2">
+              <Link to="/our-panels">
+                <FaArrowLeft className="text-lg md:text-xl text-zinc-800 font-semibold" />
+              </Link>
+              <span className="text-lg md:text-2xl text-zinc-800 font-semibold">
+                Credit Card
+              </span>
+            </div>
+    
+            {/* Right Section */}
+            <button
+              onClick={() =>
+                navigate(`/our-panels/creditCard-panel/creditcard-apply`)
+              }
+              className="
+              w-full md:w-auto
+              h-10
+              bg-green-700
+              text-white 
+              rounded-lg 
+              shadow-sm 
+              flex 
+              justify-center 
+              items-center 
+              gap-2 
+              px-4
+            "
+            >
+              <span className="text-lg md:text-xl">
+                <IoAddOutline />
+              </span>
+              <span>Apply</span>
+            </button>
           </div>
-        ))}
-      </div>
-
-      <div className="p-4 bg-white rounded-lg shadow-sm">
-        <div className="flex flex-col md:flex-row justify-between items-center py-4 px-2 gap-3">
-          <h1 className="text-zinc-700 font-semibold text-xl md:text-2xl text-center md:text-left">
-            All Applied Credit Card
-          </h1>
-        </div>
-
-        <div className="flex justify-end mb-4">
-        <Input
-          size="large"
-          placeholder="Search by File No"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          onPressEnter={handleSearch}
-          style={{ width: "100%", maxWidth: 250 }}
-        />
-      </div>
-
-        <Table
-          bordered
-          columns={columns}
-          dataSource={allCreditCards}
-          scroll={{ x: "max-content" }}
-          loading={loading}
-          pagination={{
-            current: currentPage,
-            pageSize,
-            total: totalItems,
-            onChange: (page) => setCurrentPage(page),
-          }}
-          onChange={handleTableChange}
-        />
-      </div>
-    </div>
+    
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
+            {cards.map((card, index) => (
+              <div
+                key={index}
+                className={`p-6 rounded-lg shadow-lg text-white bg-gradient-to-r ${card.gradient} flex flex-col items-center`}
+              >
+                <div className="text-3xl mb-2">{card.icon}</div>
+                <h2 className="text-xl font-bold">{card.title}</h2>
+                <p className="text-2xl font-semibold mt-2">({card.count})</p>
+              </div>
+            ))}
+          </div>
+    
+          <div className="p-4 bg-white rounded-lg shadow-sm">
+            <div className="flex flex-col md:flex-row justify-between items-center py-4 px-2 gap-3">
+              <h1 className="text-zinc-700 font-semibold text-xl md:text-2xl text-center md:text-left">
+                All Applied Credit Card
+              </h1>
+            </div>
+    
+            <div className="flex justify-end mb-4">
+            <Input
+              size="large"
+              placeholder="Search by File No"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              onPressEnter={handleSearch}
+              style={{ width: "100%", maxWidth: 250 }}
+            />
+          </div>
+    
+            <Table
+              bordered
+              columns={columns}
+              dataSource={allCreditCards}
+              scroll={{ x: "max-content" }}
+              loading={loading}
+              pagination={{
+                current: currentPage,
+                pageSize,
+                total: totalItems,
+                onChange: (page) => setCurrentPage(page),
+              }}
+              onChange={handleTableChange}
+            />
+          </div>
+        </div>) : (<Loader/>)
+      }
+     </>
     );
 };
 

@@ -13,6 +13,8 @@ import { Link, useParams } from "react-router-dom";
 import { FaArrowLeft, FaCloudUploadAlt, FaFilePdf } from "react-icons/fa";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { getGovermentCustomerDetails, uploadGovermentDoc } from "../../api/partner/govermentLoanApi";
+import ErrorHandler from "../../utils/ErrorHandler";
+import Loader from "../../components/Loader";
 const { Title } = Typography;
 
 const GovermentLoanDocUpload = () => {
@@ -20,6 +22,8 @@ const GovermentLoanDocUpload = () => {
   // State for storing uploaded files dynamically
   const [images, setImages] = useState({});
   const [customerDetails, setCustomerDetails] = useState(null);
+  const [loading, setLoading]=useState(false);
+
 
 
   
@@ -133,14 +137,7 @@ const GovermentLoanDocUpload = () => {
       }
     } catch (error) {
       // Handle unexpected errors
-      notification.error({
-        message: "Error Occurred",
-        description:
-          error?.response?.data?.message ||
-          "Something went wrong. Please try again later.",
-        duration: 3,
-      });
-      console.error("Error in handleSave:", error);
+      ErrorHandler.handleError(error);
     }
   };
 
@@ -180,11 +177,16 @@ const GovermentLoanDocUpload = () => {
   useEffect(() => {
     const fetchGovermentLoanCustomerDetails = async () => {
       try {
+        setLoading(true)
         const {data, status}=await  getGovermentCustomerDetails(fileNo);
         if(status===200){
+          setLoading(false);
           setCustomerDetails(data?.data)
         }
-      } catch (error) {}
+      } catch (error) {
+        setLoading(false);
+        ErrorHandler.handleError(error);
+      }
     };
 
     fetchGovermentLoanCustomerDetails();
@@ -233,7 +235,9 @@ const GovermentLoanDocUpload = () => {
     : [];
 
   return (
-    <div className="p-6">
+   <> 
+   {
+     loading!==true ? ( <div className="p-6">
       <div className="flex items-center gap-2 py-3">
         <Link
           to={"/our-panels/govermentLoan"}
@@ -359,7 +363,9 @@ const GovermentLoanDocUpload = () => {
           )
         )}
       </div>
-    </div>
+    </div>) : (<Loader/>)
+   }
+   </>
   );
 };
 

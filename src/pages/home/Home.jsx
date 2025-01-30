@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import HomeNavbar from "../../layouts/HomeNavbar";
 import Hero from "../../components/homeCom/Hero";
 import SubscriptionPlans from "../../components/homeCom/SubscriptionPlans";
@@ -13,6 +12,7 @@ import MobileAppAdd from "../../components/homeCom/MobileAppAdd";
 import Services from "../../components/homeCom/Services";
 import OurCompany from "../../components/homeCom/OurCompany";
 import ContactInfo from "../../components/homeCom/ContactInfo";
+import OurTeam from "../../components/homeCom/OurTeam";
 
 const Home = () => {
   return (
@@ -25,6 +25,7 @@ const Home = () => {
       <div className="container mx-auto py-10 space-y-10">
         <RegisterProcess />
         <SubscriptionPlans />
+        <OurTeam/>
         <BusinessOverview />
         <FinancialProducts />
         <BusinessOverview2 />

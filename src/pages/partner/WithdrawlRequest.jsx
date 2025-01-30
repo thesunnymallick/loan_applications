@@ -3,6 +3,7 @@ import { Form, Input, Button, notification } from "antd";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {withDrawalRequest} from "../../api/partner/walletApi"
+import ErrorHandler from "../../utils/ErrorHandler";
 
 
 const WithdrawlRequest = ({setIsWithdrawl}) => {
@@ -22,12 +23,7 @@ const WithdrawlRequest = ({setIsWithdrawl}) => {
           });
         }
       } catch (error) {
-        notification.error({
-          message: 'Withdrawal Failed',
-          description: 'There was an issue processing your withdrawal request. Please try again.',
-          placement: 'topRight',
-        });
-        console.log(error); // Log the error for debugging
+        ErrorHandler.handleError(error);
       }
     };
     

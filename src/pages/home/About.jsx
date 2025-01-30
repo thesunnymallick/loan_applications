@@ -4,6 +4,7 @@ import Footer from './Footer';
 import AboutImage from "../../assets/about.jpg"
 import image1 from "../../assets/loan1.jpg"
 import image2 from "../../assets/discuss.jpg"
+import LazyImage from '../../components/LazyImage';
 const About = () => {
   return (
    <>
@@ -30,7 +31,7 @@ const About = () => {
             </p>
           </div>
           <div>
-            <img
+            <LazyImage
               src={image1}
               alt="About Us"
               className="w-full rounded-lg shadow-lg"
@@ -44,7 +45,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <img
+              <LazyImage
                 src={image2}
                 alt="Why Choose Us"
                 className="w-full rounded-lg shadow-lg"

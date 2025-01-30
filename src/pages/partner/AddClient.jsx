@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { addClient } from "../../api/partner/taxationpanel";
+import ErrorHandler from "../../utils/ErrorHandler";
 
 // Validation Schema using Yup
 const validationSchema = Yup.object({
@@ -120,12 +121,7 @@ const handleAddClient = async (values) => {
     }
   } catch (error) {
     setLoading(false);
-    console.error(error);
-    notification.error({
-      message: "Error",
-      description: "An error occurred while adding the client. Please try again later.",
-      placement: "topRight",
-    });
+    ErrorHandler.handleError(error);
   }
 };
 

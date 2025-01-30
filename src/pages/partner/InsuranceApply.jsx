@@ -5,6 +5,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { applyInsurance } from "../../api/partner/InsuranceApi";
+import ErrorHandler from "../../utils/ErrorHandler";
 const { Option } = Select;
 
 const validationSchema = Yup.object({
@@ -70,12 +71,7 @@ const InsuranceApply = () => {
       }
     } catch (error) {
       setLoading(false);
-      notification.error({
-        message: "Application Failed",
-        description:
-          error.response?.data?.message ||
-          "An error occurred while applying for the insurance.",
-      });
+      ErrorHandler.handleError(error);
     }
   };
 

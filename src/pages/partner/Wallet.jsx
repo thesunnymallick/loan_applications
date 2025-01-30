@@ -6,6 +6,7 @@ import WithdrawlRequest from "./WithdrawlRequest";
 import { getAllTransaction, getWalletBalance } from "../../api/partner/walletApi";
 import { useDispatch, useSelector } from "react-redux";
 import { updateWalletBalance } from "../../features/authSlice";
+import ErrorHandler from "../../utils/ErrorHandler";
 
 const Wallet = () => {
   const {  wallet_balance } = useSelector(
@@ -47,7 +48,7 @@ const Wallet = () => {
         }));
       }
     } catch (error) {
-      console.error("Error fetching transactions:", error);
+      ErrorHandler.handleError(error);
     } finally {
       setLoading(false);
     }
@@ -106,7 +107,7 @@ const Wallet = () => {
        dispatch(updateWalletBalance({wallet_balance: data?.wallet_balance}))
       }
      } catch (error) {
-       console.log(error);
+      ErrorHandler.handleError(error);
      }
     }
 

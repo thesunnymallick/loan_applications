@@ -5,7 +5,6 @@ import {
   Text,
   View,
   StyleSheet,
-  PDFViewer,
   Image,
 } from "@react-pdf/renderer";
 import logo from "../../assets/logo/logo1.png";

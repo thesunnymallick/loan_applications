@@ -1,6 +1,7 @@
 import React from "react";
 import menImage from "../../assets/men.png";
 import { useNavigate } from "react-router-dom";
+import LazyImage from "../LazyImage";
 
 const BusinessOverview2 = () => {
   const navigate=useNavigate();
@@ -17,7 +18,7 @@ const BusinessOverview2 = () => {
             <img
               src={menImage}
               alt="Business Person"
-              className="relative z-10 w-[50%] md:w-[90%] mr-14 md:mr-0 "
+              className="relative z-50 w-[50%] md:w-[90%] mr-14 md:mr-0 "
             />
             <div
               className="

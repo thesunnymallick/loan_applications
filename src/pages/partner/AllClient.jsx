@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { getAllClient } from "../../api/partner/taxationpanel";
 import { Table } from "antd";
 import dayjs from "dayjs";
+import ErrorHandler from "../../utils/ErrorHandler";
 
 const AllClient = () => {
   const [allClient, setAllClient] = useState([]);
@@ -122,7 +123,7 @@ const AllClient = () => {
           setAllClient(data?.data);
         }
       } catch (error) {
-        console.log(error);
+        ErrorHandler.handleError(error);
       }
     };
 

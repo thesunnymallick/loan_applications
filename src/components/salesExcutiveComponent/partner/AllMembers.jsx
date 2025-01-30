@@ -174,12 +174,23 @@ const AllMembers = () => {
       key: "payment_mode",
       width: 150,
     },
+
     {
       title: "Subscription",
       dataIndex: "subscription",
       key: "subscription",
       width: 200,
+      render: (text, record)=>{
+        return(
+          <div className="flex items-center">
+             <span className="text-zinc-700 font-semibold">{record?.subscription?.subscription_name}</span>
+             <span>-</span>
+             <span>(₹{record?.subscription?.total_price})</span>
+          </div>
+        )
+      }
     },
+   
     {
       title: "Created Date",
       dataIndex: "created_at",

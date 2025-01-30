@@ -7,6 +7,7 @@ import { getAllServices } from "../../api/admin/adminSettingApi";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { addPlaceOrder } from "../../api/partner/taxationpanel";
+import ErrorHandler from "../../utils/ErrorHandler";
 const { Option } = Select;
 
 const validationSchema = Yup.object().shape({
@@ -78,7 +79,7 @@ const PlaceOrder = () => {
           setAllClient(data?.data);
         }
       } catch (error) {
-        console.log(error);
+        ErrorHandler.handleError(error);
       }
     };
 
@@ -89,7 +90,7 @@ const PlaceOrder = () => {
           setAllServices(data?.data);
         }
       } catch (error) {
-        console.log(error);
+        ErrorHandler.handleError(error);
       }
     };
 

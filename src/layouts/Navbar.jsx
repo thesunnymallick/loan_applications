@@ -62,7 +62,7 @@ const Navbar = () => {
         {/* Logout Icon */}
         <div
           onClick={confirmationLogout}
-          className="w-10 h-10 bg-white shadow-md 
+          className="w-[2.5rem] h-[2.5rem] bg-white shadow-md 
           rounded-full flex justify-center items-center text-lg text-zinc-800 font-semibold cursor-pointer"
         >
           <FiLogOut />

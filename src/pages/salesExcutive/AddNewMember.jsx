@@ -19,6 +19,7 @@ import {
 } from "../../api/salesExecutive/partnerApi";
 import moment from "moment";
 import dayjs from "dayjs";
+import ErrorHandler from "../../utils/ErrorHandler";
 const validationSchema = Yup.object().shape({
   name: Yup.string()
     .required("Name is required")
@@ -147,10 +148,7 @@ const AddNewMember = () => {
         });
       }
     } catch (error) {
-      notification.error({
-        message: "Error",
-        description: error.message || "An unexpected error occurred.",
-      });
+      ErrorHandler.handleError(error);
     }
   };
 
@@ -173,12 +171,7 @@ const AddNewMember = () => {
     } catch (error) {
       setIsOpen(false);
       setLoading(false);
-      notification.error({
-        message: "Registration Failed",
-        description:
-          "There was an error while registering the partner. Please try again.",
-      });
-      console.log(error);
+      ErrorHandler.handleError(error);
     }
   };
 
