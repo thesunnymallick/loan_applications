@@ -4,6 +4,7 @@ import routes from './AppRoutes';
 // import NotFound from './components/AppPages/NotFound';
 import ProtectedRoute from './config/ProtectedRoute'; // To protect certain routes
 import { SyncLoader} from "react-spinners"
+import NotFound from './components/NotFound';
 const App = () => {
 
 
@@ -57,14 +58,13 @@ const App = () => {
           }
         )}
         {/* Catch-all route for 404 */}
-        {/* <Route
+        <Route
           path="*"
           element={
-            <RootLayout>
               <NotFound />
-            </RootLayout>
+     
           }
-        /> */}
+        />
       </Routes>
     </BrowserRouter>
     </Suspense>
