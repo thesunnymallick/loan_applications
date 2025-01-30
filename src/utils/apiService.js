@@ -3,7 +3,6 @@ import Cookies from 'js-cookie';
 import { notification } from 'antd';
 
 const url = process.env.REACT_APP_API_BASE_URL_LOCAL;
-console.log("Url", url);
 
 const apiService = axios.create({
   baseURL: url, 

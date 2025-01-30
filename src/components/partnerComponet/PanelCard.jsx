@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Tooltip } from "antd";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LazyIamge from "../LazyImage"
 const PanelCard = ({ title, description, image, services, link, isAccessible }) => {
   console.log("Title", title);

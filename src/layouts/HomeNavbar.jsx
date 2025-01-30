@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Menu, Dropdown, Button } from "antd";
+import { Link } from "react-router-dom";
+import { Dropdown, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import logo from "../assets/logo/logo1.png";
-import LazyImage from "../components/LazyImage"
+import LazyImage from "../components/LazyImage";
 const HomeNavbar = ({ textColor = "text-black" }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const navigate=useNavigate();
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -39,26 +39,7 @@ const HomeNavbar = ({ textColor = "text-black" }) => {
       key: "contact",
       label: <Link to="/contact">Contact</Link>,
     },
-
   ];
-
-  const menu = (
-    <Menu
-      items={menuItems.map((item) => ({
-        ...item,
-        label: (
-          <Link
-            to={item.key === "home" ? "/" : `/${item.key}`}
-            className={`text-lg font-medium hover:text-green-500 ${
-              isScrolled ? "text-zinc-900" : textColor
-            }`}
-          >
-            {item.label.props.children}
-          </Link>
-        ),
-      }))}
-    />
-  );
 
   return (
     <div
@@ -68,23 +49,33 @@ const HomeNavbar = ({ textColor = "text-black" }) => {
           : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto flex justify-between items-center py-4 px-4">
-        <LazyImage className="w-[10rem] h-auto object-cover" src={logo} alt="Logo" />
+      <div className="container 
+      mx-auto flex justify-between items-center py-4 px-4">
+        <LazyImage
+          className="w-[10rem] h-auto object-cover"
+          src={logo}
+          alt="Logo"
+        />
         {isMobile ? (
           <div className="flex items-center gap-2">
-             <Link to="/partner/login">
-           <Button className="text-lg 
-           font-medium bg-gradient-to-r from-green-500 to-green-700 text-white hover:from-green-600 hover:to-green-800 rounded-full px-6 py-2 shadow-lg transition-all duration-300">
-             Login 
-           </Button>
-         </Link>
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <Button
-              type="text"
-              icon={<MenuOutlined className="text-2xl" />}
-              className="text-lg font-medium"
-            />
-          </Dropdown>
+            <Link to="/partner/login">
+              <Button
+                className="text-lg 
+           font-medium bg-gradient-to-r
+           from-green-500 to-green-700
+           text-white hover:from-green-600 hover:to-green-800 
+           rounded-full px-6 py-2 shadow-lg transition-all duration-300"
+              >
+                Login
+              </Button>
+            </Link>
+            <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
+              <Button
+                type="text"
+                icon={<MenuOutlined className="text-2xl" />}
+                className="text-lg font-medium"
+              />
+            </Dropdown>
           </div>
         ) : (
           <ul className="flex items-center gap-10">

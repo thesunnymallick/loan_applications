@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button, Table, Modal } from "antd";
+import { Button, Table, Modal } from "antd";
 import { AiOutlinePlusCircle, AiOutlineArrowUp } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
 import WithdrawlRequest from "./WithdrawlRequest";

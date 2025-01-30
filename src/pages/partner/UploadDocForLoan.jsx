@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaCloudUploadAlt, FaFilePdf } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import userCricle from "../../assets/userCricle.jpg";
-import { Button, Image, Input, notification, Upload } from "antd";
+import { Button, Input, notification, Upload } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import {
   getCustomerDetails,

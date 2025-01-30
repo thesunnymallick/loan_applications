@@ -13,6 +13,8 @@ import logo1 from "../../assets/logo/logo1.png";
 import { RxCross2 } from "react-icons/rx";
 import ForgotPassword from "../../components/partnerComponet/ForgotPassword";
 import ErrorHandler from "../../utils/ErrorHandler";
+
+
 // Define the validation schema
 const loginSchema = Yup.object({
   email: Yup.string()
@@ -21,12 +23,15 @@ const loginSchema = Yup.object({
   password: Yup.string().required("Password is required"),
 });
 
+
+
 // A reusable login component with loginType as a prop
 const Login = ({ loginType }) => {
   const [loading, setLoading] = useState(false);
   const [isForgot, setIsForgot] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   // Define login types and their corresponding display names
   const loginTitles = {
     Admin: "Admin",
@@ -110,6 +115,7 @@ const Login = ({ loginType }) => {
     initialValues,
     validationSchema: loginSchema,
     onSubmit: (values) => {
+
       // login type sales executive
       if (loginType === "SalesExecutive") {
         handelSalesExecutiveLogin(values);

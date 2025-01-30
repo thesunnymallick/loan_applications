@@ -17,7 +17,6 @@ import {
   newPartnerCreate,
   partnerSendOTP,
 } from "../../api/salesExecutive/partnerApi";
-import moment from "moment";
 import dayjs from "dayjs";
 import ErrorHandler from "../../utils/ErrorHandler";
 const validationSchema = Yup.object().shape({

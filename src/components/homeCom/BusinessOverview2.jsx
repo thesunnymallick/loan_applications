@@ -1,7 +1,6 @@
 import React from "react";
 import menImage from "../../assets/men.png";
 import { useNavigate } from "react-router-dom";
-import LazyImage from "../LazyImage";
 
 const BusinessOverview2 = () => {
   const navigate=useNavigate();

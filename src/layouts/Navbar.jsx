@@ -1,5 +1,5 @@
-import { Avatar, Modal, Menu } from "antd";
-import React, { useState } from "react";
+import { Avatar, Modal} from "antd";
+import React from "react";
 import { FiLogOut } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";

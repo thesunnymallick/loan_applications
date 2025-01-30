@@ -1,6 +1,5 @@
 import React from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { VscUnverified } from "react-icons/vsc";
 import LazyImage from "../../LazyImage";
 
 const UploadDocView = ({ info }) => {

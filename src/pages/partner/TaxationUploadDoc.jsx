@@ -5,11 +5,6 @@ import userCricle from "../../assets/userCricle.jpg";
 import { Button, Input, notification, Upload } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import {
-  getCustomerDetails,
-  uploadDocForLoan,
-} from "../../api/partner/loanApi";
-import dayjs from "dayjs";
-import {
   getTaxtationsDetails,
   uploadTaxDoc,
 } from "../../api/partner/taxationpanel";

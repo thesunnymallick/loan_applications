@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import userImage from "../../assets/user.jpg";
 import { FaFileDownload } from "react-icons/fa";
 import { Tabs } from "antd";
 import UploadDocView from "../../components/salesExcutiveComponent/partner/UploadDocView";

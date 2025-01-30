@@ -250,7 +250,7 @@ useEffect(() => {
   if (loanType) {
     formik.setFieldValue("loan", loanMapping[loanType] || "");
   }
-}, [loanType]);
+}, [loanType, formik]);
 
   // Destructure Formik's properties for easier use
   const {

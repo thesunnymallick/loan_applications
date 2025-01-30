@@ -4,8 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import userCricle from "../../assets/userCricle.jpg";
 import { Button, Input, notification, Upload } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { getCustomerDetails } from "../../api/partner/loanApi";
-import dayjs from "dayjs";
+
 import {
   getInsurnceCustomerDetalis,
   uploadInsuranceDoc,

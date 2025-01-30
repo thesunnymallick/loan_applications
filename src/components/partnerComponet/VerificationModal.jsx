@@ -5,7 +5,6 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
   accpectAgrement,
-  downloadAgrement,
   getAgrementDetails,
 } from "../../api/partner/uploadDocApi";
 import { updateAgrement } from "../../features/authSlice";
@@ -18,7 +17,6 @@ const VerificationModal = () => {
     (state) => state.auth
   );
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false)
   const [aggrementDetails, setAgreementDeatils]=useState(null)
 

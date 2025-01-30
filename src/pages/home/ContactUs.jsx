@@ -13,14 +13,11 @@ const { Option } = Select;
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("First name is required"),
   last_name: Yup.string().required("Last name is required"),
-  work_email: Yup.string()
-    .email("Invalid email address")
-    .required("Work email is required"),
+  phone: Yup.number().required("Phone number is required"),
+  work_email: Yup.string().email("Invalid email address").required("Work email is required"),
   company_size: Yup.string().required("Company size is required"),
   industry: Yup.string().required("Industry is required"),
-  description: Yup.string()
-    .min(10, "Description must be at least 10 characters")
-    .required("Description is required"),
+  description: Yup.string().min(10, "Description must be at least 10 characters").required("Description is required"),
   demo_date: Yup.date().required("Demo date is required"),
   notes: Yup.string().nullable(),
 });
@@ -33,6 +30,7 @@ const ContactUs = () => {
     first_name: "",
     last_name: "",
     work_email: "",
+    phone:"",
     company_size: "",
     industry: "",
     description: "",
@@ -41,7 +39,7 @@ const ContactUs = () => {
   };
 
 
-
+   // Hnadle  Conatct Details
   const handleContactDetails = async (values) => {
     try {
         setLoading(true)
@@ -161,11 +159,11 @@ const ContactUs = () => {
                   placeholder="Last Name"
                   className="rounded-lg shadow-sm border-gray-300 focus:border-green-500 focus:ring-green-500"
                   name="last_name"
-                  value={values.first_name}
+                  value={values.last_name}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   status={
-                    touched.first_name && errors.first_name ? "error" : ""
+                    touched.last_name && errors.last_name ? "error" : ""
                   }
                 />
 
@@ -177,7 +175,8 @@ const ContactUs = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-1">
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+           <div className="flex flex-col gap-1">
               <label htmlFor="email">Work Email</label>
               <Input
                 id="email"
@@ -196,6 +195,26 @@ const ContactUs = () => {
                 </span>
               )}
             </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="phone">Mobile No</label>
+              <Input
+                id="phone"
+                size="large"
+                placeholder="Enter Phone Number"
+                className="rounded-lg shadow-sm border-gray-300 focus:border-green-500 focus:ring-green-500"
+                name="phone"
+                value={values.phone}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                status={touched.phone && errors.phone ? "error" : ""}
+              />
+              {touched.phone && errors.phone && (
+                <span className="text-red-500 text-xs">
+                  {errors.phone}
+                </span>
+              )}
+            </div>
+           </div>
 
             {/* Select Inputs: Company Size and Industry */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

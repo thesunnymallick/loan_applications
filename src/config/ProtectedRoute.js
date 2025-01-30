@@ -25,7 +25,7 @@ const ProtectedRoute = ({ element: Component, isProtected, allowedRoles, loanTyp
       // Redirect to the upload-doc page if the user is a "partner" with "pending" status
       navigate("/partner/upload-doc");
     }
-  }, [role, status, navigate]);
+  }, [role, status, navigate, is_agreement]);
  
   // Check if the user is logged in and has an allowed role
   if (isProtected && (!isLoggedIn || !allowedRoles.includes(role))) {

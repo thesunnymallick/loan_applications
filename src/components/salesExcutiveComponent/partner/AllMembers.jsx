@@ -76,7 +76,7 @@ const AllMembers = () => {
   useEffect(() => {
    
     fetchAllMembers(pagination.current);
-  }, [pagination.current]);
+  }, [pagination]);
 
 
   const handleTableChange = (pagination) => {

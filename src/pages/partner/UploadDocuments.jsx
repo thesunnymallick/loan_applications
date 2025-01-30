@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { Upload, Image, Button, Input, notification } from "antd";
+import { Upload, Button, Input, notification } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useFormik } from "formik";
 import * as Yup from "yup";

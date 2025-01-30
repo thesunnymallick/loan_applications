@@ -37,12 +37,15 @@ const CreditCard = () => {
    // fetch all credit Card
   const fetchAllCreditCard = async (params = {}) => {
     try {
+       setLoading(true);
       const { data, status } = await getAllCreditCards(params);
       if (status === 200) {
+        setLoading(false);
         setAllCreditCards(data?.data?.data);
         setTotalItems(data?.data?.total || 0); 
       }
     } catch (error) {
+      setLoading(false);
       ErrorHandler.handleError(error);
     }
   };

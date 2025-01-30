@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import notImage from "../assets/notImage2.jpg";
 import 'react-lazy-load-image-component/src/effects/blur.css';

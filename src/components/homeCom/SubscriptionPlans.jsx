@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getAllSubscriptions } from "../../api/partner/homeApi";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import ErrorHandler from "../../utils/ErrorHandler";
 
 const SubscriptionPlans = () => {
   const [plans, setPlans] = useState([]);
@@ -12,11 +13,10 @@ const SubscriptionPlans = () => {
       try {
         const { data, status } = await getAllSubscriptions();
         if (status === 200) {
-          console.log(data);
           setPlans(data?.data);
         }
       } catch (error) {
-        console.log(error);
+        ErrorHandler.handleError(error);
       }
     };
 
