@@ -174,8 +174,7 @@ const COMPANY_EMAIL = aggrementDetails?.COMPANY_EMAIL
           as well as any other non-public information related to current and/or
           future marketing plans and financial and operational analysis. The
           Confidential Information may comprise compilations,studies, summaries,
-          extracts, or other documentation prepared by {YOUR_COMPANY_NAME} (
-          {BRAND_NAME}).The partner cannot disclose to any person, entity,
+          extracts, or other documentation prepared by {YOUR_COMPANY_NAME} ({BRAND_NAME}).The partner cannot disclose to any person, entity,
           organization or take any actions that compromise business
           confidentiality.
         </Text>
@@ -203,7 +202,7 @@ const COMPANY_EMAIL = aggrementDetails?.COMPANY_EMAIL
           ensuring compliance with any applicable regulations or legal
           requirements.Partners are strictly prohibited from disclosing any
           internal strategies, information, or exclusive plans,shared by{" "}
-          {YOUR_COMPANY_NAME} (BRAND_NAME) through written or verbal mediums,
+          {YOUR_COMPANY_NAME} ({BRAND_NAME}) through written or verbal mediums,
           except for publicly available information and data. Prior
           authorization must be obtained before any disclosure of internal
           information. This measure is in place to safeguard the confidentiality

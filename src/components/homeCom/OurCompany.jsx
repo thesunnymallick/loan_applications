@@ -15,7 +15,7 @@ const OurCompany = () => {
           </h1>
           <p className="text-sm lg:text-base text-gray-500">
             <span className="font-semibold text-gray-700">
-              INCOMEKARO SOFTWARE PRIVATE LIMITED
+            SUNGLORI SOFTWARE PRIVATE LIMITED
             </span>{" "}
             Our Company uses a custom built ERP-CRM ecosystem to ensure seamless operational flow and streamlined customer relationship management. Our systems are fortified with advanced predictive analytics and machine learning algorithms to forecast market trends, optimize resources, and improve decision-making. Complementing this, we integrate secure Blockchain technology to facilitate transparent data exchange and uphold data integrity across all business functions. By merging these capabilities, we empower businesses with unmatched efficiency and scalability.
 

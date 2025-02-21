@@ -12,7 +12,7 @@ import MobileAppAdd from "../../components/homeCom/MobileAppAdd";
 import Services from "../../components/homeCom/Services";
 import OurCompany from "../../components/homeCom/OurCompany";
 import ContactInfo from "../../components/homeCom/ContactInfo";
-import OurTeam from "../../components/homeCom/OurTeam";
+// import OurTeam from "../../components/homeCom/OurTeam";
 
 const Home = () => {
   return (
@@ -25,7 +25,7 @@ const Home = () => {
       <div className="container mx-auto py-10 space-y-10">
         <RegisterProcess />
         <SubscriptionPlans />
-        <OurTeam/>
+        {/* <OurTeam/> */}
         <BusinessOverview />
         <FinancialProducts />
         <BusinessOverview2 />

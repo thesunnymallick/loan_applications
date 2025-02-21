@@ -2,46 +2,63 @@ import React, { lazy } from "react";
 
 import RootLayout from "./layouts/RootLayout";
 
- // Home Page Component
+// Home Page Component
 const Home = lazy(() => import("./pages/home/Home"));
-const About =lazy(()=>import("./pages/home/About"))
-const ContactUs =lazy(()=>import("./pages/home/ContactUs"))
-const Loigin =lazy(()=>import("./pages/auth/Loigin"));
-const Register = lazy(()=>import("./pages/auth/Register"));
+const About = lazy(() => import("./pages/home/About"));
+const ContactUs = lazy(() => import("./pages/home/ContactUs"));
+const Loigin = lazy(() => import("./pages/auth/Loigin"));
+const Register = lazy(() => import("./pages/auth/Register"));
 
 // Partner's Page
-const PartnerDashboard=lazy(()=>import("./pages/partner/PartnerDashboard"));
-const PartnerProfile =lazy(()=>import("./pages/partner/PartnerProfile"));
-const UploadDocuments=lazy(()=>import ("./pages/partner/UploadDocuments"));
-const OurPanels =lazy(()=>import("./pages/partner/OurPanels"));
-const LoanPanels= lazy(()=>import("./pages/partner/LoanPanels"));
-const LoanForm =lazy(()=>import("./pages/partner/LoanForm"));
-const UploadDocForLoan =lazy(()=>import("./pages/partner/UploadDocForLoan"));
-const TaxationPanel =lazy(()=>import("./pages/partner/TaxationPanel"));
-const PlaceOrder =lazy(()=>import("./pages/partner/PlaceOrder"));
-const AddClient =lazy(()=>import("./pages/partner/AddClient"));
-const CreditCard =lazy(()=>import("./pages/partner/CreditCard"));
-const  CreditCardApply=lazy(()=>import("./pages/partner/CreditCardApply")) ;
-const  GovermentLoan=lazy(()=>import("./pages/partner/GovermentLoan")) ;
-const  GovermentLoanForm=lazy(()=>import("./pages/partner/GovermentLoanForm")) ;
-const  AllClient=lazy(()=>import("./pages/partner/AllClient")) ;
-const  TaxationUploadDoc=lazy(()=>import("./pages/partner/TaxationUploadDoc")) ;
-const  CreditCardDocUpload =lazy(()=>import("./pages/partner/CreditCardDocUpload"));
-const  InsurancePanel =lazy(()=>import("./pages/partner/InsurancePanel"));
-const  InsuranceApply=lazy(()=>import("./pages/partner/InsuranceApply")) ;
-const  Wallet=lazy(()=>import("./pages/partner/Wallet")) ;
-const  GovermentLoanDocUpload=lazy(()=>import("./pages/partner/GovermentLoanDocUpload")) ;
-const  InstantLoginPanel=lazy(()=>import("./pages/partner/InstantLoginPanel")) ;
-const  EligiblePanel=lazy(()=>import("./pages/partner/EligiblePanel")) ;
-const  InsuranceDocUpload=lazy(()=>import("./pages/partner/InsuranceDocUpload")) ;
-const  Policy=lazy(()=>import("./pages/partner/Policy")) ;
-const  InstantLoginCreditCard=lazy(()=>import("./pages/partner/InstantLoginCreditCard")) ;
-const  Certificate=lazy(()=>import("./pages/partner/Certificate")) ;
+const PartnerDashboard = lazy(() => import("./pages/partner/PartnerDashboard"));
+const PartnerProfile = lazy(() => import("./pages/partner/PartnerProfile"));
+const UploadDocuments = lazy(() => import("./pages/partner/UploadDocuments"));
+const OurPanels = lazy(() => import("./pages/partner/OurPanels"));
+const LoanPanels = lazy(() => import("./pages/partner/LoanPanels"));
+const LoanForm = lazy(() => import("./pages/partner/LoanForm"));
+const UploadDocForLoan = lazy(() => import("./pages/partner/UploadDocForLoan"));
+const TaxationPanel = lazy(() => import("./pages/partner/TaxationPanel"));
+const PlaceOrder = lazy(() => import("./pages/partner/PlaceOrder"));
+const AddClient = lazy(() => import("./pages/partner/AddClient"));
+const CreditCard = lazy(() => import("./pages/partner/CreditCard"));
+const CreditCardApply = lazy(() => import("./pages/partner/CreditCardApply"));
+const GovermentLoan = lazy(() => import("./pages/partner/GovermentLoan"));
+const GovermentLoanForm = lazy(() =>
+  import("./pages/partner/GovermentLoanForm")
+);
+const AllClient = lazy(() => import("./pages/partner/AllClient"));
+const TaxationUploadDoc = lazy(() =>
+  import("./pages/partner/TaxationUploadDoc")
+);
+const CreditCardDocUpload = lazy(() =>
+  import("./pages/partner/CreditCardDocUpload")
+);
+const InsurancePanel = lazy(() => import("./pages/partner/InsurancePanel"));
+const InsuranceApply = lazy(() => import("./pages/partner/InsuranceApply"));
+const Wallet = lazy(() => import("./pages/partner/Wallet"));
+const GovermentLoanDocUpload = lazy(() =>
+  import("./pages/partner/GovermentLoanDocUpload")
+);
+const InstantLoginPanel = lazy(() =>
+  import("./pages/partner/InstantLoginPanel")
+);
+const EligiblePanel = lazy(() => import("./pages/partner/EligiblePanel"));
+const InsuranceDocUpload = lazy(() =>
+  import("./pages/partner/InsuranceDocUpload")
+);
+const Policy = lazy(() => import("./pages/partner/Policy"));
+const InstantLoginCreditCard = lazy(() =>
+  import("./pages/partner/InstantLoginCreditCard")
+);
+const Certificate = lazy(() => import("./pages/partner/Certificate"));
 
 // Sales Executive Pages
-const  SalesExcutivedDashboard =lazy(()=>import("./pages/salesExcutive/SalesExcutivedDashboard")) ;
-const  Partner =lazy(()=>import("./pages/salesExcutive/Partner")) ;
-const  AddNewMember =lazy(()=>import("./pages/salesExcutive/AddNewMember")) ;
+const SalesExcutivedDashboard = lazy(() =>
+  import("./pages/salesExcutive/SalesExcutivedDashboard")
+);
+const Partner = lazy(() => import("./pages/salesExcutive/Partner"));
+const AddNewMember = lazy(() => import("./pages/salesExcutive/AddNewMember"));
+const CompnayDocuments = lazy(() => import("./pages/home/CompnayDocuments"));
 
 const routes = [
   {
@@ -65,6 +82,15 @@ const routes = [
   {
     path: "/contact",
     element: ContactUs,
+    layout: (props) => (
+      <RootLayout {...props} showSidebar={false} showNavbar={false} />
+    ),
+    protected: false,
+    name: "Home",
+  },
+  {
+    path: "/company-doc",
+    element: CompnayDocuments,
     layout: (props) => (
       <RootLayout {...props} showSidebar={false} showNavbar={false} />
     ),

@@ -60,7 +60,10 @@ const Footer = () => {
           <div>
             <h3 className="text-green-600 font-bold mb-4">LEGAL</h3>
             <ul className="space-y-2">
-              <li>Company Doc</li>
+              <li 
+               className="cursor-pointer"
+               onClick={()=>navigate("/company-doc")}
+              >Company Doc</li>
               <li>Terms of Conditions</li>
               <li>Privacy Policy</li>
             </ul>
@@ -78,17 +81,17 @@ const Footer = () => {
         {/* Bottom Info */}
         <div className="text-xs text-gray-400 space-y-4">
           <p>
-          IncomeKaro is present in more than 27 states of India- ANDAMAN AND NICOBAR| ANDHRA PRADESH | ASSAM | BIHAR | CHANDIGARH | CHHATTISGARH | DELHI | GUJARAT | GOA| HIMACHAL PRADESH | HARYANA | JHARKHAND | JAMMU AND KASHMIR | KARNATAKA | KERALA| MAHARASHTRA | MADHYA PRADESH | MANIPUR| ODISHA | PUNJAB | RAJASTHAN | SIKKIM | TAMIL NADU | TELANGANA | UTTARAKHAND | UTTAR PRADESH | WEST BENGAL. With lots of ❤ from Team IncomeKaro.
+          SUNGLORI SOFTWARE PRIVATE LIMITED is present in more than 27 states of India- ANDAMAN AND NICOBAR| ANDHRA PRADESH | ASSAM | BIHAR | CHANDIGARH | CHHATTISGARH | DELHI | GUJARAT | GOA| HIMACHAL PRADESH | HARYANA | JHARKHAND | JAMMU AND KASHMIR | KARNATAKA | KERALA| MAHARASHTRA | MADHYA PRADESH | MANIPUR| ODISHA | PUNJAB | RAJASTHAN | SIKKIM | TAMIL NADU | TELANGANA | UTTARAKHAND | UTTAR PRADESH | WEST BENGAL. With lots of ❤ from Team SUNGLORI SOFTWARE PRIVATE LIMITED.
           </p>
           <p>
-            <span className="text-green-600 font-bold">Attention:</span> Team Incomekaro never asks any details related to debit cards and credit cards and Net Banking like CVV, OTP, SMS or any other highly confidential information. If an Incomekaro  customer receives any such mail or phone call, then they should understand that this is an online trick to steal their money. For any report, kindly email us at support@incomekaro.in
+            <span className="text-green-600 font-bold">Attention:</span> Team SUNGLORI SOFTWARE PRIVATE LIMITED never asks any details related to debit cards and credit cards and Net Banking like CVV, OTP, SMS or any other highly confidential information. If an SUNGLORI SOFTWARE PRIVATE LIMITED  customer receives any such mail or phone call, then they should understand that this is an online trick to steal their money. For any report, kindly email us at support@incomekaro.in
           </p>
-          <p>CIN: </p>
+          <p>CIN: U62013WB2025PTC276552</p>
         </div>
 
         {/* Footer Bottom */}
         <div className="flex flex-wrap justify-between items-center mt-6 text-xs">
-          <p>Copyright 2023 - 2024. INCOMEKARO SOFTWARE PRIVATE LIMITED.</p>
+          <p>Copyright 2023 - 2024. SUNGLORI SOFTWARE PRIVATE LIMITED.</p>
           <div className="space-x-4">
             <Link href="#" className="text-green-600 hover:underline">
               Terms of Conditions
